@@ -60,6 +60,9 @@ const useStyles = makeStyles((theme) => ({
     padding: '10px',
   },
   footer: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
     flexShrink: 0,
     height: 230,
     backgroundColor: "#567068",
