@@ -1,11 +1,18 @@
 import React from 'react';
 import Router from './Router';
+import { ThemeProvider } from '@material-ui/core';
 
-const App = () => {
+import Navbar from './components/Navbar/Navbar';
+import theme from './theme';
+
+const App = () => { 
+
     return (
-        <div>
+        <ThemeProvider theme={theme}>
             <Router />
-        </div>
+            <Navbar />
+            <h1>App</h1>
+        </ThemeProvider>
     );
 }
 
