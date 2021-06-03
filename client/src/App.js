@@ -8,11 +8,6 @@ import theme from './theme';
 
 const App = () => { 
 
-import Navbar from './components/Navbar/Navbar';
-import theme from './theme';
-
-const App = () => { 
-
     return (
         <ThemeProvider theme={theme}>
             <Router />
