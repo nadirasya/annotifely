@@ -10,8 +10,7 @@ const App = () => {
     return (
         <ThemeProvider theme={theme}>
             <Router />
-            <Navbar />
-            <h1>App</h1>
+            {/* <Navbar /> */}
         </ThemeProvider>
     );
 }
