@@ -63,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     bottom: 0,
     width: '100%',
+    flexShrink: 0,
     height: 230,
     backgroundColor: "#567068",
     color: theme.palette.getContrastText('#567068'),
