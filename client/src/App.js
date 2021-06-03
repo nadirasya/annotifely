@@ -1,4 +1,5 @@
 import React from 'react';
+import Router from './Router';
 import { ThemeProvider } from '@material-ui/core';
 
 import Navbar from './components/Navbar/Navbar';
@@ -8,8 +9,8 @@ const App = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Navbar />
-            <h1>App</h1>
+            <Router />
+            {/* <Navbar /> */}
         </ThemeProvider>
     );
 }
