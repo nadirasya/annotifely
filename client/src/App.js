@@ -10,6 +10,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 const App = () => { 
 
+const App = () => {
     return (
         <ThemeProvider theme={theme}>
             <BrowserRouter>
