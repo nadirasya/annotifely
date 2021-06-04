@@ -20,7 +20,6 @@ const Footer = () => {
                         <Typography variant="h4">
                           <b>Get Started</b>
                         </Typography>
-
                     </Box>
                     
                     <Box

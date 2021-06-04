@@ -29,8 +29,22 @@ export default makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    width: '40%',
   },
   googleButton: {
     marginBottom: theme.spacing(2),
   },
+  roleButtonContainer: {
+    width: '92%',
+    borderWidth: '2px', 
+    borderBottomWidth: '1px', 
+    borderBottomColor: '#CFCFCF', 
+    borderBottomStyle: 'solid',
+  },
+  buttonContainer: {
+    width: '100%', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    display: 'flex'
+  }
 }));
