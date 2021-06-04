@@ -9,8 +9,18 @@ const theme = createMuiTheme({
         secondary: {
             main: "#FFFFFF"
         },
-        
-    }
+    },
+    typography: { 
+		fontFamily: [ 'Open Sans' ].join(','), 
+	}, 
+	overrides: {
+		MuiButton: {
+		  root: {
+			borderRadius: 8,
+			textTransform: 'none'
+		  },
+		}, 
+	  },
 })
 
 export default theme;

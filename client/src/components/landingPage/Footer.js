@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from "@material-ui/core/Button";
 
 import useStyles from "./style";
+import { Grid } from '@material-ui/core';
 
 const Footer = () => {
     const classes = useStyles();
@@ -25,7 +26,11 @@ const Footer = () => {
                     <Box
                       component="span"
                       className={`${classes.spreadFooterBox} ${classes.boxFooter}`}>
-                        <div>
+                        
+
+                        <Grid>
+                          <Grid item xs={12} md={12}>
+                          <div>
                           <Typography variant="h6">Do you need help with your training data?</Typography>
                           <a
                             target="_blank"
@@ -40,7 +45,12 @@ const Footer = () => {
                             <b>Join as Client</b>
                           </Button>
                         </div>
-                        <div>
+                          </Grid>
+                        </Grid>
+
+                        <Grid>
+                          <Grid item xs={12} md={12}>
+                          <div>
                           <Typography variant="h6">Do you want to join us and get a part time job?</Typography>
                           <a
                             target="_blank"
@@ -55,6 +65,9 @@ const Footer = () => {
                             <b>Join as Annotater</b>
                           </Button>
                         </div>
+                          </Grid>
+                        </Grid>
+                        
                     </Box>
                 </Container>
             </footer>
