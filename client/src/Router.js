@@ -5,7 +5,6 @@ import LandingPage from './components/landingPage/LandingPage';
 
 const Router = () => {
     return <BrowserRouter>
-
         <Switch>
             <Route exact path="/">
                 <LandingPage />

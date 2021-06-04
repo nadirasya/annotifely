@@ -3,6 +3,7 @@ import { ThemeProvider } from '@material-ui/core';
 import Router from './Router';
 
 import Navbar from './components/Navbar/Navbar';
+import HomePage from './components/annotaterHomePage/HomePage';
 import theme from './theme';
 
 const App = () => { 
@@ -11,6 +12,7 @@ const App = () => {
         <ThemeProvider theme={theme}>
             <Router />
             {/* <Navbar /> */}
+            {/* <HomePage/> */}
         </ThemeProvider>  
     );
 }
