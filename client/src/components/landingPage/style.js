@@ -94,6 +94,18 @@ const useStyles = makeStyles((theme) => ({
       top: 0,
       zIndex: 1,
 
+    },
+    registerFormContainer: {
+      position:'fixed',
+      width: '100%', 
+      height: '100%', 
+      backgroundColor: 'black',
+      backgroundColor:'rgba(0,0,0,.75)',
+      alignItems: 'center', 
+      justifyContent:'center',
+      top: 0,
+      zIndex: 1,
+
     }
 }));
 

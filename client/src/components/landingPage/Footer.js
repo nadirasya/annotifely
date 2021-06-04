@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import useStyles from "./style";
 import { Grid } from '@material-ui/core';
 
-const Footer = () => {
+const Footer = ({handleShowRegisterClientForm, handleShowRegisterAnnotaterForm}) => {
     const classes = useStyles();
 
     return (
@@ -20,6 +20,7 @@ const Footer = () => {
                         <Typography variant="h4">
                           <b>Get Started</b>
                         </Typography>
+
                     </Box>
                     
                     <Box
@@ -40,7 +41,7 @@ const Footer = () => {
                               </Box>
                           </a>
                           <br />
-                          <Button className={classes.buttonSecondary}>
+                          <Button className={classes.buttonSecondary} onClick={handleShowRegisterClientForm}>
                             <b>Join as Client</b>
                           </Button>
                         </div>
@@ -60,7 +61,7 @@ const Footer = () => {
                               </Box>
                           </a>
                           <br />
-                          <Button className={classes.buttonSecondary}>
+                          <Button className={classes.buttonSecondary} onClick={handleShowRegisterAnnotaterForm}>
                             <b>Join as Annotater</b>
                           </Button>
                         </div>

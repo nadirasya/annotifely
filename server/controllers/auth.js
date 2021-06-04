@@ -62,8 +62,8 @@ export const signinVerificator = async( req, res ) => {
     }
 };
 
-export const signup = async( req, res ) => {
-    const { email, password } = req.body;
+export const signupAnnotater = async( req, res ) => {
+    const { name, email, password } = req.body;
 
     try {
         console.log("from controller ", email, password);
@@ -73,9 +73,30 @@ export const signup = async( req, res ) => {
 
         const hashedPassword = await bycrypt.hash(password, 12);
 
-        const result = await Annotater.create( { email, password: hashedPassword });
+        const result = await Annotater.create( { name, email, password: hashedPassword });
         
-        const token = jwt.sign({ email: result.email, id: result._id }, 'test', { expiresIn: '1h'});
+        const token = jwt.sign({ name: result.name, email: result.email, id: result._id }, 'test', { expiresIn: '1h'});
+
+        res.status(200).json({ result: result, token })
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const signupClient= async( req, res ) => {
+    const { name, email, password } = req.body;
+
+    try {
+        console.log("from controller ", email, password);
+        const existingUser = await Client.findOne({ email });
+
+        if(existingUser) return res.status(400).json({ message: ' User already exist. '});
+
+        const hashedPassword = await bycrypt.hash(password, 12);
+
+        const result = await Client.create( { name, email, password: hashedPassword });
+        
+        const token = jwt.sign({ name: result.name, email: result.email, id: result._id }, 'test', { expiresIn: '1h'});
 
         res.status(200).json({ result: result, token })
     } catch (error) {
