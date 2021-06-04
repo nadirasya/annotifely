@@ -8,9 +8,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 20
   },
   boxDescription: {
-    height: 350,
+    height: 300,
     display: "flex",
-    padding: 8
+    padding: 6,
   },
   boxFooter: {
     height: 120,
@@ -27,7 +27,8 @@ const useStyles = makeStyles((theme) => ({
   centerBox: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 0
+    marginTop: 0,
+    // border: "1px solid black",
   },
     descriptionBox: {
       // justifyContent: "space-between",
@@ -60,18 +61,26 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '50px'
   },
   content: {
-    flex: '1 0 auto',
-    padding: '10px',
+    position: 'absolute',
+    top: 90,
+    bottom: 200,
+    left: 0,
+    right: 0,
+    overflow: 'auto',
+    // flex: '1 0 auto',
+    padding: theme.spacing(2,0,0),
+    // padding: '20px'
   },
   footer: {
     position: 'fixed',
     bottom: 0,
+    marginBottom: 0,
+    overflow: 'auto',
     width: '100%',
-    flexShrink: 0,
-    height: 230,
+    // flexShrink: 0,
+    height: 220,
     backgroundColor: "#567068",
     color: theme.palette.getContrastText('#567068'),
-    // marginTop: theme.spacing(8),
     padding: theme.spacing(2, 0),
     zIndex: -1,
     },
