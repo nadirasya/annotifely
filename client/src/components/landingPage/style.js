@@ -21,6 +21,8 @@ const useStyles = makeStyles((theme) => ({
   bottomRightBox: {
     justifyContent: "flex-end",
     alignItems: "flex-end",
+    zIndex: 0,
+
   },
   centerBox: {
     justifyContent: "center",
@@ -43,7 +45,9 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '130px', 
     maxHeight: '50px', 
     minWidth: '130px', 
-    minHeight: '50px'
+    minHeight: '50px',
+    // zIndex: -1,
+
   },
   buttonSecondary: {
     backgroundColor: "#F2EBEB",
@@ -60,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '10px',
   },
   footer: {
-    position: 'absolute',
+    position: 'fixed',
     bottom: 0,
     width: '100%',
     flexShrink: 0,
@@ -69,7 +73,20 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.getContrastText('#567068'),
     // marginTop: theme.spacing(8),
     padding: theme.spacing(2, 0),
+    zIndex: -1,
     },
+    loginFormContainer: {
+      position:'fixed',
+      width: '100%', 
+      height: '100%', 
+      backgroundColor: 'black',
+      backgroundColor:'rgba(0,0,0,.75)',
+      alignItems: 'center', 
+      justifyContent:'center',
+      top: 0,
+      zIndex: 1,
+
+    }
 }));
 
 export default useStyles;
