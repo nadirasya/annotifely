@@ -11,11 +11,17 @@ const Main = () => {
     const classes = useStyles();
     return (
         <>
-            <div className={classes.content}>
+        <div className={classes.body}>
+        <div className={classes.content}>
                 <Container maxWidth="md" >
-                    <Grid container spacing={2} >
-                        <Grid item xs={12} md={6}>
-                            <img src={vector_landingpage} alt="vector_landingpage" style={{width: 400}} />
+                    <Grid container spacing={0} >
+                        <Grid item xs={12} md={6} style={{alignItems: "center"}}> 
+                        <Box
+                                component="span" //uses different element but default styling is same
+                                m={1}
+                                className={`${classes.bottomRightBox} ${classes.boxDescription}`} style={{marginTop: 40}} >
+                                <img src={vector_landingpage} alt="vector_landingpage" style={{width: 350}} />
+                            </Box>
                         </Grid>
                         <Grid item xs={12} md={6} style={{alignItems: "center"}}>
                             <Box
@@ -35,6 +41,8 @@ const Main = () => {
                     </Grid>
                 </Container>
             </div>
+        </div>
+            
         </>
     );
 }
