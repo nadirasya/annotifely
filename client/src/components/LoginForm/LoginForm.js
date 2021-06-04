@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { TextField, Typography, Paper, CardMedia, Container, Grid, Button } from '@material-ui/core';
+import { TextField, Typography, Paper, Container, Grid, Button } from '@material-ui/core';
 import {useDispatch} from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { signin, signup } from '../../actions/auth';
+import { signinAnnotater, signinVerificator, signinClient, signup } from '../../actions/auth';
 import Input from './Input';
 import useStyles from './styles';
 
@@ -20,7 +20,16 @@ const LoginForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        dispatch(signin(formData, history));
+        if(initialState.role==="annotater"){
+            dispatch(signinAnnotater(formData, history));
+        } 
+        else if (initialState.role==="client"){
+            dispatch(signinClient(formData, history));
+        }
+        else {
+            dispatch(signinVerificator(formData, history));
+        }
+        // dispatch(signup(formData, history));
     };
 
     const handleChange = (e) => {
@@ -58,7 +67,7 @@ const LoginForm = () => {
                     <Input name="password" label="Password" handleChange={handleChange} type={ showPassword ? "text" : "password"} handleShowPassword={handleShowPassword}/>
                     </Grid>
                     <div className={classes.buttonContainer}>
-                        <Button type="submit"  variant="contained" color="primary" className={classes.submit} onClick={() => {console.log(formData)}}>
+                        <Button type="submit"  variant="contained" color="primary" className={classes.submit}>
                             <Typography variant="h6">
                                Confirm
                             </Typography>

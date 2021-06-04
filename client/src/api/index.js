@@ -10,5 +10,7 @@ API.interceptors.request.use((req) => {
     return req;
 });
 
-export const signIn = (formData) => API.post('/users/signin', formData);
+export const signinAnnotater = (formData) => API.post('/users/signinAnnotater', formData);
+export const signinClient = (formData) => API.post('/users/signinClient', formData);
+export const signinVerificator = (formData) => API.post('/users/signinVerificator', formData);
 export const signUp = (formData) => API.post('/users/signup', formData);
