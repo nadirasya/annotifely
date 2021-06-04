@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Paper, CardMedia, Container, Grid } from '@material-ui/core';
+import { TextField, Typography, Paper, CardMedia, Container, Grid, Button } from '@material-ui/core';
 
 import Input from './Input';
 import useStyles from './styles';
 
-const initialState = { email: '', password: '' };
+const initialState = { email: '', password: '', role: 'annotater'};
 
 const LoginForm = () => {
     const [formData, setFormData] = useState(initialState);
@@ -13,13 +13,9 @@ const LoginForm = () => {
     const classes = useStyles();
 
     const handleSubmit = (e) => {
-        // e.preventDefault();
+        e.preventDefault();
         
-        // if(isSignup){
-        //     dispatch(signup(formData, history));
-        // } else {
-        //     dispatch(signin(formData, history));
-        // }
+        console.log(formData)
     };
 
     const handleChange = (e) => {
@@ -31,22 +27,40 @@ const LoginForm = () => {
     return (
         <Container component="main" maxWidth="xs">
         <Paper className={classes.paper} elevation={3}>
-            <Typography variant="h5">Login as</Typography>
+            <Typography variant="h4" style={{marginBottom: '8px'}}>
+                <b>Login as</b>
+            </Typography>
+            <div className={classes.roleButtonContainer} >
+                <Button size="large">
+                    <Typography variant="h6" color={ formData.role === "annotater" ? "inherit" : "primary"} onClick={() => {setFormData({...formData, role: "annotater"})}}>
+                        <b>Annotater</b>
+                    </Typography>
+                </Button>
+                <Button size="large">
+                    <Typography variant="h6" color={ formData.role === "client" ? "inherit" : "primary"} onClick={() => {setFormData({...formData, role: "client"})}}>
+                        <b>Client</b>
+                    </Typography>
+                </Button>
+                <Button size="large">
+                    <Typography variant="h6" color={ formData.role === "verificator" ? "inherit" : "primary"} onClick={() => {setFormData({...formData, role: "verificator"})}}>
+                        <b>Verificator</b>
+                    </Typography>
+                </Button>
+            </div>
             <form className={classes.form} onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                     <Input name="email" label="Email Address" handleChange={handleChange} type="email"/>
                     <Input name="password" label="Password" handleChange={handleChange} type={ showPassword ? "text" : "password"} handleShowPassword={handleShowPassword}/>
                     </Grid>
-                    <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-                        Confirm
-                    </Button>
-                    {/* <Grid container justify="flex-end">
-                        <Grid>
-                            <Button onClick={switchMode}>
-                                { isSignup ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
-                            </Button>
-                        </Grid>
-                    </Grid> */}
+                    <div className={classes.buttonContainer}>
+                        <Button type="submit"  variant="contained" color="primary" className={classes.submit} onClick={() => {console.log(formData)}}>
+                            <Typography variant="h6">
+                               Confirm
+                            </Typography>
+                            
+                        </Button>
+                    </div>
+                    
             </form>
         </Paper>
     </Container>

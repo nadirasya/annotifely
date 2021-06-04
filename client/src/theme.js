@@ -7,8 +7,11 @@ const theme = createMuiTheme({
             main: "#567068"
         }, 
         secondary: {
-            main: "#FFFFFF"
+            main: "#FFFFFF",
         },
+		grey: {
+			main: "#CFCFCF"
+		}
     },
     typography: { 
 		fontFamily: [ 'Open Sans' ].join(','), 
