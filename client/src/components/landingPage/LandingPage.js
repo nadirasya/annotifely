@@ -7,14 +7,20 @@ import Header from './Header';
 import Main from './Main';
 import Footer from './Footer'
 import LoginForm from "../LoginForm/LoginForm";
+import ClientForm from "../RegisterForm/ClientForm";
+import AnnotaterForm from "../RegisterForm/AnnotaterForm";
 
 
 const LandingPage = () => {
   const classes = useStyles();
 
   const [loginForm, setLoginForm] = useState(false);
+  const [clientRegisterForm, setClientRegisterForm] = useState(false);
+  const [annotaterRegisterForm, setAnnotaterRegisterForm] = useState(false);
 
   const handleShowLoginForm = () => setLoginForm((prevLoginForm) => !prevLoginForm);
+  const handleShowRegisterClientForm = () => setClientRegisterForm(true);
+  const handleShowRegisterAnnotaterForm = () => setAnnotaterRegisterForm(true);
 
   function useOutsideAlerter(ref) {
     useEffect(() => {
@@ -23,7 +29,7 @@ const LandingPage = () => {
          */
         function handleClickOutside(event) {
             if (ref.current && !ref.current.contains(event.target)) {
-               setLoginForm(false)
+               setLoginForm(false) || setClientRegisterForm(false) || setAnnotaterRegisterForm(false)
             }
         }
 
@@ -56,6 +62,22 @@ const LandingPage = () => {
           </OutsideAlerter>
         </div>
         :   null    }
+        {
+          clientRegisterForm ?
+            <div className={classes.registerFormContainer}>
+              <OutsideAlerter>
+                <ClientForm />
+              </OutsideAlerter>
+            </div>
+            : null }
+          {
+          annotaterRegisterForm ?
+            <div className={classes.registerFormContainer}>
+              <OutsideAlerter>
+                <AnnotaterForm />
+              </OutsideAlerter>
+            </div>
+            : null }
           <CssBaseline />
           <Container maxWidth="lg">
           {/* header */}
@@ -66,7 +88,10 @@ const LandingPage = () => {
           </main>
           </Container>
           {/* footer */}
-          <Footer />
+          <Footer 
+            handleShowRegisterClientForm={handleShowRegisterClientForm}
+            handleShowRegisterAnnotaterForm={handleShowRegisterAnnotaterForm}
+          />
     </div>
   );
 }

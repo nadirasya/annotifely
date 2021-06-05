@@ -40,13 +40,25 @@ export const signinVerificator = (formData, history) =>  async(dispatch) => {
     }
 }
 
-export const signup = (formData, history) =>  async(dispatch) => {
+export const signupAnnotater = (formData, history) =>  async(dispatch) => {
     try {
-        const { data } = await api.signUp(formData);
+        const { data } = await api.signupAnnotater(formData);
         
         dispatch({ type: AUTH, data });
 
         history.push('/annotater');
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const signupClient = (formData, history) =>  async(dispatch) => {
+    try {
+        const { data } = await api.signupClient(formData);
+        
+        dispatch({ type: AUTH, data });
+
+        history.push('/client');
     } catch (error) {
         console.log(error);
     }
