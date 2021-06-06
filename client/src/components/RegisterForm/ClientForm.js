@@ -41,6 +41,7 @@ const ClientForm = () => {
               <Grid container spacing={2}>
                   <Input
                     handleChange={handleChange}
+                    type="text"
                     name="name"
                     label="Name"
                   />
@@ -65,7 +66,7 @@ const ClientForm = () => {
               color="primary"
               className={classes.submit}
             >
-              Confirm
+              <Typography variant="h6">Confirm</Typography>
             </Button>
          </form>
       </Paper>
