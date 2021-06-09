@@ -8,6 +8,7 @@ import AnnotaterHomePage from './components/annotaterHomePage/HomePage';
 import theme from './theme';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
+
 const App = () => {
     return (
         <ThemeProvider theme={theme}>
