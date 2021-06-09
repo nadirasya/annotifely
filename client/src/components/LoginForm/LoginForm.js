@@ -39,7 +39,7 @@ const LoginForm = () => {
     const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
     
     return (
-        <Container component="main" maxWidth="xs">
+        // <Container component="main" maxWidth="xs">
         <Paper className={classes.paper} elevation={3}>
             <Typography variant="h4" style={{marginBottom: '8px'}}>
                 <b>Login as</b>
@@ -77,7 +77,7 @@ const LoginForm = () => {
                     
             </form>
         </Paper>
-    </Container>
+    // </Container>
     )
 }
 

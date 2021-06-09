@@ -46,5 +46,11 @@ export default makeStyles((theme) => ({
     justifyContent: 'center', 
     alignItems: 'center', 
     display: 'flex'
+  },
+  formContainer: {
+    width: '50%',
+    display: 'flex',
+    // alignItems: 'center',
+    justifyContent: 'center'
   }
 }));
