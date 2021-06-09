@@ -1,8 +1,10 @@
+
 import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@material-ui/core';
+
 import React from 'react';
 import NavBar from '../Navbar/Navbar';
 import useStyles from './styles';
-    
+
 function createData(id, client, title, totalImage, annotaters, createdAt) {
     return { id, client, title, totalImage, annotaters, createdAt };
   }
@@ -13,12 +15,11 @@ function createData(id, client, title, totalImage, annotaters, createdAt) {
     createData(3, 'Reina Shabira', 'Cari daun menjari', 16, 24, 6),
     createData(4, 'Kevin Andrio', 'Cari jembatan', 3, 67, 4),
     createData(5, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49, 3),
-  ];
+
 
   
 const HomePage = () => {
     const classes = useStyles();
-
     const handleAccept = (id) => {
         console.log(id);
     }
