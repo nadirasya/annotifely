@@ -11,7 +11,6 @@ const Main = () => {
     const classes = useStyles();
     return (
         <>
-        <div className={classes.body}>
         <div className={classes.content}>
                 <Container maxWidth="md" >
                     <Grid container spacing={0} >
@@ -41,8 +40,6 @@ const Main = () => {
                     </Grid>
                 </Container>
             </div>
-        </div>
-            
         </>
     );
 }

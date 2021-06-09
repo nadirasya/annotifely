@@ -14,7 +14,7 @@ function createData(id, client, title, totalImage, annotaters, createdAt) {
     createData(2, 'Irfan Mahendra', 'Cari barang berbahan kaca', 9, 37, 3),
     createData(3, 'Reina Shabira', 'Cari daun menjari', 16, 24, 6),
     createData(4, 'Kevin Andrio', 'Cari jembatan', 3, 67, 4),
-    createData(5, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49, 3),
+    createData(5, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49, 3),]
 
 
   
