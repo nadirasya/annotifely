@@ -2,14 +2,22 @@ import React, { useState } from 'react';
 import { AppBar, Typography, Toolbar, Button, IconButton, Menu, MenuItem } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import { useDispatch } from 'react-redux';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 import useStyles from './styles';
 import logoSmall from '../images/logoSmall.png';
 
 const Navbar = () => {
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const history = useHistory();
+
+
     const [userRole, setUserRole] = useState('annotater');
     const [anchorEl, setAnchorEl] = useState(null);
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
+
     const open = Boolean(anchorEl);
 
     const handleMenu = (event) => {
@@ -19,6 +27,14 @@ const Navbar = () => {
     const handleClose = () => {
       setAnchorEl(null);
     };
+
+    const handleLogout = () => {
+      dispatch({type: 'LOGOUT'});
+
+      history.push('/');
+
+      setUser(null);
+    }
 
 
   return (
@@ -76,7 +92,7 @@ const Navbar = () => {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </div>
         </Toolbar>
