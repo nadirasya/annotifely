@@ -8,6 +8,7 @@ import AnnotaterHomePage from './components/annotaterHomePage/HomePage';
 import AnnotaterTaskPage from './components/annotaterTaskPage/AnnotaterTaskPage';
 import AnnotaterMyAnnotationsPage from './components/annotaterMyAnnotationsPage/AnnotaterMyAnnotationsPage';
 import TaskForm from './components/TaskFrom/TaskForm';
+import AnnotaterAnnotationPage from './components/annotaterAnnotationPage/AnnotaterAnnotationPage';
 import theme from './theme';
 
 
@@ -19,6 +20,7 @@ const App = () => {
                 <Switch>
                     <Route path='/annotater' exact component = {AnnotaterHomePage} />
                     <Route path='/annotater/task' exact component = {AnnotaterTaskPage} />
+                    <Route path='/annotater/task/annotation' exact component = {AnnotaterAnnotationPage} />
                     <Route path='/annotater/my-annotation' exact component = {AnnotaterMyAnnotationsPage} />
                     <Route path='/task' exact component = {TaskForm} />
                 </Switch>
@@ -26,7 +28,7 @@ const App = () => {
         )
 
     }
-
+    
     return (
         <ThemeProvider theme={theme}>
             <BrowserRouter>

@@ -1,7 +1,10 @@
-import React from 'react';
-import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, CircularProgress } from '@material-ui/core';
 import NavBar from '../Navbar/Navbar';
 import useStyles from './styles';
+
+import { getTasks } from '../../actions/tasks';
 
 function createData(id, client, title, totalImage, annotaters, createdAt) {
     return { id, client, title, totalImage, annotaters, createdAt };
@@ -14,21 +17,34 @@ const rows = [
     createData(4, 'Kevin Andrio', 'Cari jembatan', 3, 67, 4),
     createData(5, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49, 3),]
 
-
   
 const AnnotaterTaskPage = () => {
+    const dispatch = useDispatch(); 
     const classes = useStyles();
+    const tasks = useSelector((state) => state.tasks)
+    
+
+    useEffect(() => {
+        dispatch(getTasks());  
+    }, [dispatch]);
+
     const handleAccept = (id) => {
-        console.log(id);
-    }
+        console.log("useEffect", tasks)
+    };
 
     return (
+        
         <div>
             <div className={classes.pageTitle}>
                 <Typography variant="h4">
                    <b> Task List </b> 
                 </Typography>
             </div>
+            { !tasks.length ?
+            <div style={{display: 'flex', justifyContent: 'center'}}> 
+                <CircularProgress />
+            </div>
+            :  
             <div className={classes.tableContainer}>
                 <TableContainer component={Paper} style={{width: '70%'}}>
                     <Table className={classes.table} aria-label="simple table">
@@ -55,25 +71,24 @@ const AnnotaterTaskPage = () => {
                         </TableRow>
                         </TableHead>
                         <TableBody>
-                        {rows.map((row) => (
-                            <TableRow key={row.title}>
+                        {tasks.map((task) => (
+                            <TableRow key={task._id}>
                             <TableCell component="th" scope="row">
-                                <Typography variant="subtitle1" ><b>{row.client}</b></Typography>
+                                <Typography variant="subtitle1" ><b>future improvement</b></Typography>
                             </TableCell>
-                            <TableCell align="right" >{row.title}</TableCell>
-                            <TableCell align="right">{row.totalImage}</TableCell>
-                            <TableCell align="right">{row.annotaters}</TableCell>
-                            <TableCell align="right">{row.createdAt}h ago </TableCell>
+                            <TableCell align="right" >{task.title}</TableCell>
+                            <TableCell align="right">future improvement</TableCell>
+                            <TableCell align="right">future improvement</TableCell>
+                            <TableCell align="right">{task.createdAt}</TableCell>
                             <TableCell align="right">
-                                <Button variant="contained" disableElevation onClick={() => handleAccept(row.id)}>Accept</Button>
+                                <Button variant="contained" disableElevation onClick={() => handleAccept(task._id)}>Accept</Button>
                             </TableCell>
                             </TableRow>
                         ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
-            </div>
-            
+            </div> }
         </div>
     )
 }

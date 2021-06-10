@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getTask, createTask } from '../controllers/task.js';
+import { getTask, createTask } from '../controllers/tasks.js';
 import findUser from '../middleware/findUser.js';
 
 const router = express.Router();
