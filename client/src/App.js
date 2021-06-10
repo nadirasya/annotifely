@@ -7,6 +7,7 @@ import Navbar from './components/Navbar/Navbar';
 import AnnotaterHomePage from './components/annotaterHomePage/HomePage';
 import AnnotaterTaskPage from './components/annotaterTaskPage/AnnotaterTaskPage';
 import AnnotaterMyAnnotationsPage from './components/annotaterMyAnnotationsPage/AnnotaterMyAnnotationsPage';
+import TaskForm from './components/TaskFrom/TaskForm';
 import theme from './theme';
 
 
@@ -19,6 +20,7 @@ const App = () => {
                     <Route path='/annotater' exact component = {AnnotaterHomePage} />
                     <Route path='/annotater/task' exact component = {AnnotaterTaskPage} />
                     <Route path='/annotater/my-annotation' exact component = {AnnotaterMyAnnotationsPage} />
+                    <Route path='/task' exact component = {TaskForm} />
                 </Switch>
             </div>
         )

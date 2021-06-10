@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 const taskSchema = mongoose.Schema({
     id: { type: String },
     idClient: { type: String },
+    UrlImage: { type: String },
+    title: { type: String },
     label: { type: String },
     instruction: { type: String },
     timeSpan: { type: Number },
