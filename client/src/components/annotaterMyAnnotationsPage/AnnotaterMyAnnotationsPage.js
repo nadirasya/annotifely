@@ -8,7 +8,7 @@ import useStyles from './styles';
 const AnnotaterMyAnnotationsPage = () => {
     const classes = useStyles();
     return (
-        <div>
+    <div>
         <div className={classes.pageTitle}>
             <Typography variant="h4">
                <b> My Annotations </b> 

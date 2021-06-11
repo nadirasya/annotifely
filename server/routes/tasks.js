@@ -1,11 +1,11 @@
 import express from 'express';
 
-import { getTask, createTask } from '../controllers/task.js';
+import { getTasks, createTask } from '../controllers/tasks.js';
 import findUser from '../middleware/findUser.js';
 
 const router = express.Router();
 
-router.get('/',getTask);
+router.get('/',getTasks);
 router.post('/createTask',findUser, createTask);
 
 export default router;

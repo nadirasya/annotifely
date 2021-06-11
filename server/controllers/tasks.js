@@ -1,17 +1,16 @@
 import Task from '../models/task.js';
-import Image from '../models/image.js';
+import mongoose from 'mongoose';
 
-export const getTask = async( req, res ) => {
+export const getTasks = async (req, res) => { 
     try {
-        console.log(req.user);
-
-        const task = await Task.find({idClient: req.user.id});
-        res.json(task);
+        const tasks = await Task.find();
+                
+        res.status(200).json(tasks);
+    } catch (error) {
+        console.log(error)
+        // res.status(404).json({ message: error.message });
     }
-    catch(err) {
-        res.status(500).send();
-    }
-};
+}
 
 export const createTask = async( req, res ) => {
 
