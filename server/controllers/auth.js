@@ -16,9 +16,9 @@ export const signinAnnotater = async( req, res ) => {
         if(!isPasswordCorrect) return res.status(400).json({ message: 'invalid credentials'});
 
         const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, 'test', { expiresIn: '1h'});
-        console.log("existing user", existingUser.email)
+        // console.log("existing user", existingUser.email)
 
-        res.status(200).json({ result: existingUser, token })
+        res.status(200).json({ result: existingUser, token, role: "annotater" })
     } catch (error) {
         res.status(500).json({ messgae: 'Something went wrong' })
     }
@@ -35,9 +35,9 @@ export const signinClient = async( req, res ) => {
         if(!isPasswordCorrect) return res.status(400).json({ message: 'invalid credentials'});
 
         const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, 'test', { expiresIn: '1h'});
-        console.log("existing user", existingUser.email)
+        // console.log("existing user", existingUser.email)
 
-        res.status(200).json({ result: existingUser, token })
+        res.status(200).json({ result: existingUser, token, role: "client" })
     } catch (error) {
         res.status(500).json({ messgae: 'Something went wrong' })
     }
@@ -54,9 +54,9 @@ export const signinVerificator = async( req, res ) => {
         if(!isPasswordCorrect) return res.status(400).json({ message: 'invalid credentials'});
 
         const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, 'test', { expiresIn: '1h'});
-        console.log("existing user", existingUser.email)
+        // console.log("existing user", existingUser.email)
 
-        res.status(200).json({ result: existingUser, token })
+        res.status(200).json({ result: existingUser, token, role: "verificator" })
     } catch (error) {
         res.status(500).json({ messgae: 'Something went wrong' })
     }
@@ -77,7 +77,7 @@ export const signupAnnotater = async( req, res ) => {
         
         const token = jwt.sign({ name: result.name, email: result.email, id: result._id }, 'test', { expiresIn: '1h'});
 
-        res.status(200).json({ result: result, token })
+        res.status(200).json({ result: result, token, role: "annotater" })
     } catch (error) {
         console.log(error);
     }
@@ -98,7 +98,7 @@ export const signupClient= async( req, res ) => {
         
         const token = jwt.sign({ name: result.name, email: result.email, id: result._id }, 'test', { expiresIn: '1h'});
 
-        res.status(200).json({ result: result, token })
+        res.status(200).json({ result: result, token, role: "client" })
     } catch (error) {
         console.log(error);
     }

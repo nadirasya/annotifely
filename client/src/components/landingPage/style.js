@@ -63,11 +63,12 @@ const useStyles = makeStyles((theme) => ({
   content: {
     position: 'absolute',
     top: 90,
-    bottom: 200,
+    bottom: 250,
     left: 0,
     right: 0,
     overflow: 'auto',
     zIndex: -2,
+    // flex: '1 0 auto',
     padding: theme.spacing(2,0,0),
     // padding: '20px'
   },

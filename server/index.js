@@ -5,7 +5,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import userRoutes from './routes/users.js';
-import clientTaskRoutes from './routes/tasks.js';
+import taskRoutes from './routes/tasks.js';
 
 const app = express();
 dotenv.config();
@@ -15,7 +15,9 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
 app.use('/users', userRoutes);
-app.use('/client', clientTaskRoutes);
+app.use('/tasks', taskRoutes);
+app.use('/client', taskRoutes);
+
 
 app.get('/', (req,res) => {
     res.send('Hello to annotifely application API');

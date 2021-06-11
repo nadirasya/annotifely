@@ -71,7 +71,6 @@ const LoginForm = () => {
                             <Typography variant="h6">
                                Confirm
                             </Typography>
-                            
                         </Button>
                     </div>
                     
