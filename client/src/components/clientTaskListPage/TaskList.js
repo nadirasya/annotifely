@@ -34,7 +34,7 @@ const TaskList = () => {
         <Container maxWidth="lg">
             <main>
                 {
-                    tasks.length == 0 ?
+                    tasks.length === 0 ?
                     <EmptyTask />
                     :
                     <div className={classes.container}>
