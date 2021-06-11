@@ -31,7 +31,7 @@ const AnnotaterForm = () => {
     // const {getUser} = useContext(UserContext);
 
     return (
-        <Container component="main" maxWidth="xs">
+        // <Container component="main" maxWidth="xs">
         <Paper className={classes.paper} elevation={3}>
                 <Typography variant="h4"><b>Join As Annotater</b></Typography>
                 <Avatar className={classes.avatar}>
@@ -69,7 +69,7 @@ const AnnotaterForm = () => {
             </Button>
          </form>
       </Paper>
-    </Container>
+    // </Container>
     );
 }
 

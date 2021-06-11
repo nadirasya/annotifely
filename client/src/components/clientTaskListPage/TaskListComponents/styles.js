@@ -54,7 +54,8 @@ const useStyles= makeStyles((theme) => ({
         marginRight: theme.spacing(1),
     },
     table: {
-        minWidth: 700
+        minWidth: 700,
+        maxHeight: 200,
     },
     setting: {
         color: "#8f948f",

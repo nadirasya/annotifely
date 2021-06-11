@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 8,
     marginTop: 20
   },
-  boxDescription: {
+  boxMain: {
     height: 300,
     display: "flex",
     padding: 6,
@@ -22,22 +22,22 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-end",
     alignItems: "flex-end",
     zIndex: 0,
-
   },
   centerBox: {
     justifyContent: "center",
     alignItems: "center",
     marginTop: 0,
+    // marginBottom: 50,
     // border: "1px solid black",
   },
-    descriptionBox: {
-      // justifyContent: "space-between",
-      alignItems: "center"
-    },
-    spreadFooterBox: {
-      justifyContent: "space-between",
-      alignItems: "center"
-    },
+  descriptionBox: {
+    // justifyContent: "space-between",
+    alignItems: "center"
+  },
+  spreadFooterBox: {
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
   buttonPrimary: {
     backgroundColor: "#567068",
     color: theme.palette.getContrastText('#567068'),
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     right: 0,
     overflow: 'auto',
-    // flex: '1 0 auto',
+    zIndex: -2,
     padding: theme.spacing(2,0,0),
     // padding: '20px'
   },
@@ -77,37 +77,34 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 0,
     overflow: 'auto',
     width: '100%',
-    // flexShrink: 0,
     height: 220,
     backgroundColor: "#567068",
     color: theme.palette.getContrastText('#567068'),
     padding: theme.spacing(2, 0),
     zIndex: -1,
-    },
-    loginFormContainer: {
-      position:'fixed',
-      width: '100%', 
-      height: '100%', 
-      backgroundColor: 'black',
-      backgroundColor:'rgba(0,0,0,.75)',
-      alignItems: 'center', 
-      justifyContent:'center',
-      top: 0,
-      zIndex: 1,
-
-    },
-    registerFormContainer: {
-      position:'fixed',
-      width: '100%', 
-      height: '100%', 
-      backgroundColor: 'black',
-      backgroundColor:'rgba(0,0,0,.75)',
-      alignItems: 'center', 
-      justifyContent:'center',
-      top: 0,
-      zIndex: 1,
-
-    }
+  },
+  loginFormContainer: {
+    position:'fixed',
+    width: '100%', 
+    height: '100%', 
+    backgroundColor: 'black',
+    backgroundColor:'rgba(0,0,0,.75)',
+    alignItems: 'center', 
+    justifyContent:'center',
+    top: 0,
+    zIndex: 1,
+  },
+  registerFormContainer: {
+    position:'fixed',
+    width: '100%', 
+    height: '100%', 
+    backgroundColor: 'black',
+    backgroundColor:'rgba(0,0,0,.75)',
+    alignItems: 'center', 
+    justifyContent:'center',
+    top: 0,
+    zIndex: 1,
+  }
 }));
 
 export default useStyles;

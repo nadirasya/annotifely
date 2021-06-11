@@ -15,3 +15,5 @@ export const signinClient = (formData) => API.post('/users/signinClient', formDa
 export const signinVerificator = (formData) => API.post('/users/signinVerificator', formData);
 export const signupClient = (formData) => API.post('/users/signupClient', formData);
 export const signupAnnotater = (formData) => API.post('/users/signupAnnotater', formData);
+
+export const fetchClientTasks = () => API.get('/client/getClientTask');

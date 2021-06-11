@@ -11,7 +11,6 @@ const Main = () => {
     const classes = useStyles();
     return (
         <>
-        <div className={classes.body}>
         <div className={classes.content}>
                 <Container maxWidth="md" >
                     <Grid container spacing={0} >
@@ -19,7 +18,7 @@ const Main = () => {
                         <Box
                                 component="span" //uses different element but default styling is same
                                 m={1}
-                                className={`${classes.bottomRightBox} ${classes.boxDescription}`} style={{marginTop: 40}} >
+                                className={`${classes.bottomRightBox} ${classes.boxMain}`} style={{marginTop: 40}} >
                                 <img src={vector_landingpage} alt="vector_landingpage" style={{width: 350}} />
                             </Box>
                         </Grid>
@@ -27,7 +26,7 @@ const Main = () => {
                             <Box
                                 component="span" //uses different element but default styling is same
                                 m={1}
-                                className={`${classes.descriptionBox} ${classes.boxDescription}`} >
+                                className={`${classes.descriptionBox} ${classes.boxMain}`} >
                                 <div>
                                     <Typography variant="h2">
                                         <b> Annotifely</b>
@@ -41,8 +40,6 @@ const Main = () => {
                     </Grid>
                 </Container>
             </div>
-        </div>
-            
         </>
     );
 }

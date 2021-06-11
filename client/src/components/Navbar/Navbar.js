@@ -1,16 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppBar, Typography, Toolbar, Button, IconButton, Menu, MenuItem } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import { useDispatch } from 'react-redux';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 import useStyles from './styles';
 import logoSmall from '../images/logoSmall.png';
 
 const Navbar = () => {
     const classes = useStyles();
-    const [userRole, setUserRole] = useState('annotater');
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const location = useLocation();
+
+    // const [userRole, setUserRole] = useState('annotater');
     const [anchorEl, setAnchorEl] = useState(null);
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
+    const [currentPath, setCurrentPath] = useState(location.pathname);
+
     const open = Boolean(anchorEl);
+
+    useEffect(() => {
+      setCurrentPath(location.pathname);
+    },[location.pathname])
 
     const handleMenu = (event) => {
       setAnchorEl(event.currentTarget);
@@ -20,6 +33,13 @@ const Navbar = () => {
       setAnchorEl(null);
     };
 
+    const handleLogout = () => {
+      dispatch({type: 'LOGOUT'});
+
+      history.push('/');
+
+      setUser(null);
+    }
 
   return (
     <div className={classes.root}>
@@ -29,21 +49,21 @@ const Navbar = () => {
             <img src={logoSmall} alt="logo" className={classes.logo} />
           </div>
           <div className={classes.buttonContainer}>
-            { userRole === 'annotater' ? 
+            { user.role === 'annotater' ? 
               <div>
-                <Button color="primary">
+                <Button color="primary" onClick={() => {history.push('/annotater')}}>
                   <Typography variant="h6" className={classes.navigationLink}>
-                      Home
+                      { currentPath==="/annotater" ? <b>Home</b> : "Home" }
                   </Typography>
                 </Button>
-                <Button color="primary">
+                <Button color="primary" onClick={() => {history.push('/annotater/task')}}>
                   <Typography variant="h6" className={classes.navigationLink}>
-                      Task
+                    { currentPath ==="/annotater/task" ? <b>Task</b> : "Task" }
                   </Typography>
                 </Button>
-                <Button color="primary">
+                <Button color="primary" onClick={() => {history.push('/annotater/my-annotation')}}>
                   <Typography variant="h6" className={classes.navigationLink}>
-                      My Annotation
+                    { currentPath === "/annotater/my-annotation" ? <b>My Annotation</b> : "My Annotation" }
                   </Typography>
                 </Button>
               </div>
@@ -75,8 +95,7 @@ const Navbar = () => {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </div>
         </Toolbar>

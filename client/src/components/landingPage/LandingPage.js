@@ -49,7 +49,11 @@ const LandingPage = () => {
       const wrapperRef = useRef(null);
       useOutsideAlerter(wrapperRef);
 
-      return <div ref={wrapperRef} onClick={props.onClick}>{props.children}</div>;
+      return (
+        <Container component="main" maxWidth="xs">
+          <div ref={wrapperRef} onClick={props.onClick}>{props.children}</div>
+        </Container>
+      )
   }
   
   return (
@@ -80,14 +84,11 @@ const LandingPage = () => {
             : null }
           <CssBaseline />
           <Container maxWidth="lg">
-          {/* header */}
           <Header handleShowLoginForm={handleShowLoginForm}/>                
-          {/* body */}
           <main>
             <Main />
           </main>
           </Container>
-          {/* footer */}
           <Footer 
             handleShowRegisterClientForm={handleShowRegisterClientForm}
             handleShowRegisterAnnotaterForm={handleShowRegisterAnnotaterForm}

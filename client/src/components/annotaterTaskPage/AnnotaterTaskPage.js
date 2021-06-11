@@ -1,7 +1,5 @@
-
-import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@material-ui/core';
-
 import React from 'react';
+import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@material-ui/core';
 import NavBar from '../Navbar/Navbar';
 import useStyles from './styles';
 
@@ -9,7 +7,7 @@ function createData(id, client, title, totalImage, annotaters, createdAt) {
     return { id, client, title, totalImage, annotaters, createdAt };
   }
   
-  const rows = [
+const rows = [
     createData(1, 'Dharma Baskara', 'Cari kendaraan roda 2', 6, 24, 2),
     createData(2, 'Irfan Mahendra', 'Cari barang berbahan kaca', 9, 37, 3),
     createData(3, 'Reina Shabira', 'Cari daun menjari', 16, 24, 6),
@@ -18,7 +16,7 @@ function createData(id, client, title, totalImage, annotaters, createdAt) {
 
 
   
-const HomePage = () => {
+const AnnotaterTaskPage = () => {
     const classes = useStyles();
     const handleAccept = (id) => {
         console.log(id);
@@ -28,7 +26,7 @@ const HomePage = () => {
         <div>
             <div className={classes.pageTitle}>
                 <Typography variant="h4">
-                   <b> Home </b> 
+                   <b> Task List </b> 
                 </Typography>
             </div>
             <div className={classes.tableContainer}>
@@ -80,4 +78,4 @@ const HomePage = () => {
     )
 }
 
-export default HomePage;
+export default AnnotaterTaskPage;
