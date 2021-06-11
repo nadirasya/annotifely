@@ -15,20 +15,12 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(3),
       },
       submit: {
-        // margin: theme.spacing(5, 0, 2),
-        // left:'500px',
-        position: 'absolute',
-        right: '70px',
         width: '150px',
         height: '60px',
+        marginLeft: 'auto'
       },
       label: {
-        width: '584px',
-        height: '31px',
-        top: '-2px',
-        lineHeight: '30px',
-        fontSize:'22px',
-        padding: theme.spacing(2,0,2),
+        padding: theme.spacing(2,0,1),
       },
       image :{
         marginTop: theme.spacing(2),
@@ -43,12 +35,21 @@ const useStyles = makeStyles((theme) => ({
         height: '100%',
         padding: theme.spacing(2,2,0),
       },
-      days: {
-        // marginTop: theme.spacing(-4),
-        margin: theme.spacing(11,0, 2),
-        fontSize: "22px",
-        lineHeight: "0px",
-      },
+      imagePreview: {
+        borderRadius: '7px',
+        border: '1px solid #CFCFCF',
+        marginTop: '20px',
+        padding: '20px',
+        height: '320px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }, 
+      daysContainer: {
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr 2fr',
+        width: '100%'
+      }
 }));
 
 export default useStyles;

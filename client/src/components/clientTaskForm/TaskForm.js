@@ -11,6 +11,8 @@ const initialState = { UrlImage: '', title: '', label: '', instruction: '', time
 const TaskForm= () => {
 
     const [taskData, setTaskData] = useState(initialState);
+    const [picture, setPicture] = useState(null);
+    const [pictureError, setPictureError] = useState(false);
 
     const classes = useStyles();
     const history = useHistory();
@@ -25,14 +27,41 @@ const TaskForm= () => {
         setTaskData({ ...taskData, [e.target.name] : e.target.value });
     };
 
-    const [picture, setPicture] = useState(null);
+    function checkIfImageExists(url, callback) {
+        const img = new Image();
+        
+        img.src = url;
+        
+        if (img.complete) {
+          callback(true);
+        } else {
+          img.onload = () => {
+            callback(true);
+          };
+          img.onerror = () => {
+            callback(false);
+          };
+        }
+      }
+
     const onChangePicture = e => {
         setTaskData({ ...taskData, [e.target.name] : e.target.value });
-    if (e.target.value) {
-      console.log("picture: ", e.target.value);
-      setPicture(e.target.value);
-    }
-  };
+        if (e.target.value) {
+            checkIfImageExists(e.target.value, (exists) => {
+                if (exists) {
+                    setPictureError(false);
+                    setPicture(e.target.value);
+                } else {
+                    setPictureError(true);
+                }
+              });
+        } else {
+            setPicture(null);
+            setPictureError(false);
+        }
+    };
+
+    
 
     return (
         // <Container maxWidth="lg">
@@ -42,7 +71,7 @@ const TaskForm= () => {
         <Grid container spacing={6}>
             <Grid item xs={12} md={6}>
                 <Box>
-                <Typography className={classes.label} htmlFor="form-image">Image URL</Typography>
+                <Typography variant="h6" className={classes.label} htmlFor="form-image">Image URL</Typography>
                     <Input
                         handleChange={onChangePicture}
                         type="text"
@@ -50,9 +79,18 @@ const TaskForm= () => {
                         name="UrlImage"
                     />
                 <Grid item >
+                    {picture ? 
                     <ButtonBase className={classes.image}>
-                        <img className={classes.img} src={picture} alt="Image Preview" justify="center"/>
+                        <img className={classes.img} src={picture} justify="center"/>
                     </ButtonBase>
+                    : 
+                    <Grid item xs={12} sm={12} className={classes.imagePreview}>
+                        
+                        <Typography variant="h6" style={{color: '#CFCFCF'}}>
+                            {pictureError === true ? "Image Not Found" : "Image Preview"}
+                        </Typography>
+                    </Grid>
+                    }
                 </Grid>
                 </Box>
             </Grid>
@@ -60,14 +98,14 @@ const TaskForm= () => {
             <Grid item xs={12} md={6}>
                 <Grid item direction="column" justify="space-between" spacing={2}>
                     <Grid item xs>
-                        <Typography className={classes.label} htmlFor="form-task">Task title</Typography>
+                        <Typography variant="h6" className={classes.label} htmlFor="form-task">Task title</Typography>
                             <Input
                                 handleChange={handleChange}
                                 type="text"
                                 label="Title"
                                 name="title"
                             />
-                        <Typography className={classes.label} htmlFor="form-label">Annotation label</Typography>
+                        <Typography variant="h6" className={classes.label} htmlFor="form-label">Annotation label</Typography>
                             <Input
                                 handleChange={handleChange}
                                 type="text"
@@ -75,7 +113,7 @@ const TaskForm= () => {
                                 name="label"    
                             />
 
-                        <Typography className={classes.label} htmlFor="form-instruction">Task Instruction</Typography>
+                        <Typography variant="h6" className={classes.label} htmlFor="form-instruction">Task Instruction</Typography>
                             <Input
                                 handleChange={handleChange}
                                 type="text"
@@ -85,34 +123,29 @@ const TaskForm= () => {
                                 rows={10}
                             />
                     <Grid container spacing={1}>
-                    <Grid item xs={12} sm={3}>
-                        <Typography className={classes.label} htmlFor="form-timespan">Task timespan</Typography>
+                    {/* <Grid item xs={12} sm={3}> */}
+                        <Typography variant="h6" className={classes.label} htmlFor="form-timespan">Task timespan</Typography>
+                        <div className={classes.daysContainer}>
                             <Input
                                 handleChange={handleChange}
                                 type="number"
                                 label="Timespan"
                                 name="task-timespan"
+                                InputProps={{ inputProps: { min: 1 } }}
                             />
-                        </Grid>
-                        <Grid item xs={12} sm={3}>
-                            <Typography className={classes.days}> Days </Typography>
-                        </Grid>
-                        {/* <Grid item xs={12} sm={3}>
-                            <Typography className={classes.days} component="h1" variant="h5">Days</Typography>
-                        </Grid> */}
+                            <Typography variant="h6" style={{alignSelf: 'center', marginLeft: '5px'}}> Days </Typography>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}>
+                                <Typography variant="h6">
+                                    Submit
+                                </Typography>
+                            </Button>
+                        </div>
+                        {/* </Grid> */}
                     </Grid>
-                <Grid item>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        <Typography variant="h6">
-                            Submit
-                        </Typography>
-                    </Button>
-                </Grid>
               </Grid>
             </Grid>
           </Grid>

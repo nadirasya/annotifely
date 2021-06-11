@@ -7,7 +7,7 @@ import Navbar from './components/Navbar/Navbar';
 import AnnotaterHomePage from './components/annotaterHomePage/HomePage';
 import AnnotaterTaskPage from './components/annotaterTaskPage/AnnotaterTaskPage';
 import AnnotaterMyAnnotationsPage from './components/annotaterMyAnnotationsPage/AnnotaterMyAnnotationsPage';
-import TaskForm from './components/TaskFrom/TaskForm';
+import TaskForm from './components/clientTaskForm/TaskForm';
 import AnnotaterAnnotationPage from './components/annotaterAnnotationPage/AnnotaterAnnotationPage';
 import theme from './theme';
 
