@@ -17,15 +17,21 @@ export const createTask = async( req, res ) => {
 
     const {title, label, instruction, timespan, UrlImage } = req.body;
 
+    // save task in the database
     const newTask = new Task ({ title: title, label:label, 
                                 instruction:instruction, timespan:timespan, 
-                                UrlImage: UrlImage, idClient:req.user.id,
+                                idClient:req.user.id,
                                 createdAt: new Date().toISOString()
                             });
 
+    const savedTask = await newTask.save();
+    
+    // save image in the database
+    const newImage = new Image ({ imageURL: UrlImage, idTask: savedTask._id});
+
     try {
-          await newTask.save();
-          res.status(201).json(newTask);
+        await newImage.save();
+        res.status(201).json(newImage);
 
     } catch (error) {
         console.log(error);
