@@ -10,14 +10,6 @@ function createData(id, client, title, totalImage, annotaters, createdAt) {
     return { id, client, title, totalImage, annotaters, createdAt };
   }
   
-const rows = [
-    createData(1, 'Dharma Baskara', 'Cari kendaraan roda 2', 6, 24, 2),
-    createData(2, 'Irfan Mahendra', 'Cari barang berbahan kaca', 9, 37, 3),
-    createData(3, 'Reina Shabira', 'Cari daun menjari', 16, 24, 6),
-    createData(4, 'Kevin Andrio', 'Cari jembatan', 3, 67, 4),
-    createData(5, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49, 3),]
-
-  
 const AnnotaterTaskPage = () => {
     const dispatch = useDispatch(); 
     const classes = useStyles();
