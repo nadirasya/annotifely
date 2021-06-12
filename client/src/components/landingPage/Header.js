@@ -16,7 +16,7 @@ const Header = ({handleShowLoginForm}) => {
                 component="span" //uses different element but default styling is same
                 m={1}
                 className={`${classes.bottomRightBox} ${classes.box}`} >
-                <Button className={classes.buttonPrimary} onClick={handleShowLoginForm}>
+                <Button variant="contained" className={classes.buttonPrimary} onClick={handleShowLoginForm}>
                     <b>Login</b>
                 </Button>
             </Box>

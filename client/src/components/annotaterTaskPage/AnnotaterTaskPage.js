@@ -9,7 +9,8 @@ import { getTasks } from '../../actions/tasks';
 function createData(id, client, title, totalImage, annotaters, createdAt) {
     return { id, client, title, totalImage, annotaters, createdAt };
   }
-  
+
+
 const AnnotaterTaskPage = () => {
     const dispatch = useDispatch(); 
     const classes = useStyles();
@@ -25,7 +26,6 @@ const AnnotaterTaskPage = () => {
     };
 
     return (
-        
         <div>
             <div className={classes.pageTitle}>
                 <Typography variant="h4">

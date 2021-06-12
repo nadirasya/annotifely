@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 8,
     marginTop: 20
   },
-  boxDescription: {
+  boxMain: {
     height: 300,
     display: "flex",
     padding: 6,
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 0,
-    marginBottom: 50,
+    // marginBottom: 50,
     // border: "1px solid black",
   },
   descriptionBox: {
@@ -78,34 +78,34 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 0,
     overflow: 'auto',
     width: '100%',
-    height: 300,
+    height: 220,
     backgroundColor: "#567068",
     color: theme.palette.getContrastText('#567068'),
     padding: theme.spacing(2, 0),
     zIndex: -1,
-    },
-    loginFormContainer: {
-      position:'fixed',
-      width: '100%', 
-      height: '100%', 
-      backgroundColor: 'black',
-      backgroundColor:'rgba(0,0,0,.75)',
-      alignItems: 'center', 
-      justifyContent:'center',
-      top: 0,
-      zIndex: 1,
-    },
-    registerFormContainer: {
-      position:'fixed',
-      width: '100%', 
-      height: '100%', 
-      backgroundColor: 'black',
-      backgroundColor:'rgba(0,0,0,.75)',
-      alignItems: 'center', 
-      justifyContent:'center',
-      top: 0,
-      zIndex: 1,
-    }
+  },
+  loginFormContainer: {
+    position:'fixed',
+    width: '100%', 
+    height: '100%', 
+    backgroundColor: 'black',
+    backgroundColor:'rgba(0,0,0,.75)',
+    alignItems: 'center', 
+    justifyContent:'center',
+    top: 0,
+    zIndex: 1,
+  },
+  registerFormContainer: {
+    position:'fixed',
+    width: '100%', 
+    height: '100%', 
+    backgroundColor: 'black',
+    backgroundColor:'rgba(0,0,0,.75)',
+    alignItems: 'center', 
+    justifyContent:'center',
+    top: 0,
+    zIndex: 1,
+  }
 }));
 
 export default useStyles;

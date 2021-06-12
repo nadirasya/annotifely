@@ -18,3 +18,5 @@ export const signupAnnotater = (formData) => API.post('/users/signupAnnotater', 
 
 export const createTask = (taskData) => API.post('/task/createTask', taskData);
 export const fetchTasks = () => API.get('/tasks');
+export const fetchClientTasks = () => API.get('/client/getClientTask');
+

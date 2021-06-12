@@ -16,6 +16,8 @@ app.use(cors());
 
 app.use('/users', userRoutes);
 app.use('/tasks', taskRoutes);
+app.use('/client', taskRoutes);
+
 
 app.get('/', (req,res) => {
     res.send('Hello to annotifely application API');

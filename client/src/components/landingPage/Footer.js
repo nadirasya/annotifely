@@ -41,7 +41,7 @@ const Footer = ({handleShowRegisterClientForm, handleShowRegisterAnnotaterForm})
                               </Box>
                           </a>
                           <br />
-                          <Button className={classes.buttonSecondary} onClick={handleShowRegisterClientForm}>
+                          <Button variant="contained" className={classes.buttonSecondary} onClick={handleShowRegisterClientForm}>
                             <b>Join as Client</b>
                           </Button>
                         </div>
@@ -61,7 +61,7 @@ const Footer = ({handleShowRegisterClientForm, handleShowRegisterAnnotaterForm})
                               </Box>
                           </a>
                           <br />
-                          <Button className={classes.buttonSecondary} onClick={handleShowRegisterAnnotaterForm}>
+                          <Button variant="contained" className={classes.buttonSecondary} onClick={handleShowRegisterAnnotaterForm}>
                             <b>Join as Annotater</b>
                           </Button>
                         </div>
