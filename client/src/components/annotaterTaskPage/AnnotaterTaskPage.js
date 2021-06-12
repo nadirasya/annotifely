@@ -45,19 +45,19 @@ const AnnotaterTaskPage = () => {
                             <TableCell>
                                 <Typography variant="subtitle1" color="secondary"><b>Clients</b></Typography>
                             </TableCell>
-                            <TableCell align="right">
+                            <TableCell align="left">
                                 <Typography variant="subtitle1" color="secondary"><b>Title</b></Typography>
                             </TableCell>
-                            <TableCell align="right">
+                            <TableCell align="left">
                                 <Typography variant="subtitle1" color="secondary"><b>Total Image</b></Typography>
                             </TableCell>
-                            <TableCell align="right">
+                            <TableCell align="left">
                                 <Typography variant="subtitle1" color="secondary"><b>Annotaters</b></Typography>
                             </TableCell>
-                            <TableCell align="right">
+                            <TableCell align="left">
                                 <Typography variant="subtitle1" color="secondary"><b>Created At</b></Typography>
                             </TableCell>
-                            <TableCell align="right">
+                            <TableCell align="left">
                                 <Typography variant="subtitle1" color="secondary"><b>Action</b></Typography>
                             </TableCell>
                         </TableRow>
@@ -68,11 +68,11 @@ const AnnotaterTaskPage = () => {
                             <TableCell component="th" scope="row">
                                 <Typography variant="subtitle1" ><b>future improvement</b></Typography>
                             </TableCell>
-                            <TableCell align="right" >{task.title}</TableCell>
-                            <TableCell align="right">future improvement</TableCell>
-                            <TableCell align="right">future improvement</TableCell>
-                            <TableCell align="right">{task.createdAt}</TableCell>
-                            <TableCell align="right">
+                            <TableCell align="left" >{task.title}</TableCell>
+                            <TableCell align="left">future improvement</TableCell>
+                            <TableCell align="left">future improvement</TableCell>
+                            <TableCell align="left">{task.createdAt}</TableCell>
+                            <TableCell align="left">
                                 <Button variant="contained" disableElevation onClick={() => handleAccept(task._id)}>Accept</Button>
                             </TableCell>
                             </TableRow>

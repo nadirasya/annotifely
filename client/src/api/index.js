@@ -16,7 +16,7 @@ export const signinVerificator = (formData) => API.post('/users/signinVerificato
 export const signupClient = (formData) => API.post('/users/signupClient', formData);
 export const signupAnnotater = (formData) => API.post('/users/signupAnnotater', formData);
 
-export const createTask = (taskData) => API.post('/task/createTask', taskData);
+export const createTask = (taskData) => API.post('/tasks/createTask', taskData);
 export const fetchTasks = () => API.get('/tasks');
 export const fetchClientTasks = () => API.get('/client/getClientTask');
 

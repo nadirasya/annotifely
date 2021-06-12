@@ -96,7 +96,7 @@ const TaskForm= () => {
             </Grid>
             
             <Grid item xs={12} md={6}>
-                <Grid item direction="column" justify="space-between" spacing={2}>
+                <Grid container direction="column" justify="space-between" spacing={2}>
                     <Grid item xs>
                         <Typography variant="h6" className={classes.label} htmlFor="form-task">Task title</Typography>
                             <Input

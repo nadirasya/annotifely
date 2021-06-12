@@ -6,7 +6,7 @@ import AddIcon from '@material-ui/icons/Add';
 import useStyles from './styles';
 import vector_emptyTask from './vector_emptyTask.png';
 
-const EmptyTask = () => {
+const EmptyTask = ({handleAddTask}) => {
 
     const classes = useStyles();
 
@@ -17,13 +17,13 @@ const EmptyTask = () => {
                     component="div"
                     m={1}
                     className={`${classes.centerBox} ${classes.boxImage}`}>
-                    < img src={vector_emptyTask} alt="vector_emptyTask" style={{width: '170px'}} />
+                    < img src={vector_emptyTask} alt="vector_emptyTask" style={{width: '200px'}} />
                 </Box>
                 <Box 
                     component="div"
                     m={1}
                     className={`${classes.centerBox} ${classes.boxButton}`}>
-                    <Button variant="contained" className={classes.buttonPrimary}> 
+                    <Button variant="contained" className={classes.buttonPrimary} onClick={handleAddTask}> 
                         <AddIcon className={classes.icon}/> Add Task
                     </Button>
                 </Box>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getClientTask } from '../../actions/tasks';
 
@@ -6,6 +6,7 @@ import {Container, Button, Typography, Box, Grid, Table, TableBody, TableCell, T
 import AddIcon from '@material-ui/icons/Add';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import useStyles from './TaskListComponents/styles';
+import { useHistory } from 'react-router-dom';
 
 import EmptyTask from './TaskListComponents/EmptyTask';
 
@@ -23,11 +24,18 @@ const StyledTableCell = withStyles((theme) => ({
 const TaskList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const tasks = useSelector((state) => state.tasks)
+    const tasks = useSelector((state) => state.tasks);
+    const history = useHistory();
+
 
     useEffect(() => {
         dispatch(getClientTask());
     }, [dispatch] );
+
+    const handleAddTask = () => {
+        console.log('pressed')
+        history.push('/client/add-task')
+    }
 
     return (
         <>
@@ -35,7 +43,7 @@ const TaskList = () => {
             <main>
                 {
                     tasks.length === 0 ?
-                    <EmptyTask />
+                    <EmptyTask handleAddTask={handleAddTask}/>
                     :
                     <div className={classes.container}>
                     <Grid container spacing={0}  direction="column" alignItems="center" justify="center" >
@@ -43,7 +51,7 @@ const TaskList = () => {
                             <Typography variant="h4">
                                 <b>Task List</b>
                             </Typography>
-                            <Button variant="contained" className={classes.buttonTertiary} style={{
+                            <Button variant="contained" onClick={handleAddTask} className={classes.buttonTertiary} style={{
                                 height: 40,
                                 maxWidth: '135px', 
                                 maxHeight: '50px', 

@@ -4,7 +4,7 @@ function findUser(req, res, next) {
   
             const authHeader = req.headers["authorization"];
             const token = authHeader && authHeader.split(' ')[1];
-            console.log(token);
+            // console.log(token);
             if (token == null) return res.status(401).json({errorMessage: "Unauthorized"});
                 
             jwt.verify(token, 'test', (err, user) => {
