@@ -18,7 +18,7 @@ export const createTask = async( req, res ) => {
 
     // save task in the database
     const newTask = new Task ({ title: title, label:label, 
-                                instruction:instruction, timespan:timespan, 
+                                instruction:instruction, timeSpan:timespan, 
                                 idClient:req.user.id,
                                 createdAt: new Date().toISOString()
                             });
@@ -53,3 +53,41 @@ export const getClientTasks = async (req,res)  => {
     }
 }
 
+export const updateTime = async( req, res ) => {
+    try{
+        const {timespan} = req.body;
+        const taskId = req.params.id;
+
+        if(!taskId)
+        return res.status(400).json(taskId);
+
+        const originalTask = await Task.findById(taskId);
+        if(!originalTask)
+        return res.status(400).json(originalTask);
+
+        if (originalTask.idClient.toString() !== req.user.id)
+            return res.status(400).json({ errorMesssage: "Unauthorized"});
+
+        originalTask.timeSpan = timespan;
+
+        const savedTask = await originalTask.save();
+
+        res.status(201).json(savedTask);
+
+    }
+    catch(err){
+        res.status(500).send();
+    }
+};
+
+//READ DATA CLIENT FROM DATABASE
+export const getClientById = async (req,res)  => {
+    try {
+        const client = await Client.find({id: req.idClient});
+
+        res.status(200).json(client);
+    }
+    catch(err) {
+        res.status(500).send();
+    }
+}
