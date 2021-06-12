@@ -36,7 +36,7 @@ const App = () => {
                 <Navbar />
                 <Switch>
                     <Route path='/client' exact component = {ClientTaskList} />
-                    <Route path='/task' exact component = {TaskForm} />
+                    <Route path='/client/add-task' exact component = {TaskForm} />
                 </Switch>
             </div>
         )
@@ -48,7 +48,8 @@ const App = () => {
             <BrowserRouter>
                 <Switch>
                     <Route path='/' exact component = {LandingPage} />
-                    <Route component={AnnotaterRoutes, ClientRoutes} />
+                    <Route component={AnnotaterRoutes} />
+                    <Route component={ClientRoutes} />
                 </Switch>
             </BrowserRouter>
         </ThemeProvider>  
