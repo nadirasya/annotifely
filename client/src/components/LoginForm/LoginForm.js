@@ -20,10 +20,10 @@ const LoginForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        if(initialState.role==="annotater"){
+        if(formData.role==="annotater"){
             dispatch(signinAnnotater(formData, history));
         } 
-        else if (initialState.role==="client"){
+        else if (formData.role==="client"){
             dispatch(signinClient(formData, history));
         }
         else {
