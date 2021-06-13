@@ -15,7 +15,8 @@ import theme from './theme';
 
 
 const App = () => {
-    const AnnotaterRoutes = () => {
+
+    const NavBarRoutes = () => {
         return (
             <div>
                 <Navbar />
@@ -24,17 +25,6 @@ const App = () => {
                     <Route path='/annotater/task' exact component = {AnnotaterTaskPage} />
                     <Route path='/annotater/task/annotation' exact component = {AnnotaterAnnotationPage} />
                     <Route path='/annotater/my-annotation' exact component = {AnnotaterMyAnnotationsPage} />
-                </Switch>
-            </div>
-        )
-
-    }
-
-    const ClientRoutes = () => {
-        return (
-            <div>
-                <Navbar />
-                <Switch>
                     <Route path='/client' exact component = {ClientTaskList} />
                     <Route path='/client/add-task' exact component = {TaskForm} />
                 </Switch>
@@ -48,8 +38,7 @@ const App = () => {
             <BrowserRouter>
                 <Switch>
                     <Route path='/' exact component = {LandingPage} />
-                    <Route component={AnnotaterRoutes} />
-                    <Route component={ClientRoutes} />
+                    <Route component={NavBarRoutes} />
                 </Switch>
             </BrowserRouter>
         </ThemeProvider>  

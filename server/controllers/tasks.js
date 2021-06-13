@@ -1,4 +1,5 @@
 import Task from '../models/task.js';
+import Image from '../models/image.js';
 import mongoose from 'mongoose';
 
 export const getTasks = async (req, res) => { 
@@ -26,15 +27,17 @@ export const createTask = async( req, res ) => {
     const savedTask = await newTask.save();
     
     // save image in the database
-    const newImage = new Image ({ imageURL: UrlImage, idTask: savedTask._id});
-
-    try {
-        await newImage.save();
-        res.status(201).json(newImage);
-
-    } catch (error) {
-        console.log(error);
-    }
+    UrlImage.map(async(image) => {
+        const newImage = new Image ({ imageURL: image, idTask: savedTask._id});
+        try {
+            await newImage.save();
+            res.status(201).json(newImage);
+    
+        } catch (error) {
+            console.log(error);
+        }
+    })
+    
 
 };
 
