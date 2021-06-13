@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useHistory } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 
@@ -13,16 +14,28 @@ import AnnotaterForm from "../RegisterForm/AnnotaterForm";
 
 const LandingPage = () => {
   const classes = useStyles();
+  const history = useHistory();
 
   const [loginForm, setLoginForm] = useState(false);
   const [clientRegisterForm, setClientRegisterForm] = useState(false);
   const [annotaterRegisterForm, setAnnotaterRegisterForm] = useState(false);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
+
 
   const handleShowLoginForm = () => setLoginForm((prevLoginForm) => !prevLoginForm);
   const handleShowRegisterClientForm = () => setClientRegisterForm(true);
   const handleShowRegisterAnnotaterForm = () => setAnnotaterRegisterForm(true);
 
+  useEffect(() => {
+      if(user?.role === "annotater") {
+          history.push('/annotater')
+      } else if(user?.role === "client") {
+          history.push('/client')
+      }
+  }, [])
+  
   function useOutsideAlerter(ref) {
+
     useEffect(() => {
         /**
          * Alert if clicked on outside of element

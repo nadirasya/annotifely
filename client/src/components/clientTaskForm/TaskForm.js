@@ -1,18 +1,22 @@
-import React, { useContext, useState } from 'react';
-import { Card, Button, GridListTileBar, CssBaseline, TextField, Grid, Typography, Container, Box, CardContent, ButtonBase } from '@material-ui/core';
-import {useDispatch} from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { Button, ButtonGroup, Grid, Typography, ButtonBase } from '@material-ui/core';
+import ClearIcon from '@material-ui/icons/Clear';
+import AddIcon from '@material-ui/icons/Add';
+import CloseIcon from '@material-ui/icons/Close';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { createTask } from '../../actions/task';
 import Input from './Input';
 import useStyles from './styles';
 
-const initialState = { UrlImage: '', title: '', label: '', instruction: '', timespan: ''};
+const initialState = { UrlImage: [], title: '', label: '', instruction: '', timespan: ''};
 
 const TaskForm= () => {
-
     const [taskData, setTaskData] = useState(initialState);
     const [picture, setPicture] = useState(null);
     const [pictureError, setPictureError] = useState(false);
+    const [url, setUrl] = useState('');
+    const [onPreviewUrl, setOnPreviewUrl] = useState(null);
 
     const classes = useStyles();
     const history = useHistory();
@@ -45,7 +49,7 @@ const TaskForm= () => {
       }
 
     const onChangePicture = e => {
-        setTaskData({ ...taskData, [e.target.name] : e.target.value });
+        setUrl(e.target.value)
         if (e.target.value) {
             checkIfImageExists(e.target.value, (exists) => {
                 if (exists) {
@@ -61,6 +65,41 @@ const TaskForm= () => {
         }
     };
 
+    const onPressAddImage = () => {
+        if (picture) {
+            checkIfImageExists(picture, (exists) => {
+                if (exists) {
+                    setUrl('');
+                    const currentImages = taskData.UrlImage;
+                    currentImages.push(picture);
+                    setTaskData({ ...taskData, ['UrlImage'] : currentImages});
+                    setPicture(null);
+                    setPictureError(false);
+                }
+              });
+        } 
+    }
+    
+    const handleSelectImage = (index) => {
+        setUrl(taskData.UrlImage[index]);
+        setPicture(taskData.UrlImage[index]);
+        setOnPreviewUrl(index);
+    }
+
+    const handleRemoveImage = (index) => {
+        console.log("remove", index);
+        const imageUrlTemp = taskData.UrlImage;
+        imageUrlTemp.splice(index);
+        console.log(imageUrlTemp)
+        setTaskData({ ...taskData, ['UrlImage'] : imageUrlTemp});
+    }
+
+    const onPressCloseImage = () => {
+        setOnPreviewUrl(null);
+        setUrl('');
+        setPicture(null);
+    }
+
     
 
     return (
@@ -70,14 +109,53 @@ const TaskForm= () => {
         <form className={classes.form} onSubmit={handleSubmit}>
         <Grid container spacing={6}>
             <Grid item xs={12} md={6}>
-                <Box>
                 <Typography variant="h6" className={classes.label} htmlFor="form-image">Image URL</Typography>
+                <div className={classes.imageUrlContainer}>
                     <Input
                         handleChange={onChangePicture}
                         type="text"
                         label="Image URL"
                         name="UrlImage"
+                        value={url}
+                        disabled={ onPreviewUrl !== null ? true : false}
+                        isRequired={false}
                     />
+                    { onPreviewUrl !== null ?
+                        <Button variant="outlined" className={classes.addButtonContainer} onClick={onPressCloseImage}>
+                            <CloseIcon style={{color:'#CFCFCF'}}/>
+                        </Button >
+                        :
+                        <Button variant="outlined" className={classes.addButtonContainer} onClick={onPressAddImage}>
+                            <AddIcon style={{color:'#CFCFCF'}}/>
+                        </Button >
+                    }
+                </div>
+                <div className={classes.imagesContainer}> 
+                {taskData.UrlImage.map((imageurl, index) => (
+                    <div key={index}>
+                        <ButtonGroup variant="contained" disableElevation className={classes.images}>
+                            {index === onPreviewUrl ?
+                                <Button disabled>
+                                    <Typography style={{color: '#CFCFCF'}}>Image {index+1}</Typography>
+                                </Button>
+                                :
+                                <Button onClick={() => handleSelectImage(index)}>
+                                    Image {index+1}
+                                </Button>
+                            }
+                            <Button onClick={() => handleRemoveImage(index)}>
+                                {index === onPreviewUrl ?
+                                    <ClearIcon style={{color: '#CFCFCF'}}/>
+                                    :
+                                    <ClearIcon />
+                                }
+                            </Button>
+                        </ButtonGroup> 
+                    </div>
+                ))
+                }
+                </div>
+                
                 <Grid item >
                     {picture ? 
                     <ButtonBase className={classes.image}>
@@ -92,7 +170,6 @@ const TaskForm= () => {
                     </Grid>
                     }
                 </Grid>
-                </Box>
             </Grid>
             
             <Grid item xs={12} md={6}>

@@ -27,13 +27,12 @@ const TaskList = () => {
     const tasks = useSelector((state) => state.tasks);
     const history = useHistory();
 
-
     useEffect(() => {
         dispatch(getClientTask());
     }, [dispatch] );
 
     const handleAddTask = () => {
-        console.log('pressed')
+        // console.log('pressed')
         history.push('/client/add-task')
     }
 
