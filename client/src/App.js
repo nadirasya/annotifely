@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider } from '@material-ui/core';
+import { ThemeProvider, CssBaseline } from '@material-ui/core';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import LandingPage from './components/landingPage/LandingPage';
@@ -19,6 +19,7 @@ const App = () => {
     const NavBarRoutes = () => {
         return (
             <div>
+                <CssBaseline />
                 <Navbar />
                 <Switch>
                     <Route path='/annotater' exact component = {AnnotaterHomePage} />
