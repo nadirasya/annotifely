@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ThemeProvider, CssBaseline } from '@material-ui/core';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import LandingPage from './components/landingPage/LandingPage';
 import Navbar from './components/Navbar/Navbar';
@@ -15,8 +15,24 @@ import theme from './theme';
 
 
 const App = () => {
+    
 
-    const NavBarRoutes = () => {
+
+    const ClientRoutes = () => {
+        return (
+            <div>
+                <CssBaseline />
+                <Navbar />
+                <Switch>
+                    <Route path='/client' exact component = {ClientTaskList} />
+                    <Route path='/client/add-task' exact component = {TaskForm} />
+                    <Redirect to='/no-permission' />
+                </Switch>
+            </div>
+        )
+    }
+
+    const AnnotaterRoutes = () => {
         return (
             <div>
                 <CssBaseline />
@@ -26,8 +42,47 @@ const App = () => {
                     <Route path='/annotater/task' exact component = {AnnotaterTaskPage} />
                     <Route path='/annotater/task/annotation' exact component = {AnnotaterAnnotationPage} />
                     <Route path='/annotater/my-annotation' exact component = {AnnotaterMyAnnotationsPage} />
-                    <Route path='/client' exact component = {ClientTaskList} />
-                    <Route path='/client/add-task' exact component = {TaskForm} />
+                    <Redirect to='/no-permission' />
+                </Switch>
+            </div>
+        )
+    }
+
+    const AccesDenied = () => {
+
+        return (
+            <div>
+                You dont have access to this page
+            </div>
+        )
+    }
+
+
+    const NavBarRoutes = () => {
+        const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
+
+        const checkUser = (allowedRole) => {
+
+            if( user?.role===allowedRole){
+
+                return 'approved'
+            } else {
+
+                return 'denied'
+            }
+        }
+
+        return (
+            <div>
+                <CssBaseline />
+                <Switch>
+                {
+                    checkUser('annotater') === 'approved' ?
+                    <AnnotaterRoutes/> : 
+                    checkUser('client') === 'approved' ? 
+                    <ClientRoutes/> 
+                    : null
+                }
                 </Switch>
             </div>
         )
@@ -39,6 +94,7 @@ const App = () => {
             <BrowserRouter>
                 <Switch>
                     <Route path='/' exact component = {LandingPage} />
+                    <Route path='/no-permission' exact component = {AccesDenied} />
                     <Route component={NavBarRoutes} />
                 </Switch>
             </BrowserRouter>

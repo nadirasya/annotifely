@@ -34,9 +34,11 @@ const Navbar = () => {
     };
 
     const handleLogout = () => {
+      setUser(null);
+
       dispatch({type: 'LOGOUT'});
 
-      history.push('/');
+      history.replace('/');
 
       setUser(null);
     }
@@ -49,7 +51,7 @@ const Navbar = () => {
             <img src={logoSmall} alt="logo" className={classes.logo} />
           </div>
           <div className={classes.buttonContainer}>
-            { user.role === 'annotater' ? 
+            { user?.role === 'annotater' ? 
               <div>
                 <Button color="primary" onClick={() => {history.push('/annotater')}}>
                   <Typography variant="h6" className={classes.navigationLink}>
