@@ -71,7 +71,9 @@ const AnnotaterTaskPage = () => {
                             <TableCell align="left" >{task.title}</TableCell>
                             <TableCell align="left">future improvement</TableCell>
                             <TableCell align="left">future improvement</TableCell>
-                            <TableCell align="left">{task.createdAt}</TableCell>
+                            <TableCell align="left">
+                                {task.timeRemaining === 0 ? 'Today' : task.timeRemaining === 1 ? `${task.timeRemaining} day ago` : `${task.timeRemaining} days ago`}
+                            </TableCell>
                             <TableCell align="left">
                                 <Button variant="contained" disableElevation onClick={() => handleAccept(task._id)}>Accept</Button>
                             </TableCell>
