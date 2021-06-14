@@ -23,6 +23,7 @@ export const createTask = async( req, res ) => {
                                 idClient:req.user.id,
                                 createdAt: new Date().toISOString()
                             });
+    // console.log(req.body);
 
     const savedTask = await newTask.save();
     

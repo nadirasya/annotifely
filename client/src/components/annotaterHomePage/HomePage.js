@@ -93,7 +93,7 @@ const HomePage = () => {
             </div>
 
             <div className={classes.tableContainer}>
-                <TableContainer component={Paper} style={{ maxHeight: 235 }}>
+                <TableContainer component={Paper} style={{ maxHeight: '100%' }}>
                     <Table stickyHeader className={classes.table} size="small" aria-label="sticky header">
                         <TableHead>
                         <TableRow className={classes.tableRow} style={{alignItems: "left"}} >

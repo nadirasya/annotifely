@@ -79,9 +79,9 @@ const TaskList = () => {
                                     {tasks.map((task) => (
                                         <TableRow key={task._id}>
                                             <TableCell align="left">{task.title}</TableCell>
-                                            <TableCell align="left"><b>future improvement</b></TableCell>
-                                            <TableCell align="left"><b>future improvement</b></TableCell>
-                                            <TableCell align="left"><b>future improvement</b> </TableCell>
+                                            <TableCell align="left">future improvement</TableCell>
+                                            <TableCell align="left">future improvement</TableCell>
+                                            <TableCell align="left">{task.timeRemaining} days </TableCell>
                                             <TableCell align="left">
                                                 <Button variant="contained" className={classes.buttonTertiary}> 
                                                 Download

@@ -5,7 +5,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { createTask } from '../../actions/task';
+import { createTask } from '../../actions/tasks';
 import Input from './Input';
 import useStyles from './styles';
 
@@ -207,7 +207,7 @@ const TaskForm= () => {
                                 handleChange={handleChange}
                                 type="number"
                                 label="Timespan"
-                                name="task-timespan"
+                                name="timespan"
                                 InputProps={{ inputProps: { min: 1 } }}
                             />
                             <Typography variant="h6" style={{alignSelf: 'center', marginLeft: '5px'}}> Days </Typography>
