@@ -22,31 +22,41 @@ const AnnotaterAnnotationPage = props => {
     }, )
 
     return (
-    <div>
+    <div style={{paddingLeft: '5%', paddingRight: '2%', paddingBottom: '3%'}}>
         <div className={classes.pageTitle}>
             <Typography variant="h4">
                <b> My Annotations </b> 
             </Typography>
         </div>
         <div className={classes.labelContainer}>
-            <div className={classes.taskLabel}>
-                <Typography variant="h6">
-                    Tandai tanda lalu lintas menggunakan bounding box 
-                </Typography>
-            </div> 
-            <div className={classes.rightContainer}>
-               <div className={classes.taskLabel}>
+            <div>
+                <div className={classes.taskLabel}>
                     <Typography variant="h6">
-                        <b>Tools</b>
+                        Tandai tanda lalu lintas menggunakan bounding box 
                     </Typography>
+                </div> 
+                <div className={classes.imageContainer}>
+                    <img
+                        style={{maxWidth: '100%', maxHeight: '100%'}}
+                        src="https://images.unsplash.com/photo-1525480122447-64809d765ec4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"/>
+                    </div>
                 </div>
-                <div className={classes.toolsContainer}>
-                        <ToolsButton image={boundingBoxLogo} label="Bounding Box" />
-                        <ToolsButton image={deleteLogo} label="Delete" />
-                        <ToolsButton image={undoLogo} label="Undo" />
-                        <ToolsButton image={redoLogo} label="Redo" />
-                </div>
+                
+            <div className={classes.rightContainer}>
                 <div>
+                    <div className={classes.taskLabel}>
+                        <Typography variant="h6">
+                            <b>Tools</b>
+                        </Typography>
+                    </div>
+                    <div className={classes.toolsContainer}>
+                            <ToolsButton image={boundingBoxLogo} label="Bounding Box" />
+                            <ToolsButton image={deleteLogo} label="Delete" />
+                            <ToolsButton image={undoLogo} label="Undo" />
+                            <ToolsButton image={redoLogo} label="Redo" />
+                    </div>
+                </div>
+                <div className={classes.submitButtonContainer}>
                     <Button color="primary" variant="contained" className={classes.buttonContainer}>
                         <Typography variant="h6">
                             <b>Submit</b>
@@ -54,7 +64,6 @@ const AnnotaterAnnotationPage = props => {
                     </Button>
                 </div>
             </div>
-            
         </div>
         
     </div>
