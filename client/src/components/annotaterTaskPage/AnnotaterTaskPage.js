@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, CircularProgress } from '@material-ui/core';
-import NavBar from '../Navbar/Navbar';
+import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, CircularProgress, withStyles } from '@material-ui/core';
 import useStyles from './styles';
 
 import { getTasks } from '../../actions/tasks';
+
+const StyledTableCell = withStyles((theme) => ({
+    head: {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.common.white,
+    },
+    body: {
+      fontSize: 14,
+      textTransform: 'none',
+    },
+}))(TableCell);
 
 
 const AnnotaterTaskPage = () => {
@@ -22,8 +32,9 @@ const AnnotaterTaskPage = () => {
 
     return (
         <div>
+            <Container className={classes.container}>
             <div className={classes.pageTitle}>
-                <Typography variant="h4">
+                <Typography className={classes.h4}>
                    <b> Task List </b> 
                 </Typography>
             </div>
@@ -31,30 +42,31 @@ const AnnotaterTaskPage = () => {
             <div style={{display: 'flex', justifyContent: 'center'}}> 
                 <CircularProgress />
             </div>
-            :  
+            :
+            <div style={{height: '75vh'}}>  
             <div className={classes.tableContainer}>
-                <TableContainer component={Paper} style={{width: '70%'}}>
-                    <Table className={classes.table} aria-label="simple table">
+                <TableContainer component={Paper} className={classes.table}>
+                    <Table stickyHeader aria-label="sticky header" size="small">
                         <TableHead>
                         <TableRow className={classes.tableRow}>
-                            <TableCell>
-                                <Typography variant="subtitle1" color="secondary"><b>Clients</b></Typography>
-                            </TableCell>
-                            <TableCell align="left">
+                            <StyledTableCell>
+                                <Typography variant="subtitle1" color="secondary"><b>Client</b></Typography>
+                            </StyledTableCell>
+                            <StyledTableCell align="left">
                                 <Typography variant="subtitle1" color="secondary"><b>Title</b></Typography>
-                            </TableCell>
-                            <TableCell align="left">
+                            </StyledTableCell>
+                            <StyledTableCell align="left">
                                 <Typography variant="subtitle1" color="secondary"><b>Total Image</b></Typography>
-                            </TableCell>
-                            <TableCell align="left">
+                            </StyledTableCell>
+                            <StyledTableCell align="left">
                                 <Typography variant="subtitle1" color="secondary"><b>Annotaters</b></Typography>
-                            </TableCell>
-                            <TableCell align="left">
+                            </StyledTableCell>
+                            <StyledTableCell align="left">
                                 <Typography variant="subtitle1" color="secondary"><b>Created At</b></Typography>
-                            </TableCell>
-                            <TableCell align="left">
+                            </StyledTableCell>
+                            <StyledTableCell align="left">
                                 <Typography variant="subtitle1" color="secondary"><b>Action</b></Typography>
-                            </TableCell>
+                            </StyledTableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>
@@ -77,7 +89,9 @@ const AnnotaterTaskPage = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+            </div>
             </div> }
+            </Container>
         </div>
     )
 }

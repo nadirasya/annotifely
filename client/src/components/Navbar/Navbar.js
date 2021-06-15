@@ -45,7 +45,7 @@ const Navbar = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="secondary">
+      <AppBar position="static" color="secondary" style={{maxHeight: '8vh'}}>
         <Toolbar>
           <div className={classes.logoContainer}>
             <img src={logoSmall} alt="logo" className={classes.logo} />
@@ -54,17 +54,17 @@ const Navbar = () => {
             { user?.role === 'annotater' ? 
               <div>
                 <Button color="primary" onClick={() => {history.push('/annotater')}}>
-                  <Typography variant="h6" className={classes.navigationLink}>
+                  <Typography className={`${classes.navigationLink} ${classes.h6}`} gutterBottom>
                       { currentPath==="/annotater" ? <b>Home</b> : "Home" }
                   </Typography>
                 </Button>
                 <Button color="primary" onClick={() => {history.push('/annotater/task')}}>
-                  <Typography variant="h6" className={classes.navigationLink}>
+                  <Typography className={`${classes.navigationLink} ${classes.h6}`} gutterBottom>
                     { currentPath ==="/annotater/task" ? <b>Task</b> : "Task" }
                   </Typography>
                 </Button>
-                <Button color="primary" onClick={() => {history.push('/annotater/my-annotation')}}>
-                  <Typography variant="h6" className={classes.navigationLink}>
+                <Button color="primary" onClick={() => {history.push('/annotater/my-annotation')}} >
+                  <Typography className={`${classes.navigationLink} ${classes.h6}`} gutterBottom>
                     { currentPath === "/annotater/my-annotation" ? <b>My Annotation</b> : "My Annotation" }
                   </Typography>
                 </Button>
