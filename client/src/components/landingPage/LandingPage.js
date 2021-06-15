@@ -96,7 +96,7 @@ const LandingPage = () => {
             </div>
             : null }
           <CssBaseline />
-          <Container maxWidth="lg">
+          <Container className={classes.container}>
           <Header handleShowLoginForm={handleShowLoginForm}/>                
           <main>
             <Main />

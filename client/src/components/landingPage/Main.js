@@ -18,20 +18,20 @@ const Main = () => {
                         <Box
                                 component="span" //uses different element but default styling is same
                                 m={1}
-                                className={`${classes.bottomRightBox} ${classes.boxMain}`} style={{marginTop: 40}} >
-                                <img src={vector_landingpage} alt="vector_landingpage" style={{width: 350}} />
+                                className={`${classes.bottomRightBox} ${classes.boxMainImage}`}>
+                                <img src={vector_landingpage} alt="vector_landingpage" style={{width: '50vh'}} />
                             </Box>
                         </Grid>
                         <Grid item xs={12} md={6} style={{alignItems: "center"}}>
                             <Box
                                 component="span" //uses different element but default styling is same
                                 m={1}
-                                className={`${classes.descriptionBox} ${classes.boxMain}`} >
+                                className={`${classes.descriptionBox} ${classes.boxMainDescription}`} >
                                 <div>
-                                    <Typography variant="h2">
+                                    <Typography className={classes.h2}>
                                         <b> Annotifely</b>
                                     </Typography>
-                                    <Typography variant="h6">
+                                    <Typography className={classes.h6}>
                                         <b>Annotifely is a web app that helps you to annotate your image with the help from our annotaters</b>
                                     </Typography> 
                                 </div>

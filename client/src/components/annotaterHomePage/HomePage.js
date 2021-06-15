@@ -27,7 +27,13 @@ function createData(id, client, title, totalImage, annotaters, createdAt) {
     createData(2, 'Irfan Mahendra', 'Cari barang berbahan kaca', 9, 37, 3),
     createData(3, 'Reina Shabira', 'Cari daun menjari', 16, 24, 6),
     createData(4, 'Kevin Andrio', 'Cari jembatan', 3, 67, 4),
-    createData(5, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49, 3),]
+    createData(5, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49, 3),
+    createData(4, 'Kevin Andrio', 'Cari jembatan', 3, 67, 4),
+    createData(5, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49, 3),
+    createData(5, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49, 3),
+    createData(4, 'Kevin Andrio', 'Cari jembatan', 3, 67, 4),
+    createData(5, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49, 3),
+    ]
 
 
   
@@ -85,15 +91,16 @@ const HomePage = () => {
             :
             null
         }
-        <Container maxWidth="lg">
+        <Container className={classes.container}>
             <div className={classes.pageTitle}>
-                <Typography variant="h4">
+                <Typography className={classes.h4}>
                    <b> Home </b> 
                 </Typography>
             </div>
 
+            <div style={{height: '40vh'}}>
             <div className={classes.tableContainer}>
-                <TableContainer component={Paper} style={{ maxHeight: 235 }}>
+                <TableContainer component={Paper} style={{ maxHeight: '40vh' }}>
                     <Table stickyHeader className={classes.table} size="small" aria-label="sticky header">
                         <TableHead>
                         <TableRow className={classes.tableRow} style={{alignItems: "left"}} >
@@ -136,20 +143,21 @@ const HomePage = () => {
                     </Table>
                 </TableContainer>
             </div>
+            </div>
 
             <div>
                 <Grid container spacing={2} >
                     <Grid item xs={12} md={6} lg={6} >
                         <div>
-                            <Typography variant="subtitle1" className={classes.componentTitle} >
+                            <Typography className={`${classes.componentTitle} ${classes.subtitle1}`} >
                                 <b>Do you need help with annotating Image?</b>
                             </Typography>
-                            <Button onClick={handleShowTutorial}>
+                            <Button style={{width: '90%', height: '90%'}} onClick={handleShowTutorial}>
                                 <Card className={classes.cardPrimary}>
                                     <CardContent>
                                         <Grid container spacing={0} >
-                                            <Grid item xs={6} md={6} lg={6} style={{marginTop: '20px'}}>
-                                                <Typography variant="h5">
+                                            <Grid item xs={6} md={6} lg={6} style={{marginTop: '5vh'}}>
+                                                <Typography className={classes.h5} style={{marginLeft: '1vh'}}>
                                                     <b>Click to learn how to annotate</b>
                                                 </Typography>
                                             </Grid>
@@ -165,20 +173,20 @@ const HomePage = () => {
                     
                     <Grid item xs={12} md={6} lg={6} >
                         <div>
-                            <Typography variant="subtitle1" className={classes.componentTitle}>
+                            <Typography className={`${classes.componentTitle} ${classes.subtitle1}`} >
                                 <b>Check your works</b>
                             </Typography>
 
-                            <Grid container spacing={1} className={classes.gridContainer}>
+                            <Grid container spacing={0} className={classes.gridContainer}>
                                 <Grid item xs={6} md={6} lg={6}>
-                                    <Button style={{width: '100%'}}  onClick={() => {history.push('/annotater/my-annotation')}}>
+                                    <Button style={{width: '100%', height: '90%'}}  onClick={() => {history.push('/annotater/my-annotation')}}>
                                     <Card className={classes.cardSecondary}>
                                         <CardContent className={classes.cardContent}>
-                                            <Typography variant="h5">
+                                            <Typography className={classes.h6}>
                                                 <b>Total</b> <br />
                                                 <b>Annotations</b>
                                             </Typography>
-                                            <Typography variant="h2">
+                                            <Typography className={classes.h2}>
                                                 <b>102</b>
                                             </Typography>
                                         </CardContent>
@@ -186,14 +194,14 @@ const HomePage = () => {
                                     </Button>
                                 </Grid>
                                 <Grid item xs={6} md={6} lg={6}>   
-                                    <Button style={{width: '100%'}} onClick={() => {history.push('/annotater/my-annotation')}}>
+                                    <Button style={{width: '100%', height: '90%'}} onClick={() => {history.push('/annotater/my-annotation')}}>
                                     <Card className={classes.cardTertiary}>
                                         <CardContent className={classes.cardContent}>
-                                            <Typography variant="h5" >
+                                            <Typography className={classes.h6} >
                                                 <b>Accepted</b> <br />
                                                 <b>Annotations</b>
                                             </Typography>
-                                            <Typography variant="h2">
+                                            <Typography className={classes.h2}>
                                                 <b>89</b>
                                             </Typography>
                                         </CardContent>

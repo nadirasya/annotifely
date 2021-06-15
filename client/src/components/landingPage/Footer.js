@@ -13,11 +13,11 @@ const Footer = ({handleShowRegisterClientForm, handleShowRegisterAnnotaterForm})
     return (
         <>
             <footer className={classes.footer}>
-                <Container maxWidth="lg">
+                <Container className={classes.container}>
                     <Box
                         component="span" //uses different element but default styling is same
                         className={`${classes.centerBox} ${classes.box}`} style={{color: '#ffffff'}}>
-                        <Typography variant="h4">
+                        <Typography className={classes.h4}>
                           <b>Get Started</b>
                         </Typography>
 
@@ -31,18 +31,22 @@ const Footer = ({handleShowRegisterClientForm, handleShowRegisterAnnotaterForm})
                         <Grid>
                           <Grid item xs={12} md={12}>
                           <div>
-                          <Typography variant="h6">Do you need help with your training data?</Typography>
+                          <Typography className={classes.h6}><b>Do you need help with your training data?</b></Typography>
                           <a
                             target="_blank"
                             href="#" style={{color: '#ffffff'}}
                             fontStyle="italic">
                               <Box fontStyle="italic" style={{marginTop: 0, height: 10}}>
-                              Learn More
+                                <Typography className={classes.subtitle2}>
+                                  Learn More
+                                </Typography>
                               </Box>
                           </a>
                           <br />
                           <Button variant="contained" className={classes.buttonSecondary} onClick={handleShowRegisterClientForm}>
-                            <b>Join as Client</b>
+                            <Typography className={classes.subtitle1}>
+                              <b>Join as Client</b>
+                            </Typography>
                           </Button>
                         </div>
                           </Grid>
@@ -51,18 +55,22 @@ const Footer = ({handleShowRegisterClientForm, handleShowRegisterAnnotaterForm})
                         <Grid>
                           <Grid item xs={12} md={12}>
                           <div>
-                          <Typography variant="h6">Do you want to join us and get a part time job?</Typography>
+                          <Typography className={classes.h6}><b>Do you want to join us and get a part time job?</b></Typography>
                           <a
                             target="_blank"
                             href="#" style={{color: '#ffffff'}}
                             fontStyle="italic">
                               <Box fontStyle="italic" style={{marginTop: 0, height: 10}}>
-                              Learn More
+                                <Typography className={classes.subtitle2}>
+                                    Learn More
+                                </Typography>
                               </Box>
                           </a>
                           <br />
                           <Button variant="contained" className={classes.buttonSecondary} onClick={handleShowRegisterAnnotaterForm}>
-                            <b>Join as Annotater</b>
+                            <Typography className={classes.subtitle1}>
+                              <b>Join as Annotater</b>
+                            </Typography>
                           </Button>
                         </div>
                           </Grid>

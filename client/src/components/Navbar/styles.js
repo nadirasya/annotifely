@@ -9,12 +9,17 @@ export default makeStyles((theme) => ({
       },
       buttonContainer: {
         flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: "center",
       },
       logo: {
-        maxWidth: '160',
+        maxWidth: '50vw',
       },
       navigationLink: {
         textTransform: 'none'
+    },
+    h6: {
+      fontSize: 'calc(80% + 0.2vw)'
     }
       
 }))
