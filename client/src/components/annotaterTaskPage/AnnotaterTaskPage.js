@@ -42,7 +42,8 @@ const AnnotaterTaskPage = () => {
             <div style={{display: 'flex', justifyContent: 'center'}}> 
                 <CircularProgress />
             </div>
-            :  
+            :
+            <div style={{height: '75vh'}}>  
             <div className={classes.tableContainer}>
                 <TableContainer component={Paper} className={classes.table}>
                     <Table stickyHeader aria-label="sticky header" size="small">
@@ -88,6 +89,7 @@ const AnnotaterTaskPage = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+            </div>
             </div> }
             </Container>
         </div>

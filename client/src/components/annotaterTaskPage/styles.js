@@ -10,7 +10,7 @@ export default makeStyles((theme) => ({
         margin: '2.5vh'
     },
     table: {
-        height: '75vh',
+        maxHeight: '75vh',
     },
     tableRow: {
         backgroundColor: '#567068'
