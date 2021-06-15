@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
+import decode from 'jwt-decode';
 
 import useStyles from "./style";
 import Header from './Header';
@@ -15,24 +17,41 @@ import AnnotaterForm from "../RegisterForm/AnnotaterForm";
 const LandingPage = () => {
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const [loginForm, setLoginForm] = useState(false);
   const [clientRegisterForm, setClientRegisterForm] = useState(false);
   const [annotaterRegisterForm, setAnnotaterRegisterForm] = useState(false);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
 
-
   const handleShowLoginForm = () => setLoginForm((prevLoginForm) => !prevLoginForm);
   const handleShowRegisterClientForm = () => setClientRegisterForm(true);
   const handleShowRegisterAnnotaterForm = () => setAnnotaterRegisterForm(true);
 
   useEffect(() => {
-      if(user?.role === "annotater") {
-          history.push('/annotater')
-      } else if(user?.role === "client") {
-          history.push('/client')
-      }
+    const token = user?.token;
+    
+    if(token){
+      const decodedToken = decode(token);
+      
+      if(decodedToken.exp * 1000 < new Date().getTime()) logout();
+    }
+
+    if(user?.role === "annotater") {
+        history.push('/annotater')
+    } else if(user?.role === "client") {
+        history.push('/client')
+    }
   }, [])
+
+  const logout = () => {
+    setUser(null);
+    
+    dispatch({type: 'LOGOUT'});
+    
+    history.push('/');
+
+};
   
   function useOutsideAlerter(ref) {
 

@@ -2,6 +2,9 @@ import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, Tab
 
 import React, { useState, useEffect, useRef } from 'react';
 import {useHistory} from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTasks } from '../../actions/tasks';
+import { getClients } from '../../actions/clients';
 
 import useStyles from './styles';
 import learning from '../images/learning.png';
@@ -18,29 +21,19 @@ const StyledTableCell = withStyles((theme) => ({
     },
 }))(TableCell);
 
-function createData(id, client, title, totalImage, annotaters, createdAt) {
-    return { id, client, title, totalImage, annotaters, createdAt };
-  }
-  
-  const rows = [
-    createData(1, 'Dharma Baskara', 'Cari kendaraan roda 2', 6, 24, 2),
-    createData(2, 'Irfan Mahendra', 'Cari barang berbahan kaca', 9, 37, 3),
-    createData(3, 'Reina Shabira', 'Cari daun menjari', 16, 24, 6),
-    createData(4, 'Kevin Andrio', 'Cari jembatan', 3, 67, 4),
-    createData(5, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49, 3),
-    createData(4, 'Kevin Andrio', 'Cari jembatan', 3, 67, 4),
-    createData(5, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49, 3),
-    createData(5, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49, 3),
-    createData(4, 'Kevin Andrio', 'Cari jembatan', 3, 67, 4),
-    createData(5, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49, 3),
-    ]
-
-
   
 const HomePage = () => {
     const classes = useStyles();
     const history = useHistory();
+    const dispatch = useDispatch(); 
+    const tasks = useSelector((state) => state.tasks);
+
+
     const [tutorial, setTutorial] = useState(false);
+
+    useEffect(() => {
+        dispatch(getTasks());
+    }, [dispatch])
 
     const handleShowTutorial =  () => setTutorial(true);
 
@@ -125,17 +118,19 @@ const HomePage = () => {
                         </TableRow>
                         </TableHead>
                         <TableBody>
-                        {rows.map((row) => (
-                            <TableRow key={row.title} style={{alignItems: "left"}}>
+                        {tasks.map((task) => (
+                            <TableRow key={task._id}>
                             <TableCell component="th" scope="row">
-                                <Typography variant="subtitle1" ><b>{row.client}</b></Typography>
+                                <Typography variant="subtitle1" ><b>{task.clientName}</b></Typography>
                             </TableCell>
-                            <TableCell>{row.title}</TableCell>
-                            <TableCell>{row.totalImage}</TableCell>
-                            <TableCell>{row.annotaters}</TableCell>
-                            <TableCell>{row.createdAt}h ago </TableCell>
-                            <TableCell>
-                                <Button variant="contained" disableElevation onClick={() => handleAccept(row.id)}>Accept</Button>
+                            <TableCell align="left" >{task.title}</TableCell>
+                            <TableCell align="left">future improvement</TableCell>
+                            <TableCell align="left">future improvement</TableCell>
+                            <TableCell align="left">
+                                {task.timeRemaining === 0 ? 'Today' : task.timeRemaining === 1 ? `${task.timeRemaining} day ago` : `${task.timeRemaining} days ago`}
+                            </TableCell>
+                            <TableCell align="left">
+                                <Button variant="contained" disableElevation onClick={() => handleAccept(task._id)}>Accept</Button>
                             </TableCell>
                             </TableRow>
                         ))}
