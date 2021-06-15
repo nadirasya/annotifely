@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Typography, Paper, Button } from '@material-ui/core';
 import { useLocation } from 'react-router-dom'
 import NavBar from '../Navbar/Navbar';
@@ -11,8 +11,15 @@ import ToolsButton from './ToolsButton';
 import theme from '../../theme';
 
 
-const AnnotaterMyAnnotationsPage = () => {
+
+const AnnotaterAnnotationPage = props => {
     const classes = useStyles();
+    const location = useLocation();
+
+
+    useEffect(() => {
+        console.log(location.state.idTask)
+    }, )
 
     return (
     <div>
@@ -34,12 +41,10 @@ const AnnotaterMyAnnotationsPage = () => {
                     </Typography>
                 </div>
                 <div className={classes.toolsContainer}>
-                    <Button>
                         <ToolsButton image={boundingBoxLogo} label="Bounding Box" />
                         <ToolsButton image={deleteLogo} label="Delete" />
                         <ToolsButton image={undoLogo} label="Undo" />
                         <ToolsButton image={redoLogo} label="Redo" />
-                    </Button>
                 </div>
                 <div>
                     <Button color="primary" variant="contained" className={classes.buttonContainer}>
@@ -56,4 +61,4 @@ const AnnotaterMyAnnotationsPage = () => {
     )
 };
 
-export default AnnotaterMyAnnotationsPage;
+export default AnnotaterAnnotationPage;

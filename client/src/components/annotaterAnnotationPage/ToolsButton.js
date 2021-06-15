@@ -13,7 +13,7 @@ const ToolsButton = ({image, label}) => {
                     <img src={image} alt="logo" className={classes.logo}/>
                 </div>
                 <div>
-                    <Typography variant="subtitle">
+                    <Typography variant="subtitle1">
                         <b>{label}</b>
                     </Typography>
                 </div>
