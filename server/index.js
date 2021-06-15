@@ -5,8 +5,12 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import userRoutes from './routes/users.js';
+<<<<<<< HEAD
 import taskRoutes from './routes/tasks.js';
 import clientRoutes from './routes/clients.js';
+=======
+import taskRoutes from './routes/task.js';
+>>>>>>> Create a Task Form
 
 const app = express();
 dotenv.config();
@@ -16,9 +20,13 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
 app.use('/users', userRoutes);
+<<<<<<< HEAD
 app.use('/tasks', taskRoutes);
 app.use('/clients', clientRoutes);
 
+=======
+app.use('/task', taskRoutes);
+>>>>>>> Create a Task Form
 
 app.get('/', (req,res) => {
     res.send('Hello to annotifely application API');

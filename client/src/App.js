@@ -5,6 +5,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import LandingPage from './components/landingPage/LandingPage';
 import Navbar from './components/Navbar/Navbar';
 import AnnotaterHomePage from './components/annotaterHomePage/HomePage';
+<<<<<<< HEAD
 import AnnotaterTaskPage from './components/annotaterTaskPage/AnnotaterTaskPage';
 import AnnotaterMyAnnotationsPage from './components/annotaterMyAnnotationsPage/AnnotaterMyAnnotationsPage';
 import TaskForm from './components/clientTaskForm/TaskForm';
@@ -13,6 +14,12 @@ import ClientTaskList from './components/clientTaskListPage/TaskList';
 
 import theme from './theme';
 
+=======
+import ClientHomePage from './components/clientHomePage/HomePage';
+import theme from './theme';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import TaskForm from './components/TaskForm/TaskForm';
+>>>>>>> Create a Task Form
 
 const App = () => {
     
@@ -96,8 +103,13 @@ const App = () => {
             <BrowserRouter>
                 <Switch>
                     <Route path='/' exact component = {LandingPage} />
+<<<<<<< HEAD
                     <Route path='/no-permission' exact component = {AccesDenied} />
                     <Route component={NavBarRoutes} />
+=======
+                    <Route path='/annotater' exact component = {AnnotaterHomePage} />
+                    <Route path='/client' exact component = {ClientHomePage} />
+>>>>>>> Create a Task Form
                 </Switch>
             </BrowserRouter>
         </ThemeProvider>  

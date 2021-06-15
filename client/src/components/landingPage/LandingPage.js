@@ -25,8 +25,8 @@ const LandingPage = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
 
   const handleShowLoginForm = () => setLoginForm((prevLoginForm) => !prevLoginForm);
-  const handleShowRegisterClientForm = () => setClientRegisterForm(true);
-  const handleShowRegisterAnnotaterForm = () => setAnnotaterRegisterForm(true);
+  const handleShowRegisterClientForm = () => setClientRegisterForm((prevRegisterClientForm) => !prevRegisterClientForm);
+  const handleShowRegisterAnnotaterForm = () => setAnnotaterRegisterForm((prevRegisterAnnotaterForm) => !prevRegisterAnnotaterForm);
 
   useEffect(() => {
     const token = user?.token;
