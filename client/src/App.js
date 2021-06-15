@@ -49,6 +49,7 @@ const App = () => {
     }
 
     const AccesDenied = () => {
+        
 
         return (
             <div>
@@ -64,10 +65,10 @@ const App = () => {
         const checkUser = (allowedRole) => {
 
             if( user?.role===allowedRole){
-
+                // console.log("approved")
                 return 'approved'
             } else {
-
+                // console.log("denied")
                 return 'denied'
             }
         }
@@ -81,7 +82,8 @@ const App = () => {
                     <AnnotaterRoutes/> : 
                     checkUser('client') === 'approved' ? 
                     <ClientRoutes/> 
-                    : null
+                    : 
+                    <Redirect to='/no-permission' />
                 }
                 </Switch>
             </div>

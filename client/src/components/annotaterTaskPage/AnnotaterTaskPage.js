@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, CircularProgress } from '@material-ui/core';
 import NavBar from '../Navbar/Navbar';
@@ -6,20 +6,15 @@ import useStyles from './styles';
 
 import { getTasks } from '../../actions/tasks';
 
-function createData(id, client, title, totalImage, annotaters, createdAt) {
-    return { id, client, title, totalImage, annotaters, createdAt };
-  }
-
 
 const AnnotaterTaskPage = () => {
     const dispatch = useDispatch(); 
     const classes = useStyles();
     const tasks = useSelector((state) => state.tasks)
     
-
     useEffect(() => {
-        dispatch(getTasks());  
-    }, [dispatch]);
+        dispatch(getTasks());
+    }, [dispatch])
 
     const handleAccept = (id) => {
         console.log("useEffect", tasks)
@@ -66,7 +61,7 @@ const AnnotaterTaskPage = () => {
                         {tasks.map((task) => (
                             <TableRow key={task._id}>
                             <TableCell component="th" scope="row">
-                                <Typography variant="subtitle1" ><b>future improvement</b></Typography>
+                                <Typography variant="subtitle1" ><b>{task.clientName}</b></Typography>
                             </TableCell>
                             <TableCell align="left" >{task.title}</TableCell>
                             <TableCell align="left">future improvement</TableCell>
