@@ -5,3 +5,4 @@ export const FETCH_ALL = 'FETCH_ALL';
 export const AUTH = 'AUTH';
 export const LOGOUT = 'LOGOUT';
 export const FECTH = 'FETCH';
+export const FETCH_CLIENT = 'FETCH_CLIENT';
