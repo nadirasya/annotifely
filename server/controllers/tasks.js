@@ -107,3 +107,34 @@ export const getClientById = async (req,res)  => {
         console.log(err)
     }
 }
+
+//GET IMAGE BY ID TASK
+export const getImageById = async (req,res)  => {
+    try {
+        const taskId = req.params.id;
+        const image = await Image.find({idTask: taskId});
+
+        res.status(200).json(image);
+    }
+    catch(err) {
+        res.status(500).send();
+    }
+}
+
+export const downloadTask = async (req,res)  => {
+    try {
+        const taskId = req.params.id;
+        const image = await Image.find({idTask: taskId});
+
+        const path ="Data_Image.json"; 
+        const filePath = fs.writeFileSync(path, JSON.stringify(image,0,2));
+        filePath.on('finish',() => {
+            filePath.close();
+            console.log('Download Completed'); 
+        });
+        res.status(200).json(image);
+    }
+    catch(err) {
+        res.status(500).send();
+    }
+}
