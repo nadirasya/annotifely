@@ -16,7 +16,6 @@ export const signinVerificator = (formData) => API.post('/users/signinVerificato
 export const signupClient = (formData) => API.post('/users/signupClient', formData);
 export const signupAnnotater = (formData) => API.post('/users/signupAnnotater', formData);
 
-<<<<<<< HEAD
 export const createTask = (taskData) => API.post('/tasks/createTask', taskData);
 export const fetchTasks = () => API.get('/tasks');
 export const fetchClientTasks = () => API.get('/clients/getClientTask');
@@ -24,6 +23,3 @@ export const fetchClientTasks = () => API.get('/clients/getClientTask');
 export const getClientById = (idClient) => API.get(`/tasks/getClientById/${idClient}`)
 export const getClients = () => API.get('/clients')
 
-=======
-export const createTask = (taskData) => API.post('/task/createTask', taskData);
->>>>>>> Create a Task Form
