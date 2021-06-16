@@ -1,13 +1,11 @@
 import Task from '../models/task.js';
 import Image from '../models/image.js';
-import Client from '../models/client.js';
-import mongoose from 'mongoose';
 
 export const getTasks = async (req, res) => { 
     try {
-        const tasks = await Task.find();
+        const tasks = await Task.find().populate('client', 'name');
         
-        console.log('task hitted')
+        // console.log('task hitted')
         // await tasks.map(async(task) => {
         //     const clientName = await Client.findById(task.idClient);
         //     // console.log("clientName", clientName.name)
@@ -28,16 +26,16 @@ export const createTask = async( req, res ) => {
     // save task in the database
     const newTask = new Task ({ title: title, label:label, 
                                 instruction:instruction, timeSpan:timespan, 
-                                idClient:req.user.id,
+                                client: req.user.id,
                                 createdAt: new Date().toISOString()
-                            });
+                            }).populate ('client', 'id')
     // console.log(req.body);
 
     const savedTask = await newTask.save();
     
     // save image in the database
     UrlImage.map(async(image) => {
-        const newImage = new Image ({ imageURL: image, idTask: savedTask._id});
+        const newImage = new Image ({ imageURL: image, task:savedTask._id }).populate ('task', 'id');
         try {
             await newImage.save();
             res.status(201).json(newImage);
@@ -46,26 +44,7 @@ export const createTask = async( req, res ) => {
             console.log(error);
         }
     })
-    
-
 };
-
-
-//READ DATA FROM DATABASE
-export const getClientTasks = async (req,res)  => {
-    try {
-        console.log(req.user); 
-
-        const tasks = await Task.find({idClient: req.user.id});
-        // console.log("client hitted")
-        
-        
-        res.json(tasks);
-    } 
-    catch (error) {
-        res.status(500).json({errorMessage: 'something went wrong'});
-    }
-}
 
 export const updateTime = async( req, res ) => {
     try{
@@ -79,7 +58,7 @@ export const updateTime = async( req, res ) => {
         if(!originalTask)
         return res.status(400).json(originalTask);
 
-        if (originalTask.idClient.toString() !== req.user.id)
+        if (originalTask.client.toString() !== req.user.id)
             return res.status(400).json({ errorMesssage: "Unauthorized"});
 
         originalTask.timeSpan = timespan;
@@ -94,37 +73,11 @@ export const updateTime = async( req, res ) => {
     }
 };
 
-//READ DATA CLIENT FROM DATABASE
-export const getClientById = async (req,res)  => {
-    const { idClient } = req.params;
-    try {
-        const client = await Client.findById(idClient);
-        // console.log("client", client)
-        // console.log("client hitted")
-        res.status(200).json(client);
-    }
-    catch(err) {
-        console.log(err)
-    }
-}
-
-//GET IMAGE BY ID TASK
-export const getImageById = async (req,res)  => {
-    try {
-        const taskId = req.params.id;
-        const image = await Image.find({idTask: taskId});
-
-        res.status(200).json(image);
-    }
-    catch(err) {
-        res.status(500).send();
-    }
-}
 
 export const downloadTask = async (req,res)  => {
     try {
         const taskId = req.params.id;
-        const image = await Image.find({idTask: taskId});
+        const image = await Image.find({task: taskId}).populate('task', 'id');
 
         const path ="Data_Image.json"; 
         const filePath = fs.writeFileSync(path, JSON.stringify(image,0,2));

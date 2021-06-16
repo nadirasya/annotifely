@@ -2,8 +2,12 @@ import mongoose from 'mongoose';
 
 const verificationSchema = mongoose.Schema({
     id: { type: String },
-    idAnnotater: { type: String },
-    idVerificator: { type: String },
+    annotater: [{ 
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Annotater' }],
+    verificator: [{ 
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Verificator' }],
     score: { type: Number },
     feedback: { type: String },
 })

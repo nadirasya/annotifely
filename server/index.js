@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/users.js';
 import taskRoutes from './routes/tasks.js';
 import clientRoutes from './routes/clients.js';
+import imageRoutes from './routes/images.js';
 
 const app = express();
 dotenv.config();
@@ -18,6 +19,7 @@ app.use(cors());
 app.use('/users', userRoutes);
 app.use('/tasks', taskRoutes);
 app.use('/clients', clientRoutes);
+app.use('/images', imageRoutes);
 
 
 app.get('/', (req,res) => {
