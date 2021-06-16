@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, CircularProgress, withStyles } from '@material-ui/core';
 import useStyles from './styles';
 
 import { getTasks } from '../../actions/tasks';
+import AnnotaterAnnotationPage from '../annotaterAnnotationPage/AnnotaterAnnotationPage';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -19,6 +21,7 @@ const StyledTableCell = withStyles((theme) => ({
 
 const AnnotaterTaskPage = () => {
     const dispatch = useDispatch(); 
+    const history = useHistory();
     const classes = useStyles();
     const tasks = useSelector((state) => state.tasks)
     
@@ -27,7 +30,10 @@ const AnnotaterTaskPage = () => {
     }, [dispatch])
 
     const handleAccept = (id) => {
-        console.log("useEffect", tasks)
+        history.push({
+            pathname: '/annotater/task/annotation',
+            state: {idTask: id}
+        })
     };
 
     return (
