@@ -27,37 +27,37 @@ export const getImageByTask = async (req,res)  => {
     }
 }
 
-// export const createAnnotation = async( req, res ) => {
+export const createAnnotation = async( req, res ) => {
 
-//     const {pointX, pointY, length, width} = req.body;
+    const {pointX, pointY, length, width} = req.body;
 
-//     // save task in the database
-//     const newAnnotation = new Image({ pointX: pointX, pointY:pointY, 
-//                                 length:length, width:width, 
-//                                 idBoundingBox:req.id, annotater: req.user.id,
-//                             }).populate('annotater', 'id name');
-//     // console.log(req.body);
+    // save task in the database
+    const newAnnotation = new Image({ pointX: pointX, pointY:pointY, 
+                                length:length, width:width, 
+                                idBoundingBox:req.id, annotater: req.user.id,
+                            }).populate('annotater', 'id name');
+    // console.log(req.body);
 
-//     const savedAnnotation = await newAnnotation.save();
+    const savedAnnotation = await newAnnotation.save();
 
-//         try {
-//             await savedAnnotation.save();
-//             res.status(201).json(savedAnnotation);
+        try {
+            await savedAnnotation.save();
+            res.status(201).json(savedAnnotation);
     
-//         } catch (error) {
-//             console.log(error);
-//         }
-// };
+        } catch (error) {
+            console.log(error);
+        }
+};
 
-// //GET ANNOTATION BY ID IMAGE
-// export const getAnnotation = async (req,res)  => {
-//     try {
-//         const imageId = req.params.id;
-//         const image = await Image.find(imageId);
+//GET ANNOTATION BY ID IMAGE
+export const getAnnotation = async (req,res)  => {
+    try {
+        const imageId = req.params.id;
+        const image = await Image.find(imageId);
 
-//         res.status(200).json(image);
-//     }
-//     catch(err) {
-//         res.status(500).send();
-//     }
-// }
+        res.status(200).json(image);
+    }
+    catch(err) {
+        res.status(500).send();
+    }
+}
