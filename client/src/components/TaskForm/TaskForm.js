@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
-import { InputLabel, Button, ButtonBase, Paper, CssBaseline, TextField, Grid, Typography, Container, Box } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Button, ButtonBase, Grid, Typography, Box } from '@material-ui/core';
 import {useDispatch} from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { createTask } from '../../actions/task';
+import { createTask } from '../../actions/tasks';
 import Input from './Input';
 import useStyles from './styles';
 

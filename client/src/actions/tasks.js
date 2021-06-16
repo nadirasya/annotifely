@@ -18,7 +18,6 @@ export const getTasks = () => async (dispatch) => {
     }
 }
 
-
 export const getClientTask = () => async (dispatch) => {
     // const currentDate = new Date();
     const currentDate = moment()

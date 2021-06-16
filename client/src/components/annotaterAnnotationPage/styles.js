@@ -20,7 +20,8 @@ export default makeStyles((theme) => ({
         maxWidth: '30',
     },
     buttonContainer:{
-        padding: '20px 40px'
+        padding: '20px 40px',
+        // width: '30%'
     },
     rightContainer: {
         paddingLeft: '3%',
@@ -39,7 +40,4 @@ export default makeStyles((theme) => ({
         borderStyle: 'solid', 
         borderRadius: '10px'
     },
-    submitButtonContainer: {
-        
-    }
 }))

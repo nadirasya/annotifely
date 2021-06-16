@@ -10,7 +10,8 @@ router.get('/',getTasks);
 router.get('/getTasksById/:id', getTasksById);
 router.post('/createTask',findUser, createTask);
 router.put('/updateTime/:id',findUser, updateTime);
-router.get('/downloadTasks/:id',downloadTask);
-
+router.get('/getClientById/:idClient', getClientById);
+router.get('/downloadTasks/:id', downloadTask);
+router.get('/getImageById/:id', getImageById);
 
 export default router;
