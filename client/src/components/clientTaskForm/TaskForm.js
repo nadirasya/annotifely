@@ -208,7 +208,7 @@ const TaskForm= () => {
                                 type="number"
                                 label="Timespan"
                                 name="timespan"
-                                InputProps={{ inputProps: { min: 1 } }}
+                                InputProps={{ inputProps: { min: 1} }}
                             />
                             <Typography variant="h6" style={{alignSelf: 'center', marginLeft: '5px'}}> Days </Typography>
                             <Button
