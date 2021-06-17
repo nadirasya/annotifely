@@ -80,7 +80,7 @@ const AnnotaterTaskPage = () => {
                         {tasks.map((task) => (
                             <TableRow key={task._id}>
                             <TableCell component="th" scope="row">
-                                <Typography variant="subtitle1" ><b>{task.clientName}</b></Typography>
+                                <Typography variant="subtitle1" ><b>{task?.client[0]?.name}</b></Typography>
                             </TableCell>
                             <TableCell align="left" >{task.title}</TableCell>
                             <TableCell align="left">{task.totalImage}</TableCell>

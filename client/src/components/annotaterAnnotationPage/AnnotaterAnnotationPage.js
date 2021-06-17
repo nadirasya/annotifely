@@ -21,11 +21,13 @@ const AnnotaterAnnotationPage = props => {
     // The current Annotorious instance
     const [ anno, setAnno ] = useState();
     const [ deleteAnnotation, setDeleteAnnotation ] = useState(false);
+    const [ selected, setSelected ] = useState()
     const tag = "traffic light";
 
     // Current drawing tool name
-    const [ tool, setTool ] = useState('rect');
+    const [ tool, setTool ] = useState();
     
+    console.log("re render", deleteAnnotation)
 
     useEffect(() => {
         let annotorious = null;
@@ -69,12 +71,7 @@ const AnnotaterAnnotationPage = props => {
 
           annotorious.on('selectAnnotation', function(annotation) {
             console.log('selected', annotation);
-            console.log(deleteAnnotation)
-            if (deleteAnnotation==true){
-                console.log("delete", annotation);
-                annotorious.removeAnnotation(annotation);
-            }
-            setDeleteAnnotation(false)
+            setSelected(annotation)
           });
         }
     
@@ -99,10 +96,9 @@ const AnnotaterAnnotationPage = props => {
       }
     
     const onDelete = () => {
-        console.log('hey this is delete', deleteAnnotation)
+      console.log('hey this is delete', selected)
+      anno.removeAnnotation(selected)
         
-        setDeleteAnnotation(!deleteAnnotation);
-        // console.log(deleteAnnotation)
     }
     
     return (
@@ -135,13 +131,18 @@ const AnnotaterAnnotationPage = props => {
                         </Typography>
                     </div>
                     <div className={classes.toolsContainer}>
-                            <ToolsButton image={boundingBoxLogo} label="Bounding Box" onClick={toggleTool}/>
-                            <ToolsButton image={deleteLogo} label="Delete" onClick={onDelete} />
-                            <ToolsButton image={undoLogo} label="Undo" />
-                            <ToolsButton image={redoLogo} label="Redo" />
+                      <ToolsButton image={boundingBoxLogo} label="Bounding Box" onClick={toggleTool}/>
+                      <ToolsButton image={deleteLogo} label="Delete" onClick={onDelete} />
+                      <ToolsButton image={undoLogo} label="Undo" />
+                      <ToolsButton image={redoLogo} label="Redo" />
                     </div>
                 </div>
                 <div className={classes.submitButtonContainer}>
+                    <div className={classes.imageCounter}>
+                      <Typography variant="h4">
+                        <b>1/12</b>
+                      </Typography>
+                    </div>
                     <Button color="primary" variant="contained" className={classes.buttonContainer}>
                         <Typography variant="h6">
                             <b>Submit</b>

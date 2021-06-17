@@ -3,7 +3,7 @@ import { Typography, Paper, Button } from '@material-ui/core';
 import useStyles from './styles';
 
 
-const ToolsButton = ({image, label, onClick}) => {
+const ToolsButton = ({image, label, onClick, selected}) => {
     const classes = useStyles();
 
     return (

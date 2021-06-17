@@ -40,4 +40,12 @@ export default makeStyles((theme) => ({
         borderStyle: 'solid', 
         borderRadius: '10px'
     },
+    submitButtonContainer: {
+        display:'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-end'
+    },
+    imageCounter: {
+        padding: '20px'
+    }
 }))

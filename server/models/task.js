@@ -19,8 +19,9 @@ const taskSchema = mongoose.Schema({
         type: Date,
         default: new Date(),
     },
-    totalImage: { type: Number },
-    totalAnnotaters: { type: Number, default: 0},
+    image: [{ 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Image' }],
 })
 
 export default mongoose.model('Task', taskSchema);
