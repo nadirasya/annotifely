@@ -32,7 +32,7 @@ export const getClientTasks = async (req,res)  => {
         console.log(req.user); 
 
         const tasks = await Task.find({client: req.user.id}).populate('client', 'id');
-        // console.log("client hitted")
+        console.log("client hitted")
         res.json(tasks);
     } 
     catch (error) {

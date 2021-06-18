@@ -18,10 +18,10 @@ export const signupAnnotater = (formData) => API.post('/users/signupAnnotater', 
 
 export const createTask = (taskData) => API.post('/tasks/createTask', taskData);
 export const fetchTasks = () => API.get('/tasks');
-export const fetchClientTasks = () => API.get('/clients/getClientTask');
+export const fetchClientTasks = () => API.get('/clients/getClientTasks');
 
 export const getClientById = (idClient) => API.get(`/tasks/getClientById/${idClient}`)
 export const getClients = () => API.get('/clients')
-export const getImageById = (id) => API.get(`/tasks/getImageById/${id}`)
+export const getTasksById = (id) => API.get(`/tasks/getTasksById/${id}`)
 export const getTotalImage = (id) => API.get(`/images/total/${id}`)
 

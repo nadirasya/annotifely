@@ -124,8 +124,8 @@ const HomePage = () => {
                                 <Typography variant="subtitle1" ><b>{task?.client[0]?.name}</b></Typography>
                             </TableCell>
                             <TableCell align="left" >{task.title}</TableCell>
-                            <TableCell align="left">{task.totalImage}</TableCell>
-                            <TableCell align="left">future improvement</TableCell>
+                            <TableCell align="left">{task?.totalImage}</TableCell>
+                            <TableCell align="left">{task?.totalAnnotater}</TableCell>
                             <TableCell align="left">
                                 {task.timeRemaining === 0 ? 'Today' : task.timeRemaining === 1 ? `${task.timeRemaining} day ago` : `${task.timeRemaining} days ago`}
                             </TableCell>

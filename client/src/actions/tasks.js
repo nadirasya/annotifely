@@ -1,4 +1,4 @@
-import { FETCH_ALL, CREATE } from '../constants/actionTypes';
+import { FETCH_ALL, CREATE, FETCH_IMAGES } from '../constants/actionTypes';
 import * as api from '../api';
 import moment from 'moment';
 
@@ -11,8 +11,18 @@ export const getTasks = () => async (dispatch) => {
             const createdDate = moment(task.createdAt);
             task['timeRemaining'] =  currentDate.diff(createdDate, 'days');
         })
-        console.log(data)
+        // console.log(data)
         dispatch({ type: FETCH_ALL, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getTasksById = (id) => async(dispatch) => {
+    try {
+        const { data } = await api.getTasksById(id);
+        console.log("this is actions", data)
+        dispatch({ type: FETCH_IMAGES, payload: data })
     } catch (error) {
         console.log(error);
     }

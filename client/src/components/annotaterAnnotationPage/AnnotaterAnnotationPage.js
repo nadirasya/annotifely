@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { Typography, Button } from '@material-ui/core';
-import { useLocation } from 'react-router-dom'
+import { Typography, Button, CircularProgress } from '@material-ui/core';
+import { useHistory, useLocation } from 'react-router-dom'
 import useStyles from './styles';
 import boundingBoxLogo from '../images/bounding box.png';
 import deleteLogo from '../images/delete.png';
@@ -8,12 +8,18 @@ import redoLogo from '../images/redo.png';
 import undoLogo from '../images/undo.png';
 import ToolsButton from './ToolsButton';
 import { Annotorious } from '@recogito/annotorious';
+import { useDispatch, useSelector } from 'react-redux';
+import { nextImage } from '../../actions/images';
+
 
 import '@recogito/annotorious/dist/annotorious.min.css';
 
 const AnnotaterAnnotationPage = props => {
     const classes = useStyles();
     const location = useLocation();
+    const history = useHistory();
+    const dispatch = useDispatch(); 
+
 
     // Ref to the image DOM element
     const imgEl = useRef();
@@ -21,22 +27,27 @@ const AnnotaterAnnotationPage = props => {
     // The current Annotorious instance
     const [ anno, setAnno ] = useState();
     const [ deleteAnnotation, setDeleteAnnotation ] = useState(false);
-    const [ selected, setSelected ] = useState()
-    const tag = "traffic light";
-
+    const [ selected, setSelected ] = useState();
+    const images = useSelector((state) => state.images['allImage']);
+    // const images = imagesState.allImage
+    // const currentIndex = useSelector((state) => state.images['index']);
+    const currentIndex = 0
+    const tag = 'test'
+    const totalImage = images?.length;
+    
     // Current drawing tool name
     const [ tool, setTool ] = useState();
     
-    console.log("re render", deleteAnnotation)
+    console.log("render currentIndex", images)
 
     useEffect(() => {
         let annotorious = null;
-    
+        
         if (imgEl.current) {
           // Init
           annotorious = new Annotorious({
             image: imgEl.current,
-            disableEditor: true,
+            // disableEditor: true,
             // readOnly: true,
           });
           
@@ -48,12 +59,11 @@ const AnnotaterAnnotationPage = props => {
             selection.body = [{
               type: 'TextualBody',
               purpose: 'tagging',
+              // value: images[currentIndex]?.task[0]?.label
               value: tag
             }];
           
             // Step 3: update the selection and save it
-            // Remember that .updateSelected is an async function!
-            // You need to wait until it completes before saving
             await annotorious.updateSelected(selection);
             annotorious.saveSelected();
             console.log('selection', selection);
@@ -100,8 +110,21 @@ const AnnotaterAnnotationPage = props => {
       anno.removeAnnotation(selected)
         
     }
+
+    const handleButton = () => {
+      if(currentIndex!=totalImage-1){
+        getAnnotation();
+        dispatch(nextImage());
+        history.push('/annotater/task/annotation')
+
+
+      }
+    }
     
     return (
+    images?.length == null ?
+      <CircularProgress/>
+      :
     <div style={{paddingLeft: '5%', paddingRight: '2%', paddingBottom: '3%'}}>
         <div className={classes.pageTitle}>
             <Typography variant="h4">
@@ -112,14 +135,16 @@ const AnnotaterAnnotationPage = props => {
             <div>
                 <div className={classes.taskLabel}>
                     <Typography variant="h6">
-                        Tandai tanda lalu lintas menggunakan bounding box 
+                        {images[currentIndex]?.task[0]?.instruction}
                     </Typography>
                 </div> 
                 <div className={classes.imageContainer}>
                     <img
                         ref={imgEl} 
                         style={{maxWidth: '100%', maxHeight: '100%'}}
-                        src="https://images.unsplash.com/photo-1557153416-3eb8fc6fb4c0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"/>
+                        // src="https://images.unsplash.com/photo-1557153416-3eb8fc6fb4c0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+                        src={images[currentIndex]?.imageURL}
+                        />
                     </div>
                 </div>
                 
@@ -140,12 +165,16 @@ const AnnotaterAnnotationPage = props => {
                 <div className={classes.submitButtonContainer}>
                     <div className={classes.imageCounter}>
                       <Typography variant="h4">
-                        <b>1/12</b>
+                        <b>1/{totalImage}</b>
                       </Typography>
                     </div>
-                    <Button color="primary" variant="contained" className={classes.buttonContainer}>
+                    <Button color="primary" variant="contained" className={classes.buttonContainer} onClick={handleButton}>
                         <Typography variant="h6">
-                            <b>Submit</b>
+                          {
+                            currentIndex==totalImage-1?
+                            <b>Submit</b> :
+                            <b>Next</b>
+                          }
                         </Typography>
                     </Button>
                 </div>
@@ -153,6 +182,7 @@ const AnnotaterAnnotationPage = props => {
         </div>
         
     </div>
+    
     )
 };
 

@@ -1,45 +1,34 @@
 import Task from '../models/task.js';
 import Image from '../models/image.js';
+import mongoose from 'mongoose';
+import task from '../models/task.js';
 
 export const getTasks = async (req, res) => { 
     try {
-        const task= await Task.aggregate([
-            {  $unwind: "$image" },
-                {$match: {'image._id': "$image._id"},
-                $group: {
-                _id: null },
-                count: { $sum:1 }}
-        ]);
-
-        // if(!image)
-        // return res.status(400).json(image);
-
-        const tasks = await Task.find().populate('client image', 'name', $total );
-
+        const tasks = await Task.find().populate('client', 'name');
+        
+        await tasks.map(async(task) => {
+            const totalImage = await Image.aggregate([
+                { $match: {
+                    task: mongoose.Types.ObjectId(task._id)
+                }
+            },
+            {
+                $count: 'task'
+            }
+        ])
+            console.log("c", totalImage)
+            task["totalImage"] = await totalImage
+            // task = [...task, totalImage]
+            console.log("b", task)
+        })
+        console.log("a", tasks)
         res.status(200).json(tasks);
     } catch (error) {
         res.status(500).send();
     }
 }
 
-// export const getTotal = async (req, res) => {
-//     try {
-//       const image= await Image.aggregate([
-//         { $group: {
-//             _id: {task:"$_id"},
-//             count: { $sum: 1 }
-//         }}
-//     ]);
-//     // const total = image[0].total + total;
-//     console.log(image);
-//     // if((await image).length > 0 ) {
-//     //     total += image[0].total;
-//     // }
-//     //   res.status(200).json(image.total);
-//     } catch (error) {
-//         res.status(500).send();
-//     }
-// }
 
 export const getTasksById = async (req, res) => {
     try {
@@ -61,24 +50,23 @@ export const createTask = async( req, res ) => {
 
     const {title, label, instruction, timespan, UrlImage } = req.body;
 
+    //count total image 
+    const totalImage = UrlImage.length
+
     // save task in the database
     const newTask = new Task ({ title: title, label:label, 
                                 instruction:instruction, timeSpan:timespan, 
-                                client: req.user.id,
-                                createdAt: new Date().toISOString()
+                                client: req.user.id, totalImage: totalImage, totalAnnotater: 0,
+                                createdAt: new Date().toISOString(), 
                             }).populate ('client', 'id');
     // console.log(req.body);
-
     const savedTask = await newTask.save();
     
     // save image in the database
     UrlImage.map(async(image) => {
-        const newImage = new Image ({ imageURL: UrlImage, task:savedTask._id }).populate ('task', 'id');
+        const newImage = new Image ({ imageURL: image, task:savedTask._id }).populate ('task', 'id');
         try {
             await newImage.save();
-            const url = new Task ({ image: newImage._id}).save();
-            res.status(201).json(newImage);
-    
         } catch (error) {
             res.status(500).send();
         }
