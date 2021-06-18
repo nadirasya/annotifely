@@ -12,7 +12,6 @@ export const getTasks = async (req, res) => {
     }
 }
 
-
 export const getTasksById = async (req, res) => {
     try {
         const { id } = req.params;
