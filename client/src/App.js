@@ -11,13 +11,25 @@ import TaskForm from './components/clientTaskForm/TaskForm';
 import AnnotaterAnnotationPage from './components/annotaterAnnotationPage/AnnotaterAnnotationPage';
 import ClientTaskList from './components/clientTaskListPage/TaskList';
 import ClientHomePage from './components/clientHomePage/HomePage';
-
+import VerificatorVerificationPage from './components/verificatorVerificationPage/VerificatorVerificationPage';
 import theme from './theme';
+
 
 
 const App = () => {
     
-
+    const VerificatorRoutes = () => {
+        return (
+            <div>
+                <CssBaseline />
+                <Navbar />
+                <Switch>
+                    <Route path='/verificator' exact component = {VerificatorVerificationPage} />
+                    <Redirect to='/no-permission' />
+                </Switch>
+            </div>
+        )
+    }
 
     const ClientRoutes = () => {
         return (
@@ -82,7 +94,9 @@ const App = () => {
                     checkUser('annotater') === 'approved' ?
                     <AnnotaterRoutes/> : 
                     checkUser('client') === 'approved' ? 
-                    <ClientRoutes/> 
+                    <ClientRoutes/> :
+                    checkUser('verificator') === 'approved' ? 
+                    <VerificatorRoutes />
                     : 
                     <Redirect to='/no-permission' />
                 }
