@@ -12,7 +12,6 @@ export const getTasks = async (req, res) => {
     }
 }
 
-
 export const getTasksById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -47,7 +46,7 @@ export const createTask = async( req, res ) => {
     
     // save image in the database
     UrlImage.map(async(image) => {
-        const newImage = new Image ({ imageURL: image, task:savedTask._id }).populate ('task', 'id');
+        const newImage = new Image ({ imageURL: image, task:savedTask._id })
         try {
             await newImage.save();
         } catch (error) {
@@ -55,6 +54,10 @@ export const createTask = async( req, res ) => {
         }
     })
 };
+
+// export const getTotalAnnotater = async (req, res) => {
+//     const query = {}
+// }
 
 export const updateTime = async( req, res ) => {
     try{

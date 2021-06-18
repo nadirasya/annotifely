@@ -8,6 +8,7 @@ import userRoutes from './routes/users.js';
 import taskRoutes from './routes/tasks.js';
 import clientRoutes from './routes/clients.js';
 import imageRoutes from './routes/images.js';
+import annotationRoutes from './routes/annotations.js';
 
 const app = express();
 dotenv.config();
@@ -20,6 +21,7 @@ app.use('/users', userRoutes);
 app.use('/tasks', taskRoutes);
 app.use('/clients', clientRoutes);
 app.use('/images', imageRoutes);
+app.use('/annotations', annotationRoutes);
 
 
 app.get('/', (req,res) => {
