@@ -3,6 +3,7 @@ import { Container, Typography, Table, TableBody, TableCell, TableContainer, Tab
 
 import useStyles from './styles';
 import FeedbackForm from '../annotaterFeedbackForm/FeedbackForm';
+import { useHistory } from 'react-router';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -28,6 +29,8 @@ const rows = [
 
 const AnnotaterMyAnnotationsPage = () => {
     const classes = useStyles();
+    const history = useHistory();
+
     const [feedbackForm, setFeedbackForm] = useState(false);
 
     const handleShowFeedback =  () => setFeedbackForm(true);
@@ -72,6 +75,14 @@ const AnnotaterMyAnnotationsPage = () => {
               <div ref={wrapperRef} onClick={props.onClick}>{props.children}</div>
             </Container>
         )
+    }
+
+    const handleEdit = ({id}) => {
+        history.push({
+            pathname: '/annotater/task/annotation',
+            state: { id: id, index: 0, type: 'edit'}
+        })
+        // dispatch(getTasksById(id));
     }
 
 
@@ -138,7 +149,7 @@ const AnnotaterMyAnnotationsPage = () => {
                                         </Button>
                                     </Grid>
                                     <Grid item xs={12} md={6} lg={6}>
-                                    <Button variant="contained" disableElevation className={classes.buttonTertiary}>
+                                    <Button variant="contained" disableElevation className={classes.buttonTertiary} onClick={() => handleEdit(row.id)}>
                                         <Typography variant="subtitle2">Edit</Typography>
                                     </Button>
                                     </Grid>

@@ -7,6 +7,7 @@ import deleteLogo from '../images/delete.png';
 import redoLogo from '../images/redo.png';
 import undoLogo from '../images/undo.png';
 import ToolsButton from './ToolsButton';
+import createAnnotation from './createAnnotation';
 import { Annotorious } from '@recogito/annotorious';
 import { useDispatch, useSelector } from 'react-redux';
 import { nextImage } from '../../actions/images';
@@ -25,10 +26,8 @@ const AnnotaterAnnotationPage = props => {
 
     // The current Annotorious instance
     const [ anno, setAnno ] = useState();
+
     const [ selected, setSelected ] = useState();
-    // const [ undo, setUndo ] = useState();
-    // const [ redo, setRedo ] = useState();
-    // const [ undoType, setUndoType ] = useState();
     const [ histories, setHistories ] = useState({annotations: [], current: ''});
     let images = useSelector((state) => state.images['allImage'])
     const currentIndex = location.state.index;
@@ -50,7 +49,9 @@ const AnnotaterAnnotationPage = props => {
             // readOnly: true,
           });
           
-        //   annotorious.setAnnotations(annotated);
+          if(location.state?.type == "edit"){
+              annotorious.setAnnotations(createAnnotation({id: 123, label: 'test', x: 0, y: 0, width: 300.891, height: 450.67}));
+          }
           annotorious.on('createSelection', async function(selection) {
     
             // Tag to insert
@@ -89,9 +90,6 @@ const AnnotaterAnnotationPage = props => {
     
         // Keep current Annotorious instance in state
         setAnno(annotorious);
-    
-        // Cleanup: destroy current instance
-        // return () => annotorious.destroy();
       }, [images, currentIndex]);
 
 
@@ -123,6 +121,7 @@ const AnnotaterAnnotationPage = props => {
 
     const handleButton = async() => {
       const annotations = await anno.getAnnotations().forEach(function(element, index){
+        console.log(element);
         let value = element.target.selector.value;
         value = value.split(':')[1];
         console.log("value of ",index,  "is ", value)
@@ -153,7 +152,7 @@ const AnnotaterAnnotationPage = props => {
     <div style={{paddingLeft: '5%', paddingRight: '2%', paddingBottom: '3%'}}>
         <div className={classes.pageTitle}>
             <Typography variant="h4">
-               <b> Annotation Form</b> 
+               <b>{ location.state?.type == "edit"? "Edit" : null } Annotation Form</b> 
             </Typography>
         </div>
         <div className={classes.labelContainer}>
@@ -167,8 +166,10 @@ const AnnotaterAnnotationPage = props => {
                     <img
                         ref={imgEl} 
                         style={{maxWidth: '100%', maxHeight: '100%'}}
-                        // src="https://images.unsplash.com/photo-1557153416-3eb8fc6fb4c0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-                        src={ images ? images[currentIndex]?.imageURL : null}
+                        
+                        src={ location.state?.type == "edit" ? 
+                        "https://images.unsplash.com/photo-1593642532871-8b12e02d091c?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
+                        : images[currentIndex]?.imageURL }
                         />
                     </div>
                 </div>
