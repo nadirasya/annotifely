@@ -6,23 +6,6 @@ import task from '../models/task.js';
 export const getTasks = async (req, res) => { 
     try {
         const tasks = await Task.find().populate('client', 'name');
-        
-        await tasks.map(async(task) => {
-            const totalImage = await Image.aggregate([
-                { $match: {
-                    task: mongoose.Types.ObjectId(task._id)
-                }
-            },
-            {
-                $count: 'task'
-            }
-        ])
-            console.log("c", totalImage)
-            task["totalImage"] = await totalImage
-            // task = [...task, totalImage]
-            console.log("b", task)
-        })
-        console.log("a", tasks)
         res.status(200).json(tasks);
     } catch (error) {
         res.status(500).send();
