@@ -32,7 +32,10 @@ const AnnotaterTaskPage = () => {
     }, [dispatch])
 
     const handleAccept = (id) => {
-        history.push('/annotater/task/annotation')
+        history.push({
+            pathname: '/annotater/task/annotation',
+            state: { id: id, index: 0 }
+        })
         dispatch(getTasksById(id));
         
     };

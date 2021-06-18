@@ -26,21 +26,20 @@ const AnnotaterAnnotationPage = props => {
 
     // The current Annotorious instance
     const [ anno, setAnno ] = useState();
-    const [ deleteAnnotation, setDeleteAnnotation ] = useState(false);
     const [ selected, setSelected ] = useState();
-    const images = useSelector((state) => state.images['allImage']);
+    let images = useSelector((state) => state.images['allImage'])
     // const images = imagesState.allImage
+    const currentIndex = location.state.index
     // const currentIndex = useSelector((state) => state.images['index']);
-    const currentIndex = 0
+    // const currentIndex = 0
     const tag = 'test'
     const totalImage = images?.length;
     
     // Current drawing tool name
     const [ tool, setTool ] = useState();
-    
-    console.log("render currentIndex", images)
 
     useEffect(() => {
+      console.log(images)
         let annotorious = null;
         
         if (imgEl.current) {
@@ -59,8 +58,8 @@ const AnnotaterAnnotationPage = props => {
             selection.body = [{
               type: 'TextualBody',
               purpose: 'tagging',
-              // value: images[currentIndex]?.task[0]?.label
-              value: tag
+              value: images[currentIndex]?.task[0]?.label
+              // value: tag
             }];
           
             // Step 3: update the selection and save it
@@ -89,8 +88,8 @@ const AnnotaterAnnotationPage = props => {
         setAnno(annotorious);
     
         // Cleanup: destroy current instance
-        return () => annotorious.destroy();
-      }, []);
+        // return () => annotorious.destroy();
+      }, [images]);
 
 
     // Toggles current tool + button label
@@ -103,21 +102,20 @@ const AnnotaterAnnotationPage = props => {
     const getAnnotation = () => {
         const annotations = anno.getAnnotations().forEach(function(element){
         console.log("selected", element.target.selector)})
+        console.log('annotations', annotations)
       }
     
     const onDelete = () => {
-      console.log('hey this is delete', selected)
       anno.removeAnnotation(selected)
         
     }
 
     const handleButton = () => {
+      console.log('hello this is get', anno.getAnnotations())
+      anno.destroy();
       if(currentIndex!=totalImage-1){
-        getAnnotation();
-        dispatch(nextImage());
-        history.push('/annotater/task/annotation')
-
-
+        // dispatch(nextImage());
+        // history.push('/annotater/task/annotation')
       }
     }
     
@@ -143,7 +141,7 @@ const AnnotaterAnnotationPage = props => {
                         ref={imgEl} 
                         style={{maxWidth: '100%', maxHeight: '100%'}}
                         // src="https://images.unsplash.com/photo-1557153416-3eb8fc6fb4c0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-                        src={images[currentIndex]?.imageURL}
+                        src={ images ? images[currentIndex]?.imageURL : null}
                         />
                     </div>
                 </div>
