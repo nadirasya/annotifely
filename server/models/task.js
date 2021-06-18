@@ -5,12 +5,11 @@ const taskSchema = mongoose.Schema({
     client: [{ 
             type: mongoose.Schema.Types.ObjectId, 
             ref: 'Client' }],
-    image: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Image' }],
     annotater: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Annotater' }],
+    totalImage: { type: Number },
+    totalAnnotater: { type: Number },
     title: { type: String },
     label: { type: String },
     instruction: { type: String },
@@ -19,6 +18,7 @@ const taskSchema = mongoose.Schema({
         type: Date,
         default: new Date(),
     },
+    
 })
 
 export default mongoose.model('Task', taskSchema);

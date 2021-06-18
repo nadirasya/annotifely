@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, CircularProgress, withStyles } from '@material-ui/core';
 import useStyles from './styles';
 
-import { getTasks } from '../../actions/tasks';
+import { getTasks, getTasksById } from '../../actions/tasks';
 import AnnotaterAnnotationPage from '../annotaterAnnotationPage/AnnotaterAnnotationPage';
 
 const StyledTableCell = withStyles((theme) => ({
@@ -24,16 +24,20 @@ const AnnotaterTaskPage = () => {
     const history = useHistory();
     const classes = useStyles();
     const tasks = useSelector((state) => state.tasks)
+    const [loading, setLoading] = useState(false)
     
     useEffect(() => {
         dispatch(getTasks());
+        console.log(tasks)
     }, [dispatch])
 
     const handleAccept = (id) => {
         history.push({
             pathname: '/annotater/task/annotation',
-            state: {idTask: id}
+            state: { id: id, index: 0 }
         })
+        dispatch(getTasksById(id));
+        
     };
 
     return (
@@ -79,11 +83,11 @@ const AnnotaterTaskPage = () => {
                         {tasks.map((task) => (
                             <TableRow key={task._id}>
                             <TableCell component="th" scope="row">
-                                <Typography variant="subtitle1" ><b>{task.clientName}</b></Typography>
+                                <Typography variant="subtitle1" ><b>{task?.client[0]?.name}</b></Typography>
                             </TableCell>
                             <TableCell align="left" >{task.title}</TableCell>
-                            <TableCell align="left">future improvement</TableCell>
-                            <TableCell align="left">future improvement</TableCell>
+                            <TableCell align="left">{task?.totalImage}</TableCell>
+                            <TableCell align="left">{task?.totalAnnotater}</TableCell>
                             <TableCell align="left">
                                 {task.timeRemaining === 0 ? 'Today' : task.timeRemaining === 1 ? `${task.timeRemaining} day ago` : `${task.timeRemaining} days ago`}
                             </TableCell>

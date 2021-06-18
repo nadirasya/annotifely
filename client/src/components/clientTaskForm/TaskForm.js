@@ -25,6 +25,7 @@ const TaskForm= () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(createTask(taskData, history)); 
+        history.push('/client')
     };
 
     const handleChange = (e) => {

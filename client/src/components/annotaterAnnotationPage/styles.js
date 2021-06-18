@@ -20,7 +20,8 @@ export default makeStyles((theme) => ({
         maxWidth: '30',
     },
     buttonContainer:{
-        padding: '20px 40px'
+        padding: '20px 40px',
+        // width: '30%'
     },
     rightContainer: {
         paddingLeft: '3%',
@@ -40,6 +41,11 @@ export default makeStyles((theme) => ({
         borderRadius: '10px'
     },
     submitButtonContainer: {
-        
+        display:'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-end'
+    },
+    imageCounter: {
+        padding: '20px'
     }
 }))
