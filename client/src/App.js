@@ -11,13 +11,26 @@ import TaskForm from './components/clientTaskForm/TaskForm';
 import AnnotaterAnnotationPage from './components/annotaterAnnotationPage/AnnotaterAnnotationPage';
 import ClientTaskList from './components/clientTaskListPage/TaskList';
 import ClientHomePage from './components/clientHomePage/HomePage';
-
+import AccessDenied from './components/AccessDenied/AccessDenied';
+import VerificatorVerificationPage from './components/verificatorVerificationPage/VerificatorVerificationPage';
 import theme from './theme';
+
 
 
 const App = () => {
     
-
+    const VerificatorRoutes = () => {
+        return (
+            <div>
+                <CssBaseline />
+                <Navbar />
+                <Switch>
+                    <Route path='/verificator' exact component = {VerificatorVerificationPage} />
+                    <Redirect to='/no-permission' />
+                </Switch>
+            </div>
+        )
+    }
 
     const ClientRoutes = () => {
         return (
@@ -49,16 +62,6 @@ const App = () => {
         )
     }
 
-    const AccesDenied = () => {
-        
-
-        return (
-            <div>
-                You dont have access to this page
-            </div>
-        )
-    }
-
 
     const NavBarRoutes = () => {
         const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
@@ -82,7 +85,9 @@ const App = () => {
                     checkUser('annotater') === 'approved' ?
                     <AnnotaterRoutes/> : 
                     checkUser('client') === 'approved' ? 
-                    <ClientRoutes/> 
+                    <ClientRoutes/> :
+                    checkUser('verificator') === 'approved' ? 
+                    <VerificatorRoutes />
                     : 
                     <Redirect to='/no-permission' />
                 }
@@ -97,7 +102,7 @@ const App = () => {
             <BrowserRouter>
                 <Switch>
                     <Route path='/' exact component = {LandingPage} />
-                    <Route path='/no-permission' exact component = {AccesDenied} />
+                    <Route path='/no-permission' exact component = {AccessDenied} />
                     <Route component={NavBarRoutes} />
                 </Switch>
             </BrowserRouter>
