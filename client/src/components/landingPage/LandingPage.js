@@ -94,7 +94,7 @@ const LandingPage = () => {
         loginForm ?
         <div className={classes.loginFormContainer}>
           <OutsideAlerter>
-            <LoginForm />
+            <LoginForm loginForm={loginForm}/>
           </OutsideAlerter>
         </div>
         :   null    }
@@ -102,7 +102,7 @@ const LandingPage = () => {
           clientRegisterForm ?
             <div className={classes.registerFormContainer}>
               <OutsideAlerter>
-                <ClientForm />
+                <ClientForm clientRegisterForm={clientRegisterForm}/>
               </OutsideAlerter>
             </div>
             : null }
@@ -110,7 +110,7 @@ const LandingPage = () => {
           annotaterRegisterForm ?
             <div className={classes.registerFormContainer}>
               <OutsideAlerter>
-                <AnnotaterForm />
+                <AnnotaterForm annotaterRegisterForm={annotaterRegisterForm} />
               </OutsideAlerter>
             </div>
             : null }

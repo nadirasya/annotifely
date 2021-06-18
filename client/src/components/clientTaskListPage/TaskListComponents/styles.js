@@ -11,12 +11,13 @@ const useStyles= makeStyles((theme) => ({
         marginTop: '20px'
     },
     boxImage: {
-        height: 300,
+        marginTop: '15vh',
+        // height: 300,
         display:"flex",
         padding: 8,
     },
     boxButton: {
-        height: 50,
+        // height: 50,
         display:"flex",
         padding: 8,
     },
@@ -38,10 +39,10 @@ const useStyles= makeStyles((theme) => ({
         backgroundColor: "#567068",
         color: '#ffffff',
         variant: "contained",
-        height: 40,
-        maxWidth: '170px', 
+        height: '5vh',
+        maxWidth: 200, 
         maxHeight: '50px', 
-        minWidth: '170px', 
+        minWidth: 200, 
         minHeight: '50px',
     },
     buttonTertiary: {
@@ -59,7 +60,7 @@ const useStyles= makeStyles((theme) => ({
     },
     setting: {
         color: "#8f948f",
-    }
+    },
       
 }))
 

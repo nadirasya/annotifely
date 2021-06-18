@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Avatar, Button, Paper, CssBaseline, TextField, Grid, Typography, Container } from '@material-ui/core';
+import { Avatar, Button, Paper, CssBaseline, TextField, Grid, Typography, Container, Slide } from '@material-ui/core';
 import { AccountCircle } from '@material-ui/icons';
 import {useDispatch} from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -9,7 +9,7 @@ import useStyles from './styles';
 
 const initialState = { name: '', email: '', password: ''};
 
-const AnnotaterForm = () => {
+const AnnotaterForm = ({annotaterRegisterForm}) => {
     const [formData, setFormData] = useState(initialState);
     const [showUserPassword, setShowUserPassword] = useState(false);
 
@@ -32,6 +32,7 @@ const AnnotaterForm = () => {
 
     return (
         // <Container component="main" maxWidth="xs">
+        <Slide in={annotaterRegisterForm} direction="down" mountOnEnter unmountOnExit >
         <Paper className={classes.paper} elevation={3}>
                 <Typography variant="h4"><b>Join As Annotater</b></Typography>
                 <Avatar className={classes.avatar}>
@@ -70,6 +71,7 @@ const AnnotaterForm = () => {
             </Button>
          </form>
       </Paper>
+      </Slide>
     // </Container>
     );
 }
