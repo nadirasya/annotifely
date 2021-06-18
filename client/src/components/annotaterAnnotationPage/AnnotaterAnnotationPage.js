@@ -29,10 +29,8 @@ const AnnotaterAnnotationPage = props => {
     const [ selected, setSelected ] = useState();
     let images = useSelector((state) => state.images['allImage'])
     // const images = imagesState.allImage
-    const currentIndex = location.state.index
-    // const currentIndex = useSelector((state) => state.images['index']);
-    // const currentIndex = 0
-    const tag = 'test'
+    const currentIndex = location.state.index;
+    const id = location.state.id;
     const totalImage = images?.length;
     
     // Current drawing tool name
@@ -89,7 +87,7 @@ const AnnotaterAnnotationPage = props => {
     
         // Cleanup: destroy current instance
         // return () => annotorious.destroy();
-      }, [images]);
+      }, [images, currentIndex]);
 
 
     // Toggles current tool + button label
@@ -114,6 +112,10 @@ const AnnotaterAnnotationPage = props => {
       console.log('hello this is get', anno.getAnnotations())
       anno.destroy();
       if(currentIndex!=totalImage-1){
+          history.push({
+            pathname: '/annotater/task/annotation',
+            state: { id: id, index: currentIndex+1 }
+        })
         // dispatch(nextImage());
         // history.push('/annotater/task/annotation')
       }
@@ -121,7 +123,9 @@ const AnnotaterAnnotationPage = props => {
     
     return (
     images?.length == null ?
+    <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
       <CircularProgress/>
+    </div>
       :
     <div style={{paddingLeft: '5%', paddingRight: '2%', paddingBottom: '3%'}}>
         <div className={classes.pageTitle}>
