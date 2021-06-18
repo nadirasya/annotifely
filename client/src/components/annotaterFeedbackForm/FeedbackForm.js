@@ -1,14 +1,15 @@
-import { Typography, Paper, Button, Grid, Box, Tooltip } from '@material-ui/core';
+import { Typography, Paper, Button, Grid, Box, Tooltip, Slide } from '@material-ui/core';
 import React from 'react';
 
 import makeStyles from './styles';
 import cancel from '../images/delete.png'
 
 
-const FeedbackForm = ({handleClickCancel, feedback}) => {
+const FeedbackForm = ({handleClickCancel, feedback, feedbackForm}) => {
     const classes = makeStyles();
 
     return (
+        <Slide in={feedbackForm} direction="down" mountOnEnter unmountOnExit>
         <Paper className={classes.paper} elevation={3}>
             <div maxWidth='90vw'>
                 <Box component="span" className={`${classes.rightBox} ${classes.boxIcon}`}>
@@ -53,6 +54,7 @@ const FeedbackForm = ({handleClickCancel, feedback}) => {
                 </div>
             </div>
         </Paper>
+        </Slide>
     );
 }
 

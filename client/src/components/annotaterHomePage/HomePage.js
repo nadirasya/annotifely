@@ -35,7 +35,7 @@ const HomePage = () => {
         dispatch(getTasks());
     }, [dispatch])
 
-    const handleShowTutorial =  () => setTutorial(true);
+    const handleShowTutorial =  () => setTutorial((prevTutorial) => !prevTutorial);
 
     const handleAccept = (id) => {
         console.log(id);
@@ -48,7 +48,7 @@ const HomePage = () => {
              */
             function handleClickOutside(event) {
                 if (ref.current && !ref.current.contains(event.target)) {
-                   setTutorial(false)
+                    setTutorial((prevTutorial) => !prevTutorial);
                 }
             }
     
@@ -78,7 +78,7 @@ const HomePage = () => {
             tutorial ?
             <div className={classes.tutorialContainer}>
                 <OutsideAlerter>
-                    <AnnotationTutorial />
+                    <AnnotationTutorial tutorial={tutorial} />
                 </OutsideAlerter>
             </div>
             :

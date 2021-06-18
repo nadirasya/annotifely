@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, Typography, Button } from '@material-ui/core';
+import { Paper, Typography, Button, Slide } from '@material-ui/core';
 import Slider from 'infinite-react-carousel';
 
 import makeStyles from './styles';
@@ -9,7 +9,7 @@ import tutorial2 from '../images/tutorial2.png';
 import tutorial3 from '../images/tutorial3.png';
 import tutorial4 from '../images/tutorial4.png';
 
-const annotationTutorial = () => {
+const annotationTutorial = ({tutorial}) => {
     const classes = makeStyles();
     const settings = {
         dots: true,
@@ -21,6 +21,7 @@ const annotationTutorial = () => {
     
     return (
         <div>
+        <Slide in={tutorial} direction="down" mountOnEnter unmountOnExit>
         <Paper className={classes.paper} elevation={3}>
             <div>
                <Button disabled><Typography variant="h6" style={{color: "#FFFFFF"}}>This is tutorial This is Tutorial This is Tutorial this is </Typography></Button>
@@ -60,6 +61,7 @@ const annotationTutorial = () => {
                 </Slider>
             </div>
         </Paper>
+        </Slide>
         </div>
     )
 }

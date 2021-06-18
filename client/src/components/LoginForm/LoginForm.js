@@ -1,5 +1,5 @@
 import React, {  useState } from 'react';
-import { IconButton, Typography, Paper, Grid, Button } from '@material-ui/core';
+import { IconButton, Typography, Paper, Grid, Button, Slide } from '@material-ui/core';
 import {useDispatch} from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ import useStyles from './styles';
 
 const initialState = { email: '', password: '', role: 'annotater'};
 
-const LoginForm = () => {
+const LoginForm = ({loginForm}) => {
     const [formData, setFormData] = useState(initialState);
     const [showPassword, setShowPassword] = useState(false);
 
@@ -42,6 +42,7 @@ const LoginForm = () => {
     
     return (
         // <Container component="main" maxWidth="xs">
+        <Slide in={loginForm} direction="down" mountOnEnter unmountOnExit>
         <Paper className={classes.paper} elevation={3}>
             <Typography variant="h4" style={{marginBottom: '8px'}}>
                 <b>Login as</b>
@@ -78,6 +79,7 @@ const LoginForm = () => {
                     
             </form>
         </Paper>
+        </Slide>
     // </Container>
     )
 }
