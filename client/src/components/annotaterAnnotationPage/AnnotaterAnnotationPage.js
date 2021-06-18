@@ -20,15 +20,17 @@ const AnnotaterAnnotationPage = props => {
     const history = useHistory();
     const dispatch = useDispatch(); 
 
-
     // Ref to the image DOM element
     const imgEl = useRef();
 
     // The current Annotorious instance
     const [ anno, setAnno ] = useState();
     const [ selected, setSelected ] = useState();
+    // const [ undo, setUndo ] = useState();
+    // const [ redo, setRedo ] = useState();
+    // const [ undoType, setUndoType ] = useState();
+    const [ histories, setHistories ] = useState({annotations: [], current: ''});
     let images = useSelector((state) => state.images['allImage'])
-    // const images = imagesState.allImage
     const currentIndex = location.state.index;
     const id = location.state.id;
     const totalImage = images?.length;
@@ -44,12 +46,11 @@ const AnnotaterAnnotationPage = props => {
           // Init
           annotorious = new Annotorious({
             image: imgEl.current,
-            // disableEditor: true,
+            disableEditor: true,
             // readOnly: true,
           });
           
         //   annotorious.setAnnotations(annotated);
-          // Attach event handlers here
           annotorious.on('createSelection', async function(selection) {
     
             // Tag to insert
@@ -57,19 +58,23 @@ const AnnotaterAnnotationPage = props => {
               type: 'TextualBody',
               purpose: 'tagging',
               value: images[currentIndex]?.task[0]?.label
-              // value: tag
             }];
           
-            // Step 3: update the selection and save it
             await annotorious.updateSelected(selection);
             annotorious.saveSelected();
-            console.log('selection', selection);
-            // Alternative:
-            // anno.updateSelected(selection, true);
+            const currentAnnotation = annotorious.getAnnotations()
+            const pushAnnotation = histories.annotations
+            pushAnnotation.push(currentAnnotation);
+            const index = pushAnnotation.length - 1;
+            setHistories({['annotations']: pushAnnotation, ['current']: index})
           });
     
           annotorious.on('updateAnnotation', (annotation, previous) => {
-            console.log('updated', annotation, previous);
+            const currentAnnotation = annotorious.getAnnotations()
+            const pushAnnotation = histories.annotations
+            pushAnnotation.push(currentAnnotation);
+            const index = pushAnnotation.length - 1;
+            setHistories({['annotations']: pushAnnotation, ['current']: index})
           });
     
           annotorious.on('deleteAnnotation', annotation => {
@@ -96,28 +101,46 @@ const AnnotaterAnnotationPage = props => {
         setTool('rect');
         anno.setDrawingTool('rect');
     }
-
-    const getAnnotation = () => {
-        const annotations = anno.getAnnotations().forEach(function(element){
-        console.log("selected", element.target.selector)})
-        console.log('annotations', annotations)
-      }
     
     const onDelete = () => {
       anno.removeAnnotation(selected)
-        
+      const currentAnnotation = anno.getAnnotations()
+      const pushAnnotation = histories.annotations
+      pushAnnotation.push(currentAnnotation);
+      const index = pushAnnotation.length - 1;
+      setHistories({['annotations']: pushAnnotation, ['current']: index})
     }
 
-    const handleButton = () => {
-      console.log('hello this is get', anno.getAnnotations())
-      anno.destroy();
+    const onUndo = () => {
+      anno.setAnnotations(histories.annotations[histories.current - 1])
+      setHistories({...histories, ['current']: histories.current - 1})
+    }
+
+    const onRedo = () => {
+      anno.setAnnotations(histories.annotations[histories.current + 1])
+      setHistories({...histories, ['current']: histories.current + 1})
+    }
+
+    const handleButton = async() => {
+      const annotations = await anno.getAnnotations().forEach(function(element, index){
+        let value = element.target.selector.value;
+        value = value.split(':')[1];
+        console.log("value of ",index,  "is ", value)
+        const x = value.split(',')[0];
+        console.log("x: ", x)
+        const y = value.split(',')[1];
+        console.log("y: ", y)
+        const width = value.split(',')[2];
+        console.log("width: ", width)
+        const height = value.split(',')[3];
+        console.log("height: ", height)
+      })
+      await anno.destroy();
       if(currentIndex!=totalImage-1){
           history.push({
             pathname: '/annotater/task/annotation',
             state: { id: id, index: currentIndex+1 }
         })
-        // dispatch(nextImage());
-        // history.push('/annotater/task/annotation')
       }
     }
     
@@ -130,7 +153,7 @@ const AnnotaterAnnotationPage = props => {
     <div style={{paddingLeft: '5%', paddingRight: '2%', paddingBottom: '3%'}}>
         <div className={classes.pageTitle}>
             <Typography variant="h4">
-               <b> My Annotations </b> 
+               <b> Annotation Form</b> 
             </Typography>
         </div>
         <div className={classes.labelContainer}>
@@ -160,14 +183,14 @@ const AnnotaterAnnotationPage = props => {
                     <div className={classes.toolsContainer}>
                       <ToolsButton image={boundingBoxLogo} label="Bounding Box" onClick={toggleTool}/>
                       <ToolsButton image={deleteLogo} label="Delete" onClick={onDelete} />
-                      <ToolsButton image={undoLogo} label="Undo" />
-                      <ToolsButton image={redoLogo} label="Redo" />
+                      <ToolsButton image={undoLogo} label="Undo" onClick={onUndo}/>
+                      <ToolsButton image={redoLogo} label="Redo" onClick={onRedo}/>
                     </div>
                 </div>
                 <div className={classes.submitButtonContainer}>
                     <div className={classes.imageCounter}>
                       <Typography variant="h4">
-                        <b>1/{totalImage}</b>
+                        <b>{currentIndex+1}/{totalImage}</b>
                       </Typography>
                     </div>
                     <Button color="primary" variant="contained" className={classes.buttonContainer} onClick={handleButton}>
