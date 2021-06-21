@@ -21,7 +21,7 @@ export const getTasksById = async (req, res) => {
         return res.status(400).json(tasks); 
 
         const image = await Image.find({task: id}).populate('task', 'id title label instruction timeSpan');
-
+        console.log("this is controller", image)
         res.status(200).json(image);
     } catch (error) {
         res.status(500).send();
@@ -38,7 +38,7 @@ export const createTask = async( req, res ) => {
     // save task in the database
     const newTask = new Task ({ title: title, label:label, 
                                 instruction:instruction, timeSpan:timespan, 
-                                client: req.user.id, totalImage: totalImage, totalAnnotater: 0,
+                                client: req.user.id, totalImage: totalImage, totalAnnotater: [],
                                 createdAt: new Date().toISOString(), 
                             }).populate ('client', 'id');
     // console.log(req.body);

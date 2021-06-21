@@ -15,7 +15,6 @@ const ConfirmationForm = ({message, handleClickCancel, handleClickConfirm, confi
         <Zoom in={confirmationForm} >
         <Paper className={classes.paper} elevation={3}>
             <div maxWidth='90vw'>
-
                 <div className={classes.messageContainer}>
                 <Box component="span" m={0} className={`${classes.centerBox} ${classes.box}`} style={{height: ''}}>
                 <Button disabled>

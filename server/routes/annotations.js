@@ -4,7 +4,7 @@ import findUser from '../middleware/findUser.js';
 
 const router = express.Router();
 
-router.post('/createAnnotation/:id', findUser, createAnnotation);
+router.post('/createAnnotation', findUser, createAnnotation);
 router.get('/getAnnotation', getAnnotation);
 
 export default router;

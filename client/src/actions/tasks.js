@@ -10,6 +10,7 @@ export const getTasks = () => async (dispatch) => {
         await data.map(async(task) => {
             const createdDate = moment(task.createdAt);
             task['timeRemaining'] =  currentDate.diff(createdDate, 'days');
+            task.totalAnnotater=task.totalAnnotater.length
         })
         // console.log(data)
         dispatch({ type: FETCH_ALL, payload: data });
@@ -38,7 +39,10 @@ export const getClientTask = () => async (dispatch) => {
             //Calculate time difference 
             const createdDate = moment(task.createdAt);
             task['timeRemaining'] =  task.timeSpan - currentDate.diff(createdDate, 'days');
+            task.totalAnnotater=task.totalAnnotater.length
         })
+        // data.totalAnnotater=data.totalAnnotater.length
+        // console.log(data[0].totalAnnotater)
         dispatch({ type: FETCH_ALL, payload: data });
     } catch (error) {
         console.log(error);

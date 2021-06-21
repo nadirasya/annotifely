@@ -9,7 +9,10 @@ const taskSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Annotater' }],
     totalImage: { type: Number },
-    totalAnnotater: { type: Number },
+    totalAnnotater: {
+        type: [String],
+        default: [],
+    },
     title: { type: String },
     label: { type: String },
     instruction: { type: String },
