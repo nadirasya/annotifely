@@ -12,7 +12,6 @@ const annotationSchema = mongoose.Schema({
     pointY: { type: Number },
     length: { type: Number },
     width: { type: Number },
-    status: { type: Boolean },
 })
 
 export default mongoose.model('Annotation', annotationSchema);
