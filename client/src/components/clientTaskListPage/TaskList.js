@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getClientTask } from '../../actions/tasks';
 
@@ -9,6 +9,7 @@ import useStyles from './TaskListComponents/styles';
 import { useHistory } from 'react-router-dom';
 
 import EmptyTask from './TaskListComponents/EmptyTask';
+import AddAdditionalTime from '../clientAddAdditionalTime/AddAdditionalTimeForm';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -26,27 +27,86 @@ const TaskList = () => {
     const dispatch = useDispatch();
     const tasks = useSelector((state) => state.tasks);
     const history = useHistory();
+    const [additionalTimeTask, setAdditionalTimeTask] = useState(false);
 
     useEffect(() => {
         dispatch(getClientTask());
     }, [dispatch] );
+
+    const handleAddTimeForm = () => {
+        setAdditionalTimeTask(true);
+    }
+
+    const handleCancelAddTime = () => {
+        setAdditionalTimeTask(false);
+    }
+
+    const handleConfirmAddTime = () => {
+        setAdditionalTimeTask(true);
+    }
 
     const handleAddTask = () => {
         // console.log('pressed')
         history.push('/client/add-task')
     }
 
+    function useOutsideAlerter(ref) {
+
+        useEffect(() => {
+            /**
+             * Alert if clicked on outside of element
+             */
+            function handleClickOutside(event) {
+                if (ref.current && !ref.current.contains(event.target)) {
+                    setAdditionalTimeTask(true)
+                }
+            }
+    
+            // Bind the event listener
+            document.addEventListener("mousedown", handleClickOutside);
+            return () => {
+                // Unbind the event listener on clean up
+                document.removeEventListener("mousedown", handleClickOutside);
+            };
+        }, [ref]);
+    }
+    
+      /**
+       * Component that alerts if you click outside of it
+       */
+      function OutsideAlerter(props) {
+          const wrapperRef = useRef(null);
+          useOutsideAlerter(wrapperRef);
+    
+          return (
+            <Container component="main" maxWidth="xs">
+              <div ref={wrapperRef} onClick={props.onClick}>{props.children}</div>
+            </Container>
+          )
+      }
+
     return (
         <>
-        <Container maxWidth="lg">
+        <div>
+            {
+                additionalTimeTask ? 
+                <div className={classes.popupContainer}>
+                <OutsideAlerter>
+                    <AddAdditionalTime taskTitle={'Judul Task'} handleClickConfirm={handleConfirmAddTime} handleClickCancel={handleCancelAddTime} additionalTimeForm={additionalTimeTask}/>
+                </OutsideAlerter>
+                </div> 
+                : null
+            }
+
+        <Container className={classes.container}>
             <main>
                 {
                     tasks.length === 0 ?
                     <EmptyTask handleAddTask={handleAddTask}/>
                     :
-                    <div className={classes.container}>
+                    <div className={classes.titleContainer}>
                     <Grid container spacing={0}  direction="column" alignItems="center" justify="center" >
-                        <Box component="div" m={1} style={{width: '80%'}} className={`${classes.spreadBox} ${classes.boxTitle}`}>
+                        <Box component="div" m={1} style={{width: '100%'}} className={`${classes.spreadBox} ${classes.boxTitle}`}>
                             <Typography variant="h4">
                                 <b>Task List</b>
                             </Typography>
@@ -61,47 +121,50 @@ const TaskList = () => {
                         </Box>
                     </Grid> 
 
-                    <div className={classes.tableContainer}>
-                        <TableContainer component={Paper} style={{width: '80%', maxHeight: 400}}>
-                            <Table className={classes.table} aria-label="customized table">
-                                <TableHead>
-                                    <TableRow>
-                                        <StyledTableCell align="left">Title</StyledTableCell>
-                                        <StyledTableCell align="left">Total Image</StyledTableCell>
-                                        <StyledTableCell align="left">Annotaters</StyledTableCell>
-                                        <StyledTableCell align="left">Time Remaining</StyledTableCell>
-                                        <StyledTableCell align="left">Action</StyledTableCell>
-                                        <StyledTableCell align="left"> </StyledTableCell>
-                                    </TableRow>
-                                </TableHead>
-
-                                <TableBody>
-                                    {tasks.map((task) => (
-                                        <TableRow key={task._id}>
-                                            <TableCell align="left">{task?.title}</TableCell>
-                                            <TableCell align="left">{task?.totalImage}</TableCell>
-                                            <TableCell align="left">{task?.totalAnnotater}</TableCell>
-                                            <TableCell align="left">{task?.timeRemaining} days </TableCell>
-                                            <TableCell align="left">
-                                                <Button variant="contained" className={classes.buttonTertiary}> 
-                                                Download
-                                                </Button>
-                                            </TableCell>
-                                            <TableCell align="left">
-                                                <Button>
-                                                    <SettingsOutlinedIcon className={classes.setting} /> 
-                                                </Button>
-                                            </TableCell>
+                    <div style={{height: '68vh'}}>
+                        <div className={classes.tableContainer}>
+                            <TableContainer component={Paper}>
+                                <Table stickyHeader size="small" aria-label="sticky table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <StyledTableCell align="left">Title</StyledTableCell>
+                                            <StyledTableCell align="left">Total Image</StyledTableCell>
+                                            <StyledTableCell align="left">Annotaters</StyledTableCell>
+                                            <StyledTableCell align="left">Time Remaining</StyledTableCell>
+                                            <StyledTableCell align="left" style={{width: '5%'}}>Action</StyledTableCell>
+                                            <StyledTableCell align="left" style={{width: '10%'}}> </StyledTableCell>
                                         </TableRow>
-                                        ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                                    </TableHead>
+
+                                    <TableBody>
+                                        {tasks.map((task) => (
+                                            <TableRow key={task._id}>
+                                                <TableCell align="left">{task?.title}</TableCell>
+                                                <TableCell align="left">{task?.totalImage}</TableCell>
+                                                <TableCell align="left">{task?.totalAnnotater}</TableCell>
+                                                <TableCell align="left">{task?.timeRemaining} days </TableCell>
+                                                <TableCell align="left">
+                                                    <Button variant="contained" className={classes.buttonTertiary}> 
+                                                    Download
+                                                    </Button>
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    <Button onClick={() => handleAddTimeForm()}>
+                                                        <SettingsOutlinedIcon className={classes.setting} /> 
+                                                    </Button>
+                                                </TableCell>
+                                            </TableRow>
+                                            ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </div>
                     </div>
                 </div>
                 }
                 </main>
         </Container>
+        </div>
         </>
     );
 }
