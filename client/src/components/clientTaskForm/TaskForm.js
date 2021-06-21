@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Button, ButtonGroup, Grid, Typography, ButtonBase, Container } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
@@ -111,6 +111,41 @@ const TaskForm= () => {
         setPicture(null);
     }
 
+
+    function useOutsideAlerter(ref) {
+
+        useEffect(() => {
+            /**
+             * Alert if clicked on outside of element
+             */
+            function handleClickOutside(event) {
+                if (ref.current && !ref.current.contains(event.target)) {
+                    setConfirmation(true)
+                }
+            }
+    
+            // Bind the event listener
+            document.addEventListener("mousedown", handleClickOutside);
+            return () => {
+                // Unbind the event listener on clean up
+                document.removeEventListener("mousedown", handleClickOutside);
+            };
+        }, [ref]);
+    }
+    
+      /**
+       * Component that alerts if you click outside of it
+       */
+      function OutsideAlerter(props) {
+          const wrapperRef = useRef(null);
+          useOutsideAlerter(wrapperRef);
+    
+          return (
+            <Container component="main" maxWidth="xs">
+              <div ref={wrapperRef} onClick={props.onClick}>{props.children}</div>
+            </Container>
+          )
+      }
     
 
     return (
@@ -241,7 +276,9 @@ const TaskForm= () => {
             </form>
             { confirmation == true ? 
                 <div className={classes.popupContainer}>
-                    <ConfirmationForm message="Are you sure you want to delete this image?" handleClickCancel={handleCancelRemoveImage} handleClickConfirm={handleRemoveImage} confirmationForm={true}/> 
+                    <OutsideAlerter>
+                        <ConfirmationForm message="Are you sure you want to delete this image?" handleClickCancel={handleCancelRemoveImage} handleClickConfirm={handleRemoveImage} confirmationForm={true}/> 
+                    </OutsideAlerter>
                 </div>
                 : null
             }

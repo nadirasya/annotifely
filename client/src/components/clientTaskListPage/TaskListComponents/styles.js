@@ -2,13 +2,17 @@ import {makeStyles} from '@material-ui/core';
 
 const useStyles= makeStyles((theme) => ({
     container: {
+        maxWidth: '80vw',
+        marginButtom: theme.spacing(15),
+    },
+    titleContainer: {
         padding: theme.spacing(6,0,4)
     },
     tableContainer: {
         width: '100%', 
         display: 'flex', 
         justifyContent: 'center',
-        marginTop: '20px'
+        marginTop: '10px'
     },
     boxImage: {
         marginTop: '15vh',
@@ -61,6 +65,17 @@ const useStyles= makeStyles((theme) => ({
     setting: {
         color: "#8f948f",
     },
+    popupContainer: {
+        position: 'fixed',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'black',
+        backgroundColor: 'rgba(0,0,0,.75)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        top: 0,
+        zIndex: 3,
+    }
       
 }))
 
