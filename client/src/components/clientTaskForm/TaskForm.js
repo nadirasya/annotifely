@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, ButtonGroup, Grid, Typography, ButtonBase } from '@material-ui/core';
+import { Button, ButtonGroup, Grid, Typography, ButtonBase, Container } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
@@ -114,7 +114,7 @@ const TaskForm= () => {
     
 
     return (
-        // <Container maxWidth="lg">
+        <Container className={classes.container}>
         <div className={classes.paper}>
             <Typography variant="h4"><b>Add New Task</b></Typography>
             <form className={classes.form} onSubmit={handleSubmit}>
@@ -240,9 +240,13 @@ const TaskForm= () => {
             </Grid>
             </form>
             { confirmation == true ? 
-                <ConfirmationForm message="Are you sure you want to delete this image?" handleClickCancel={handleCancelRemoveImage} handleClickConfirm={handleRemoveImage} confirmationForm={true}/> : null
+                <div className={classes.popupContainer}>
+                    <ConfirmationForm message="Are you sure you want to delete this image?" handleClickCancel={handleCancelRemoveImage} handleClickConfirm={handleRemoveImage} confirmationForm={true}/> 
+                </div>
+                : null
             }
       </div>
+      </Container>
   
     );
 }
