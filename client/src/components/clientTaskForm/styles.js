@@ -67,6 +67,17 @@ const useStyles = makeStyles((theme) => ({
         display: 'grid',
         gridTemplateColumns: '10fr 1fr',
       },
+      popupContainer: {
+          position:'fixed',
+          width: '100vw', 
+          height: '100vh', 
+          backgroundColor: 'black',
+          backgroundColor:'rgba(0,0,0,.75)',
+          alignItems: 'center', 
+          justifyContent:'center',
+          top: 0,
+          zIndex: 3,
+      },
 }));
 
 export default useStyles;

@@ -38,15 +38,15 @@ const TaskList = () => {
 
     return (
         <>
-        <Container maxWidth="lg">
+        <Container className={classes.container}>
             <main>
                 {
                     tasks.length === 0 ?
                     <EmptyTask handleAddTask={handleAddTask}/>
                     :
-                    <div className={classes.container}>
+                    <div className={classes.titleContainer}>
                     <Grid container spacing={0}  direction="column" alignItems="center" justify="center" >
-                        <Box component="div" m={1} style={{width: '80%'}} className={`${classes.spreadBox} ${classes.boxTitle}`}>
+                        <Box component="div" m={1} style={{width: '100%'}} className={`${classes.spreadBox} ${classes.boxTitle}`}>
                             <Typography variant="h4">
                                 <b>Task List</b>
                             </Typography>
@@ -61,42 +61,44 @@ const TaskList = () => {
                         </Box>
                     </Grid> 
 
-                    <div className={classes.tableContainer}>
-                        <TableContainer component={Paper} style={{width: '80%', maxHeight: 400}}>
-                            <Table className={classes.table} aria-label="customized table">
-                                <TableHead>
-                                    <TableRow>
-                                        <StyledTableCell align="left">Title</StyledTableCell>
-                                        <StyledTableCell align="left">Total Image</StyledTableCell>
-                                        <StyledTableCell align="left">Annotaters</StyledTableCell>
-                                        <StyledTableCell align="left">Time Remaining</StyledTableCell>
-                                        <StyledTableCell align="left">Action</StyledTableCell>
-                                        <StyledTableCell align="left"> </StyledTableCell>
-                                    </TableRow>
-                                </TableHead>
-
-                                <TableBody>
-                                    {tasks.map((task) => (
-                                        <TableRow key={task._id}>
-                                            <TableCell align="left">{task?.title}</TableCell>
-                                            <TableCell align="left">{task?.totalImage}</TableCell>
-                                            <TableCell align="left">{task?.totalAnnotater}</TableCell>
-                                            <TableCell align="left">{task?.timeRemaining} days </TableCell>
-                                            <TableCell align="left">
-                                                <Button variant="contained" className={classes.buttonTertiary}> 
-                                                Download
-                                                </Button>
-                                            </TableCell>
-                                            <TableCell align="left">
-                                                <Button>
-                                                    <SettingsOutlinedIcon className={classes.setting} /> 
-                                                </Button>
-                                            </TableCell>
+                    <div style={{height: '70vh'}}>
+                        <div className={classes.tableContainer}>
+                            <TableContainer component={Paper}>
+                                <Table stickyHeader size="small" aria-label="sticky table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <StyledTableCell align="left">Title</StyledTableCell>
+                                            <StyledTableCell align="left">Total Image</StyledTableCell>
+                                            <StyledTableCell align="left">Annotaters</StyledTableCell>
+                                            <StyledTableCell align="left">Time Remaining</StyledTableCell>
+                                            <StyledTableCell align="left">Action</StyledTableCell>
+                                            <StyledTableCell align="left"> </StyledTableCell>
                                         </TableRow>
-                                        ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                                    </TableHead>
+
+                                    <TableBody>
+                                        {tasks.map((task) => (
+                                            <TableRow key={task._id}>
+                                                <TableCell align="left">{task?.title}</TableCell>
+                                                <TableCell align="left">{task?.totalImage}</TableCell>
+                                                <TableCell align="left">{task?.totalAnnotater}</TableCell>
+                                                <TableCell align="left">{task?.timeRemaining} days </TableCell>
+                                                <TableCell align="left">
+                                                    <Button variant="contained" className={classes.buttonTertiary}> 
+                                                    Download
+                                                    </Button>
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    <Button>
+                                                        <SettingsOutlinedIcon className={classes.setting} /> 
+                                                    </Button>
+                                                </TableCell>
+                                            </TableRow>
+                                            ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </div>
                     </div>
                 </div>
                 }

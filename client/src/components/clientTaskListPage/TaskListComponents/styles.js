@@ -2,13 +2,16 @@ import {makeStyles} from '@material-ui/core';
 
 const useStyles= makeStyles((theme) => ({
     container: {
+        maxWidth: '80vw',
+        marginButtom: theme.spacing(15),
+    },
+    titleContainer: {
         padding: theme.spacing(6,0,4)
     },
     tableContainer: {
         width: '100%', 
         display: 'flex', 
         justifyContent: 'center',
-        marginTop: '20px'
     },
     boxImage: {
         marginTop: '15vh',
