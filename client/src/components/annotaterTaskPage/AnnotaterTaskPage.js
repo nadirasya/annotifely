@@ -23,11 +23,13 @@ const AnnotaterTaskPage = () => {
     const dispatch = useDispatch(); 
     const history = useHistory();
     const classes = useStyles();
-    const tasks = useSelector((state) => state.tasks)
+    let tasks = useSelector((state) => state.tasks)
     const [loading, setLoading] = useState(false)
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
+
     
     useEffect(() => {
-        dispatch(getTasks());
+        dispatch(getTasks(user.result._id));
         console.log(tasks)
     }, [dispatch])
 

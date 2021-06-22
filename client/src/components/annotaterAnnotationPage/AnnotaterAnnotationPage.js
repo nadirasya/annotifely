@@ -7,10 +7,11 @@ import deleteLogo from '../images/delete.png';
 import redoLogo from '../images/redo.png';
 import undoLogo from '../images/undo.png';
 import ToolsButton from './ToolsButton';
-import createAnnotation from './createAnnotation';
+import createAnnotationObject from './createAnnotation';
 import { Annotorious } from '@recogito/annotorious';
 import { useDispatch, useSelector } from 'react-redux';
 import { nextImage } from '../../actions/images';
+import {createAnnotation } from '../../actions/annotations';
 
 
 import '@recogito/annotorious/dist/annotorious.min.css';
@@ -38,7 +39,7 @@ const AnnotaterAnnotationPage = props => {
     const [ tool, setTool ] = useState();
 
     useEffect(() => {
-      console.log(images)
+      // console.log(images[currentIndex]?._id)
         let annotorious = null;
         
         if (imgEl.current) {
@@ -50,7 +51,7 @@ const AnnotaterAnnotationPage = props => {
           });
           
           if(location.state?.type == "edit"){
-              annotorious.setAnnotations(createAnnotation({id: 123, label: 'test', x: 0, y: 0, width: 300.891, height: 450.67}));
+              annotorious.setAnnotations(createAnnotationObject({id: 123, label: 'test', x: 0, y: 0, width: 300.891, height: 450.67}));
           }
           annotorious.on('createSelection', async function(selection) {
     
@@ -124,15 +125,17 @@ const AnnotaterAnnotationPage = props => {
         console.log(element);
         let value = element.target.selector.value;
         value = value.split(':')[1];
-        console.log("value of ",index,  "is ", value)
+        // console.log("value of ",index,  "is ", value)
         const x = value.split(',')[0];
-        console.log("x: ", x)
+        // console.log("x: ", x)
         const y = value.split(',')[1];
-        console.log("y: ", y)
+        // console.log("y: ", y)
         const width = value.split(',')[2];
-        console.log("width: ", width)
+        // console.log("width: ", width)
         const height = value.split(',')[3];
-        console.log("height: ", height)
+        // console.log("height: ", height)
+        const annotationData = {x, y, width, height, imageId: images[currentIndex]?._id}
+        dispatch(createAnnotation(annotationData))
       })
       await anno.destroy();
       if(currentIndex!=totalImage-1){

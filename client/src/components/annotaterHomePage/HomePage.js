@@ -3,7 +3,7 @@ import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, Tab
 import React, { useState, useEffect, useRef } from 'react';
 import {useHistory} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTasks } from '../../actions/tasks';
+import { getTasks, getTasksById } from '../../actions/tasks';
 import { getClients } from '../../actions/clients';
 
 import useStyles from './styles';
@@ -26,19 +26,24 @@ const HomePage = () => {
     const classes = useStyles();
     const history = useHistory();
     const dispatch = useDispatch(); 
-    const tasks = useSelector((state) => state.tasks);
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
+    let tasks = useSelector((state) => state.tasks)
 
 
     const [tutorial, setTutorial] = useState(false);
 
     useEffect(() => {
-        dispatch(getTasks());
+        dispatch(getTasks(user.result._id));
     }, [dispatch])
 
     const handleShowTutorial =  () => setTutorial((prevTutorial) => !prevTutorial);
 
     const handleAccept = (id) => {
-        console.log(id);
+        history.push({
+            pathname: '/annotater/task/annotation',
+            state: { id: id, index: 0 }
+        })
+        dispatch(getTasksById(id));
     }
 
     function useOutsideAlerter(ref) {

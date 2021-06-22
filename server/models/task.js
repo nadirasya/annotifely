@@ -5,11 +5,11 @@ const taskSchema = mongoose.Schema({
     client: [{ 
             type: mongoose.Schema.Types.ObjectId, 
             ref: 'Client' }],
-    annotater: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Annotater' }],
     totalImage: { type: Number },
-    totalAnnotater: { type: Number },
+    totalAnnotater: {
+        type: [String],
+        default: [],
+    },
     title: { type: String },
     label: { type: String },
     instruction: { type: String },

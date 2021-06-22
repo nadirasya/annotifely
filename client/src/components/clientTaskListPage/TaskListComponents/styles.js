@@ -12,6 +12,7 @@ const useStyles= makeStyles((theme) => ({
         width: '100%', 
         display: 'flex', 
         justifyContent: 'center',
+        marginTop: '10px'
     },
     boxImage: {
         marginTop: '15vh',
@@ -64,6 +65,17 @@ const useStyles= makeStyles((theme) => ({
     setting: {
         color: "#8f948f",
     },
+    popupContainer: {
+        position: 'fixed',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'black',
+        backgroundColor: 'rgba(0,0,0,.75)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        top: 0,
+        zIndex: 3,
+    }
       
 }))
 

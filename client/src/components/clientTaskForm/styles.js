@@ -1,6 +1,10 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
+    container: {
+      maxWidth: '90vw',
+      marginButtom: theme.spacing(15),
+    },
     paper: {
         marginTop: theme.spacing(2),
         padding: theme.spacing(4,8,0),
@@ -56,7 +60,6 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         marginRight: '15px',
         justifyContent: 'space-between',
-
       },
       daysContainer: {
         display: 'grid',
@@ -68,16 +71,17 @@ const useStyles = makeStyles((theme) => ({
         gridTemplateColumns: '10fr 1fr',
       },
       popupContainer: {
-          position:'fixed',
-          width: '100vw', 
-          height: '100vh', 
-          backgroundColor: 'black',
-          backgroundColor:'rgba(0,0,0,.75)',
-          alignItems: 'center', 
-          justifyContent:'center',
-          top: 0,
-          zIndex: 3,
-      },
+        position: 'fixed',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'black',
+        backgroundColor: 'rgba(0,0,0,.75)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        top: 0,
+        zIndex: 3,
+        left: 0
+      }
 }));
 
 export default useStyles;

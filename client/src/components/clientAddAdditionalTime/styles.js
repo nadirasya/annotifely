@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
   paper: {
-    marginTop: '30vh',
+    marginTop: '20vh',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -32,6 +32,14 @@ export default makeStyles((theme) => ({
     display: "flex",
     padding: 8,
     marginTop: '1vh',
+    // border: '1px solid black'
+  },
+  boxTextField: {
+    width: '100%',
+    display: "flex",
+    padding: 8,
+    marginTop: '0vh',
+    marginRight: 8,
   },
   centerBox: {
     alignItems: "center",
