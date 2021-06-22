@@ -30,8 +30,9 @@ const TaskList = () => {
     const [additionalTimeTask, setAdditionalTimeTask] = useState(false);
 
     useEffect(() => {
+        console.log("hello this is useEffect")
         dispatch(getClientTask());
-    }, [dispatch] );
+    }, [dispatch, tasks] );
 
     const handleAddTimeForm = () => {
         setAdditionalTimeTask(true);
