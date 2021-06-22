@@ -27,4 +27,4 @@ export const getTasksById = (id) => API.get(`/tasks/getTasksById/${id}`)
 export const getTotalImage = (id) => API.get(`/images/total/${id}`)
 
 export const createAnnotation = (annotationData) => API.post('/annotations/createAnnotation', annotationData); 
-
+export const fetchAnnotations = () => API.get('/annotations/getAnnotation');

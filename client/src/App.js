@@ -13,6 +13,7 @@ import ClientTaskList from './components/clientTaskListPage/TaskList';
 import ClientHomePage from './components/clientHomePage/HomePage';
 import AccessDenied from './components/AccessDenied/AccessDenied';
 import VerificatorVerificationPage from './components/verificatorVerificationPage/VerificatorVerificationPage';
+import VerificatorAnnotationList from './components/verificatorAnnotationList/annotationList';
 import theme from './theme';
 
 
@@ -25,7 +26,8 @@ const App = () => {
                 <CssBaseline />
                 <Navbar />
                 <Switch>
-                    <Route path='/verificator' exact component = {VerificatorVerificationPage} />
+                    <Route path='/verificator' exact component = {VerificatorAnnotationList} />
+                    <Route path='/verificator/verification-page' exact component = {VerificatorVerificationPage} />
                     <Redirect to='/no-permission' />
                 </Switch>
             </div>
