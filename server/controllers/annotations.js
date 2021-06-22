@@ -55,11 +55,47 @@ export const createAnnotation = async( req, res ) => {
 //GET ANNOTATION BY ID IMAGE
 export const getAnnotation = async (req,res)  => {
     try {
-        const image = await Annotation.find().populate('image', 'task imageURL' );
+        const task= await Task.find();
 
-        res.status(200).json(image);
+        console.log(task);
+        if(!task)
+        return res.status(400).json(task);
+
+        const annotation = await Annotation.find().populate('annotater', 'name');
+        res.status(200).json(annotation);
     }
     catch(err) {
         res.status(500).send();
     }
 }
+
+//EDIT ANNOTATION BY ID IMAGE
+export const editAnnotation = async( req, res ) => {
+    try{
+        const {x, y, length, width} = req.body;
+        const annotationId = req.params.id;
+
+        if(!annotationId)
+        return res.status(400).json(annotationId);
+
+        const annotation = await Annotation.findById(annotationId);
+        if(!annotation)
+        return res.status(400).json(annotation);
+
+        if (annotation.annotater.toString() !== req.user.id)
+            return res.status(400).json({ errorMesssage: "Unauthorized"});
+
+        annotation.pointX = x;
+        annotation.pointY = y;
+        annotation.length = length;
+        annotation.width = width;
+
+        const savedAnnotation = await annotation.save();
+
+        res.status(201).json(savedAnnotation);
+
+    }
+    catch(err){
+        res.status(500).send();
+    }
+};

@@ -9,6 +9,7 @@ import taskRoutes from './routes/tasks.js';
 import clientRoutes from './routes/clients.js';
 import imageRoutes from './routes/images.js';
 import annotationRoutes from './routes/annotations.js';
+import verificationRoutes from './routes/verification.js';
 
 const app = express();
 dotenv.config();
@@ -22,6 +23,7 @@ app.use('/tasks', taskRoutes);
 app.use('/clients', clientRoutes);
 app.use('/images', imageRoutes);
 app.use('/annotations', annotationRoutes);
+app.use('/verifications', verificationRoutes);
 
 
 app.get('/', (req,res) => {
