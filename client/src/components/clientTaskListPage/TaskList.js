@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getClientTask } from '../../actions/tasks';
+import { getClientTask, updateTime } from '../../actions/tasks';
 
 import {Container, Button, Typography, Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, withStyles  } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
@@ -28,12 +28,15 @@ const TaskList = () => {
     const tasks = useSelector((state) => state.tasks);
     const history = useHistory();
     const [additionalTimeTask, setAdditionalTimeTask] = useState(false);
+    const [selectedTask, setSelectedTask] = useState();
 
     useEffect(() => {
+        console.log("hello this is useEffect")
         dispatch(getClientTask());
-    }, [dispatch] );
+    }, [dispatch, tasks] );
 
-    const handleAddTimeForm = () => {
+    const handleAddTimeForm = (task) => {
+        setSelectedTask(task);
         setAdditionalTimeTask(true);
     }
 
@@ -41,12 +44,13 @@ const TaskList = () => {
         setAdditionalTimeTask(false);
     }
 
-    const handleConfirmAddTime = () => {
-        setAdditionalTimeTask(true);
+    const handleConfirmAddTime = (time) => {
+        console.log("time", time)
+        dispatch(updateTime(time, selectedTask._id))
+        setAdditionalTimeTask(false);
     }
 
     const handleAddTask = () => {
-        // console.log('pressed')
         history.push('/client/add-task')
     }
 
@@ -92,7 +96,7 @@ const TaskList = () => {
                 additionalTimeTask ? 
                 <div className={classes.popupContainer}>
                 <OutsideAlerter>
-                    <AddAdditionalTime taskTitle={'Judul Task'} handleClickConfirm={handleConfirmAddTime} handleClickCancel={handleCancelAddTime} additionalTimeForm={additionalTimeTask}/>
+                    <AddAdditionalTime taskTitle={selectedTask.title} handleClickConfirm={handleConfirmAddTime} handleClickCancel={handleCancelAddTime} additionalTimeForm={additionalTimeTask}/>
                 </OutsideAlerter>
                 </div> 
                 : null
@@ -138,7 +142,7 @@ const TaskList = () => {
 
                                     <TableBody>
                                         {tasks.map((task) => (
-                                            <TableRow key={task._id}>
+                                            <TableRow key={task?._id}>
                                                 <TableCell align="left">{task?.title}</TableCell>
                                                 <TableCell align="left">{task?.totalImage}</TableCell>
                                                 <TableCell align="left">{task?.totalAnnotater}</TableCell>
@@ -149,7 +153,7 @@ const TaskList = () => {
                                                     </Button>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Button onClick={() => handleAddTimeForm()}>
+                                                    <Button onClick={() => handleAddTimeForm(task)}>
                                                         <SettingsOutlinedIcon className={classes.setting} /> 
                                                     </Button>
                                                 </TableCell>

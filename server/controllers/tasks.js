@@ -55,15 +55,14 @@ export const createTask = async( req, res ) => {
     })
 };
 
-// export const getTotalAnnotater = async (req, res) => {
-//     const query = {}
-// }
-
 export const updateTime = async( req, res ) => {
     try{
         const {timespan} = req.body;
         const taskId = req.params.id;
 
+        const additionalTime = Number(timespan)
+
+        console.log("req.body", timespan)
         if(!taskId)
         return res.status(400).json(taskId);
 
@@ -74,7 +73,8 @@ export const updateTime = async( req, res ) => {
         if (originalTask.client.toString() !== req.user.id)
             return res.status(400).json({ errorMesssage: "Unauthorized"});
 
-        originalTask.timeSpan = timespan;
+        originalTask.timeSpan += additionalTime;
+        console.log("timespan is", timespan)
 
         const savedTask = await originalTask.save();
 

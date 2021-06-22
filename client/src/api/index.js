@@ -19,6 +19,7 @@ export const signupAnnotater = (formData) => API.post('/users/signupAnnotater', 
 export const createTask = (taskData) => API.post('/tasks/createTask', taskData);
 export const fetchTasks = () => API.get('/tasks');
 export const fetchClientTasks = () => API.get('/clients/getClientTasks');
+export const updateTime = (timespan, id) => API.put(`tasks/updateTime/${id}`, timespan);
 
 export const getClientById = (idClient) => API.get(`/tasks/getClientById/${idClient}`)
 export const getClients = () => API.get('/clients')

@@ -26,13 +26,14 @@ const HomePage = () => {
     const classes = useStyles();
     const history = useHistory();
     const dispatch = useDispatch(); 
-    const tasks = useSelector((state) => state.tasks);
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
+    let tasks = useSelector((state) => state.tasks)
 
 
     const [tutorial, setTutorial] = useState(false);
 
     useEffect(() => {
-        dispatch(getTasks());
+        dispatch(getTasks(user.result._id));
     }, [dispatch])
 
     const handleShowTutorial =  () => setTutorial((prevTutorial) => !prevTutorial);

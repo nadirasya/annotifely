@@ -1,5 +1,5 @@
 import { Typography, Paper, Button, Grid, Box, Slide } from '@material-ui/core';
-import React from 'react';
+import React, {useState} from 'react';
 
 import makeStyles from './styles';
 import Input from './input';
@@ -9,6 +9,12 @@ import Input from './input';
 
 const AddAdditionalTime = ({taskTitle, handleClickCancel, handleClickConfirm, additionalTimeForm}) => {
     const classes = makeStyles();
+    const [time, setTime] = useState();
+
+    const handleChange = (e) => {
+        setTime(e.target.value)
+        // handleClickConfirm(e.target.value)
+    }
 
     return (
         <Slide in={additionalTimeForm} direction="down" mountOnEnter unmountOnExit >
@@ -33,7 +39,7 @@ const AddAdditionalTime = ({taskTitle, handleClickCancel, handleClickConfirm, ad
                             <Grid item xs={12} >
                                 <Box component="span" m={0} className={`${classes.centerBox} ${classes.boxTextField}`}>
                                     <Input
-                                        // handleChange={handleChange}
+                                        handleChange={handleChange}
                                         type="number"
                                         label="Timespan"
                                         name="task-timespan"
@@ -49,7 +55,7 @@ const AddAdditionalTime = ({taskTitle, handleClickCancel, handleClickConfirm, ad
                         <Grid container spacing={1} className={classes.gridContainer}>
                             <Grid item xs={6}>
                                 <div className={classes.buttonContainer}>
-                                    <Button variant="contained" color="primary" className={classes.button} onClick={handleClickConfirm}>
+                                    <Button variant="contained" color="primary" className={classes.button} onClick={() => handleClickConfirm(time)}>
                                         <Typography variant="subtitle2" >
                                             <b>Confirm</b>
                                         </Typography>
