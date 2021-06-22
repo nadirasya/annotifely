@@ -1,4 +1,4 @@
-import { FETCH_ALL, CREATE, FETCH_TASK } from '../constants/actionTypes';
+import { FETCH_ALL, CREATE, FETCH_TASK, UPDATE_TIME } from '../constants/actionTypes';
 
 export default (tasks = [], action) => {
     switch(action.type){
@@ -8,6 +8,8 @@ export default (tasks = [], action) => {
             return action.payload;
         case CREATE:
             return [...tasks, action.payload];
+        case UPDATE_TIME:
+            return action.payload;
         default:
             return tasks;
     }
