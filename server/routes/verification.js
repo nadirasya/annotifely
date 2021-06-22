@@ -6,5 +6,5 @@ import findUser from '../middleware/findUser.js';
 const router = express.Router();
 
 router.post('/createVerification', findUser, createVerification);
-router.get('/getVerification', getVerification);
+router.get('/getVerification', findUser, getVerification);
 export default router;

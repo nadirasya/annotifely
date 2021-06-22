@@ -1,21 +1,26 @@
 import Verification from "../models/verification.js";
 import Annotation from "../models/annotation.js";
+import Image from "../models/image.js";
 
 export const createVerification = async (req, res) => {
 
-    const {score, feedback,annotationId} = req.body;
-    // const ObjectId = require('mongodb').ObjectID;
+    const {score, feedback, imageId} = req.body;
 
-    if(!annotationId)
-        return res.status(400).json({ errorMessage: "Annotatioin ID not given."});
+    // console.log("this is", imageId)
+    if(!imageId)
+        return res.status(400).json({ errorMessage: "Image ID not given."});
 
-    const annotation= await Annotation.findById(annotationId).populate('image', 'imageURL')
+    const image= await Image.findOne({_id: imageId});
+    if(!image)
+    return res.status(400).json({ errorMessage: "No image with this ID was found."});
+
+    const annotation= await Annotation.find({image: image}).populate('annotater', 'id')
 
     if(!annotation)
     return res.status(400).json({ errorMessage: "No annotation with this ID was found."});
 
     // save verification in the database
-    const newVerification = new Verification ({ score:score, feedback:feedback, annotater:annotation.annotater, verificator:req.user.id});
+    const newVerification = new Verification ({ score:score, feedback:feedback, imageId:imageId, annotater:annotation.annotater, verificator:req.user.id});
     
     try {
         const savedVerification = await newVerification.save();
@@ -29,7 +34,7 @@ export const createVerification = async (req, res) => {
 //GET VERIFICATION BY ID TASK
 export const getVerification = async (req,res)  => {
     try {
-        const feedback = await Verification.find();
+        const feedback = await Verification.find({annotater: req.user.id});
 
         return res.status(200).json(feedback);
     }
