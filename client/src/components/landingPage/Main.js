@@ -4,14 +4,17 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import { Grid } from "@material-ui/core";
 import vector_landingpage from "./vector_landingpage.png";
-
+import Header from './Header';
 import useStyles from "./style";
 
-const Main = () => {
+const Main = ({handleShowLoginForm}) => {
     const classes = useStyles();
     return (
         <>
         <div className={classes.content}>
+            <Container className={classes.container}>
+          <Header handleShowLoginForm={handleShowLoginForm}/>
+          </Container>
                 <Container maxWidth="md" >
                     <Grid container spacing={0} >
                         <Grid item xs={12} md={6} style={{alignItems: "center"}}> 
