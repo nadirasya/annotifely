@@ -5,6 +5,7 @@ import useStyles from './styles';
 import FeedbackForm from '../annotaterFeedbackForm/FeedbackForm';
 import { getAnnotaterTask } from '../../actions/tasks';
 import { useHistory } from 'react-router';
+import EmptyTask from './EmptyTask';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -41,6 +42,10 @@ const AnnotaterMyAnnotationsPage = () => {
 
     const handleAccept = (id) => {
         console.log(id);
+    }
+
+    const handleAddAnnotation = () => {
+        history.push('/annotater/task');
     }
 
     function useOutsideAlerter(ref) {
@@ -102,66 +107,73 @@ const AnnotaterMyAnnotationsPage = () => {
             null
         }
 
-        <Container className={classes.container}>
-            <div className={classes.pageTitle}>
-                <Typography className={classes.h4}>
-                <b> My Annotations List</b> 
-                </Typography>
+    <Container className={classes.container}>
+        {
+            !tasks.length ?
+            <EmptyTask handleAddAnnotation={handleAddAnnotation} />
+            :
+            <div>
+                <div className={classes.pageTitle}>
+                    <Typography className={classes.h4}>
+                    <b> My Annotations List</b> 
+                    </Typography>
+                </div>
+                
+                <div style={{height: '75vh'}}>
+                    <div className={classes.tableContainer}>
+                        <TableContainer component={Paper} className={classes.table}>
+                            <Table stickyHeader size="small" aria-label="sticky table">
+                                <TableHead>
+                                <TableRow className={classes.tableRow} style={{alignItems: "left", backgroundColor: '#567068'}} >
+                                    <StyledTableCell>
+                                        <Typography variant="subtitle1" color="secondary"><b>Clients</b></Typography>
+                                    </StyledTableCell>
+                                    <StyledTableCell>
+                                        <Typography variant="subtitle1" color="secondary"><b>Title</b></Typography>
+                                    </StyledTableCell>
+                                    <StyledTableCell >
+                                        <Typography variant="subtitle1" color="secondary"><b>Total Image</b></Typography>
+                                    </StyledTableCell>
+                                    <StyledTableCell>
+                                        <Typography variant="subtitle1" color="secondary"><b>Time Remaining</b></Typography>
+                                    </StyledTableCell>
+                                    <StyledTableCell  style={{width: '20%'}}>
+                                        <Typography variant="subtitle1" color="secondary"><b>Action</b></Typography>
+                                    </StyledTableCell>
+                                </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                {tasks?.map((row) => (
+                                    <TableRow key={row._id} style={{alignItems: "left"}}>
+                                    <TableCell component="th" scope="row">
+                                        <Typography variant="subtitle1" ><b>{row.client[0]?.name}</b></Typography>
+                                    </TableCell>
+                                    <TableCell>{row.title}</TableCell>
+                                    <TableCell>{row.totalImage}</TableCell>
+                                    <TableCell>{row.timeRemaining}</TableCell>
+                                    <TableCell>
+                                        <Grid container spacing={1}>
+                                            <Grid item xs={12} md={6} lg={6}>
+                                                <Button variant="contained" disableElevation className={classes.buttonTertiary} onClick={handleShowFeedback}>
+                                                    <Typography variant="subtitle2" >Feedback</Typography>
+                                                </Button>
+                                            </Grid>
+                                            <Grid item xs={12} md={6} lg={6}>
+                                            <Button variant="contained" disableElevation className={classes.buttonTertiary} onClick={() => handleEdit(row.id)}>
+                                                <Typography variant="subtitle2">Edit</Typography>
+                                            </Button>
+                                            </Grid>
+                                        </Grid>
+                                    </TableCell>
+                                    </TableRow>
+                                ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </div>
+                </div>
             </div>
-            
-            <div style={{height: '75vh'}}>
-            <div className={classes.tableContainer}>
-                <TableContainer component={Paper} className={classes.table}>
-                    <Table stickyHeader size="small" aria-label="sticky table">
-                        <TableHead>
-                        <TableRow className={classes.tableRow} style={{alignItems: "left", backgroundColor: '#567068'}} >
-                            <StyledTableCell>
-                                <Typography variant="subtitle1" color="secondary"><b>Clients</b></Typography>
-                            </StyledTableCell>
-                            <StyledTableCell>
-                                <Typography variant="subtitle1" color="secondary"><b>Title</b></Typography>
-                            </StyledTableCell>
-                            <StyledTableCell >
-                                <Typography variant="subtitle1" color="secondary"><b>Total Image</b></Typography>
-                            </StyledTableCell>
-                            <StyledTableCell>
-                                <Typography variant="subtitle1" color="secondary"><b>Time Remaining</b></Typography>
-                            </StyledTableCell>
-                            <StyledTableCell  style={{width: '20%'}}>
-                                <Typography variant="subtitle1" color="secondary"><b>Action</b></Typography>
-                            </StyledTableCell>
-                        </TableRow>
-                        </TableHead>
-                        <TableBody>
-                        {tasks?.map((row) => (
-                            <TableRow key={row._id} style={{alignItems: "left"}}>
-                            <TableCell component="th" scope="row">
-                                <Typography variant="subtitle1" ><b>{row.client[0]?.name}</b></Typography>
-                            </TableCell>
-                            <TableCell>{row.title}</TableCell>
-                            <TableCell>{row.totalImage}</TableCell>
-                            <TableCell>{row.timeRemaining}</TableCell>
-                            <TableCell>
-                                <Grid container spacing={1}>
-                                    <Grid item xs={12} md={6} lg={6}>
-                                        <Button variant="contained" disableElevation className={classes.buttonTertiary} onClick={handleShowFeedback}>
-                                            <Typography variant="subtitle2" >Feedback</Typography>
-                                        </Button>
-                                    </Grid>
-                                    <Grid item xs={12} md={6} lg={6}>
-                                    <Button variant="contained" disableElevation className={classes.buttonTertiary} onClick={() => handleEdit(row.id)}>
-                                        <Typography variant="subtitle2">Edit</Typography>
-                                    </Button>
-                                    </Grid>
-                                </Grid>
-                            </TableCell>
-                            </TableRow>
-                        ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </div>
-            </div>
+        }
         </Container>
     </div>
     )

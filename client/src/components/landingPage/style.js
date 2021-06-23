@@ -8,13 +8,14 @@ const useStyles = makeStyles((theme) => ({
     height: '8vh',
     display: "flex",
     padding: 8,
-    marginTop: '5vh',
+    marginTop: '3vh',
     // border: "1px solid black",
   },
   boxMainImage: {
     height: '45vh',
     display: "flex",
-    padding: 6,
+    padding: 0,
+    marginTop: '3vh',
     // border: "1px solid black",
   },
   boxMainDescription: {
@@ -74,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     position: 'absolute',
-    top: '15vh',
+    top: 0,
     bottom: '35vh',
     left: 0,
     right: 0,

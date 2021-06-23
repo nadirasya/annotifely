@@ -21,6 +21,16 @@ export default makeStyles((theme) => ({
         display: 'flex', 
         justifyContent: 'center'
     },
+    buttonPrimary: {
+        backgroundColor: "#567068",
+        color: '#ffffff',
+        variant: "contained",
+        height: '5vh',
+        maxWidth: 200, 
+        maxHeight: '50px', 
+        minWidth: 200, 
+        minHeight: '50px',
+    },
     buttonTertiary: {
         backgroundColor: '#283531',
         color: '#F2EBEB',
@@ -37,6 +47,21 @@ export default makeStyles((theme) => ({
         top: 0,
         zIndex: 3,
     }, 
+    centerBox: {
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    boxImage: {
+        marginTop: '20vh',
+        // height: 300,
+        display:"flex",
+        padding: 8,
+    },
+    boxButton: {
+        // height: 50,
+        display:"flex",
+        padding: 8,
+    },
     h4: {
         fontSize: 'calc(80% + 1.5vw)',
     },

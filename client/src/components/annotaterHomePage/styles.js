@@ -68,6 +68,16 @@ export default makeStyles((theme) => ({
         top: 0,
         zIndex: 3,
     },
+    centerBox: {
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    boxImage: {
+        // marginTop: '3vh',
+        height: '38vh',
+        display:"flex",
+        padding: 8,
+    },
     h2: {
         fontSize: 'calc(50% + 3.5vw)',
     },

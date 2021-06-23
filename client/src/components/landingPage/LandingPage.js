@@ -115,10 +115,9 @@ const LandingPage = () => {
             </div>
             : null }
           <CssBaseline />
-          <Container className={classes.container}>
-          <Header handleShowLoginForm={handleShowLoginForm}/>                
+          <Container className={classes.container}>                
           <main>
-            <Main />
+            <Main handleShowLoginForm={handleShowLoginForm}/>
           </main>
           </Container>
           <Footer 
