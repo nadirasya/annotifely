@@ -5,14 +5,9 @@ import Task from '../models/task.js';
 
 // CREATE ANNOTATION
 export const createAnnotation = async( req, res ) => {
-
-    console.log('hello new')
-    const {x, y, length, width, imageId} = req.body;
+    const {annotationData, imageId} = req.body;
     const lastIndex = true;
-    // const {x, y, length, width, imageId, lastIndex} = req.body;
-    // const imageId = req.params.id; 
-    // const ObjectId = require('mongodb').ObjectID;
-    console.log("this is", imageId)
+
     if(!imageId)
         return res.status(400).json({ errorMessage: "Image ID not given."});
 
@@ -27,42 +22,21 @@ export const createAnnotation = async( req, res ) => {
         
         task.totalAnnotater.push(req.user.id)
         const updatedTask = await Task.findByIdAndUpdate(task._id, task, { new: true });
-        // console.log("here is task", task._id)
-        // const result = await Task.updateOne(
-        //     {
-        //         _id: task._id
-        //     },
-        //     {
-        //         $set:{"totalAnnotater": task.totalAnnotater+1}
-        //     }
-        // )
     }
-    
-    // save annotation in the database
-    const boundingBox = []; 
-        boundingBox.push ({
-            pointX: x,
-            pointY: y,
-            length: length,
-            width: width
-        });
-    
     const newAnnotation = new Annotation ({ 
         image:imageId, 
         task: task._id, 
         annotater: req.user.id,
-        annotation_boundingBox : {
-           boundingBox: boundingBox
-       }
+        boundingBox: annotationData
     });
     try {
         const savedAnnotation = await newAnnotation.save();
         console.log(savedAnnotation);
         res.status(200).json(savedAnnotation);
     
-        } catch (error) {
-            console.log(error);
-        }
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 //GET ANNOTATION BY ID IMAGE

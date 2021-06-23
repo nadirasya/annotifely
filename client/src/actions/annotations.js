@@ -3,9 +3,10 @@ import { CREATE_ANNOTATION, FETCH_ALL } from '../constants/actionTypes';
 import * as api from '../api';
 import moment from 'moment';
 
-export const createAnnotation = (annotationData) =>  async(dispatch) => {
+export const createAnnotation = (annotationData, imageId) =>  async(dispatch) => {
     try {
-        const { data } = await api.createAnnotation(annotationData);
+        const annotation = {annotationData, imageId}
+        const { data } = await api.createAnnotation(annotation);
 
         dispatch({ type: CREATE_ANNOTATION, data });
     } catch (error) {

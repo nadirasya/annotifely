@@ -11,15 +11,13 @@ const annotationSchema = mongoose.Schema({
     task: [{
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Task' }],
-    annotation_boundingBox: {
-        boundingBox: [{
-            idBoundingBox: { type: String },
-            pointX: { type: Number },
-            pointY: { type: Number },
-            length: { type: Number },
-            width: { type: Number },
-        }]
-    },
+    boundingBox: [{
+        idBoundingBox: { type: String },
+        x: { type: Number },
+        y: { type: Number },
+        height: { type: Number },
+        width: { type: Number },
+    }]
 })
 
 
