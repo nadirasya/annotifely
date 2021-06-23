@@ -8,10 +8,19 @@ const annotationSchema = mongoose.Schema({
     annotater: [{ 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Annotater' }],
-    pointX: { type: Number },
-    pointY: { type: Number },
-    length: { type: Number },
-    width: { type: Number },
+    task: [{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Task' }],
+    annotation_boundingBox: {
+        boundingBox: [{
+            idBoundingBox: { type: String },
+            pointX: { type: Number },
+            pointY: { type: Number },
+            length: { type: Number },
+            width: { type: Number },
+        }]
+    },
 })
+
 
 export default mongoose.model('Annotation', annotationSchema);
