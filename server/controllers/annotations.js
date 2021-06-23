@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Annotation from '../models/annotation.js';
 import Image from '../models/image.js';
 import Task from '../models/task.js';
@@ -19,8 +20,8 @@ export const createAnnotation = async( req, res ) => {
     if(!image)
     return res.status(400).json({ errorMessage: "No image with this ID was found."});
 
+    const task= await Task.findOne({_id: image.task});
     if(lastIndex==true){
-        const task= await Task.findOne({_id: image.task})
         if(!task)
         return res.status(400).json({ errorMessage: "No task with this ID was found."});
         
@@ -38,12 +39,25 @@ export const createAnnotation = async( req, res ) => {
     }
     
     // save annotation in the database
-    const newAnnotation = new Annotation ({ image:imageId, annotater: req.user.id, pointX: x, pointY:y, 
-        length:length, width:width
-    })
+    const boundingBox = []; 
+        boundingBox.push ({
+            pointX: x,
+            pointY: y,
+            length: length,
+            width: width
+        });
     
+    const newAnnotation = new Annotation ({ 
+        image:imageId, 
+        task: task._id, 
+        annotater: req.user.id,
+        annotation_boundingBox : {
+           boundingBox: boundingBox
+       }
+    });
     try {
         const savedAnnotation = await newAnnotation.save();
+        console.log(savedAnnotation);
         res.status(200).json(savedAnnotation);
     
         } catch (error) {
@@ -51,17 +65,10 @@ export const createAnnotation = async( req, res ) => {
         }
 };
 
-
 //GET ANNOTATION BY ID IMAGE
 export const getAnnotation = async (req,res)  => {
     try {
-        const task= await Task.find();
-
-        console.log(task);
-        if(!task)
-        return res.status(400).json(task);
-
-        const annotation = await Annotation.find().populate('annotater', 'name');
+        const annotation = await Annotation.find().populate('annotater task', 'name title totalImage');
         res.status(200).json(annotation);
     }
     catch(err) {
