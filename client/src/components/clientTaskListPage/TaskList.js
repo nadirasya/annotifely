@@ -33,7 +33,7 @@ const TaskList = () => {
     useEffect(() => {
         console.log("hello this is useEffect")
         dispatch(getClientTask());
-    }, [dispatch, tasks] );
+    }, [dispatch] );
 
     const handleAddTimeForm = (task) => {
         setSelectedTask(task);

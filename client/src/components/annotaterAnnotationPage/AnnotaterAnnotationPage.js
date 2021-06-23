@@ -121,22 +121,21 @@ const AnnotaterAnnotationPage = props => {
     }
 
     const handleButton = async() => {
+      const annotationData = []
       const annotations = await anno.getAnnotations().forEach(function(element, index){
-        console.log(element);
         let value = element.target.selector.value;
         value = value.split(':')[1];
-        // console.log("value of ",index,  "is ", value)
         const x = value.split(',')[0];
-        // console.log("x: ", x)
         const y = value.split(',')[1];
-        // console.log("y: ", y)
         const width = value.split(',')[2];
-        // console.log("width: ", width)
         const height = value.split(',')[3];
-        // console.log("height: ", height)
-        const annotationData = {x, y, width, height, imageId: images[currentIndex]?._id}
-        dispatch(createAnnotation(annotationData))
+        const boundingBox = {x, y, width, height}
+        annotationData.push(boundingBox)
       })
+      console.log(annotationData)
+      if(annotationData !== []){
+        dispatch(createAnnotation(annotationData, images[currentIndex]?._id))
+      }
       await anno.destroy();
       if(currentIndex!=totalImage-1){
           history.push({
