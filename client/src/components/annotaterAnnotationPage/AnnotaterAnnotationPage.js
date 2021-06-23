@@ -12,7 +12,7 @@ import { Annotorious } from '@recogito/annotorious';
 import { useDispatch, useSelector } from 'react-redux';
 import { nextImage } from '../../actions/images';
 import {createAnnotation } from '../../actions/annotations';
-
+import { Prompt } from 'react-router-dom';
 
 import '@recogito/annotorious/dist/annotorious.min.css';
 
@@ -146,6 +146,12 @@ const AnnotaterAnnotationPage = props => {
     }
     
     return (
+      <div>
+      <Prompt
+      when={selected}
+      message='You have unsaved changes, are you sure you want to leave?'
+      />
+      {
     images?.length == null ?
     <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
       <CircularProgress/>
@@ -210,7 +216,8 @@ const AnnotaterAnnotationPage = props => {
         </div>
         
     </div>
-    
+    }
+    </div>
     )
 };
 

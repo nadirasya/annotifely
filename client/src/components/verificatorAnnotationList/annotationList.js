@@ -18,29 +18,6 @@ const StyledTableCell = withStyles((theme) => ({
     },
 }))(TableCell);
 
-function createData(id, annotater, title, totalImage, submitted) {
-    return { id, annotater, title, totalImage, submitted };
-}
-  
-const rows = [
-    createData(1, 'Dharma Baskara', 'Cari kendaraan roda 2', 6, 24),
-    createData(2, 'Irfan Mahendra', 'Cari barang berbahan kaca', 9, 37),
-    createData(3, 'Reina Shabira', 'Cari daun menjari', 16, 24),
-    createData(4, 'Kevin Andrio', 'Cari jembatan', 3, 67),
-    createData(5, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(6, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(7, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(8, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(9, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(10, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(5, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(6, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(7, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(8, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(9, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(10, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-]
-
 const AnnotationList = () => {
     const classes = makeStyles();
 
@@ -98,8 +75,8 @@ const AnnotationList = () => {
                             <TableCell component="th" scope="row">
                                 <Typography variant="subtitle1" ><b>{annotation?.annotater[0]?.name}</b></Typography>
                             </TableCell>
-                            <TableCell>{annotation?.title}</TableCell>
-                            <TableCell>{annotation?.totalImage}</TableCell>
+                            <TableCell>{annotation?.task[0]?.title}</TableCell>
+                            <TableCell>{annotation?.task[0]?.totalImage}</TableCell>
                             <TableCell>
                                 {annotation.submitted === 0 ? 'Today' : annotation.submitted === 1 ? `${annotation.submitted} day ago` : `${annotation.submitted} days ago`}
                             </TableCell>
