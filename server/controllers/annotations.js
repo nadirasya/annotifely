@@ -39,10 +39,21 @@ export const createAnnotation = async( req, res ) => {
     }
 };
 
-//GET ANNOTATION BY ID IMAGE
+//GET ALL ANNOTATION 
 export const getAnnotation = async (req,res)  => {
     try {
         const annotation = await Annotation.find().populate('annotater task', 'name title totalImage');
+        res.status(200).json(annotation);
+    }
+    catch(err) {
+        res.status(500).send();
+    }
+}
+//GET ANNOTATION By ID IMAGE
+export const getAnnotationByIdImage = async (req,res)  => {
+    try {
+        const imageId= req.params.id;
+        const annotation = await Annotation.find({image:imageId}).populate('annotater task', 'name title totalImage');
         res.status(200).json(annotation);
     }
     catch(err) {
@@ -53,27 +64,45 @@ export const getAnnotation = async (req,res)  => {
 //EDIT ANNOTATION BY ID IMAGE
 export const editAnnotation = async( req, res ) => {
     try{
-        const {x, y, length, width} = req.body;
-        const annotationId = req.params.id;
+        const {x, y, height, width} = req.body;
+        const imageId = req.params.id;
 
-        if(!annotationId)
-        return res.status(400).json(annotationId);
-
-        const annotation = await Annotation.findById(annotationId);
+        if(!imageId)
+        return res.status(400).json(imageId);
+      
+        const annotation = await Annotation.find({image:imageId});
         if(!annotation)
         return res.status(400).json(annotation);
 
-        if (annotation.annotater.toString() !== req.user.id)
-            return res.status(400).json({ errorMesssage: "Unauthorized"});
-
-        annotation.pointX = x;
-        annotation.pointY = y;
-        annotation.length = length;
-        annotation.width = width;
-
-        const savedAnnotation = await annotation.save();
+        // if (annotation.annotater.toString() !== req.user.id)
+        //     return res.status(400).json({ errorMesssage: "Unauthorized"});
+        
+            // const boundingBox = []; 
+            // boundingBox.push ({
+            //     x: x,
+            //     y: y,
+            //     height: height,
+            //     width: width
+            // });
+        const query ={image:imageId, annotater:req.user.id}
+        // console.log(query)
+        const update = {
+            $set: {'boundingBox.$.x':x,
+                    'boundingBox.$.y':y,
+                    'boundingBox.$.width':width,
+                   'boundingBox.$.height':height}
+        };
+        console.log(update)
+        const result = await Annotation.find(query);
+        // annotation.boundingBox.x = x;
+        // annotation.boundingBox.y = y;
+        // annotation.boundingBox.height = height;
+        // annotation.boundingBox.width = width;
+        console.log(result)
+        const savedAnnotation = await result.save();
 
         res.status(201).json(savedAnnotation);
+
 
     }
     catch(err){

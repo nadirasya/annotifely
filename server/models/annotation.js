@@ -17,7 +17,11 @@ const annotationSchema = mongoose.Schema({
         y: { type: Number },
         height: { type: Number },
         width: { type: Number },
-    }]
+    }],
+    createdAt: {
+        type: Date,
+        default: new Date(),
+    },
 })
 
 
