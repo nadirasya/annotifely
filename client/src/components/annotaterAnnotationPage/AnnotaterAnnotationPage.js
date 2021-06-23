@@ -134,7 +134,7 @@ const AnnotaterAnnotationPage = props => {
       })
       console.log(annotationData)
       if(annotationData !== []){
-        // dispatch(createAnnotation(annotationData, images[currentIndex]?._id))
+        dispatch(createAnnotation(annotationData, images[currentIndex]?._id))
       }
       await anno.destroy();
       if(currentIndex!=totalImage-1){
