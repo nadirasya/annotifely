@@ -10,9 +10,8 @@ import ToolsButton from './ToolsButton';
 import createAnnotationObject from './createAnnotation';
 import { Annotorious } from '@recogito/annotorious';
 import { useDispatch, useSelector } from 'react-redux';
-import { nextImage } from '../../actions/images';
-import {createAnnotation } from '../../actions/annotations';
-import { Prompt } from 'react-router-dom';
+import { createAnnotation, storeAnnotations, fetchAnnotations } from '../../actions/annotations';
+
 
 import '@recogito/annotorious/dist/annotorious.min.css';
 
@@ -27,10 +26,11 @@ const AnnotaterAnnotationPage = props => {
 
     // The current Annotorious instance
     const [ anno, setAnno ] = useState();
-
     const [ selected, setSelected ] = useState();
     const [ histories, setHistories ] = useState({annotations: [], current: ''});
+
     let images = useSelector((state) => state.images['allImage'])
+    const annotationStore = useSelector((state) => state.annotations)
     const currentIndex = location.state.index;
     const id = location.state.id;
     const totalImage = images?.length;
@@ -133,25 +133,28 @@ const AnnotaterAnnotationPage = props => {
         annotationData.push(boundingBox)
       })
       console.log(annotationData)
-      if(annotationData !== []){
-        dispatch(createAnnotation(annotationData, images[currentIndex]?._id))
-      }
       await anno.destroy();
       if(currentIndex!=totalImage-1){
-          history.push({
-            pathname: '/annotater/task/annotation',
-            state: { id: id, index: currentIndex+1 }
+        dispatch(storeAnnotations(annotationData, images[currentIndex]?._id))
+        history.push({
+          pathname: '/annotater/task/annotation',
+          state: { id: id, index: currentIndex+1 }
         })
       }
+      else {
+        await dispatch(fetchAnnotations());
+        const annotationTemp = {annotationData, imageId: images[currentIndex]?._id}
+        await annotationStore.push(annotationTemp)
+        dispatch(createAnnotation(annotationStore))
+        history.push({
+          pathname: '/annotater/task',
+          state: { load: true }
+        })
+      }
+      console.log("annotationStore", annotationStore)
     }
     
     return (
-      <div>
-      <Prompt
-      when={selected}
-      message='You have unsaved changes, are you sure you want to leave?'
-      />
-      {
     images?.length == null ?
     <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
       <CircularProgress/>
@@ -216,8 +219,7 @@ const AnnotaterAnnotationPage = props => {
         </div>
         
     </div>
-    }
-    </div>
+    
     )
 };
 

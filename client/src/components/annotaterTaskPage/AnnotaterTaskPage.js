@@ -23,15 +23,22 @@ const AnnotaterTaskPage = () => {
     const dispatch = useDispatch(); 
     const history = useHistory();
     const classes = useStyles();
+    const location = useLocation();
+
     let tasks = useSelector((state) => state.tasks)
+    let load = location?.state?.load;
     const [loading, setLoading] = useState(false)
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
 
+    // if(load===true){
+    //     load = false;
+    //     window.location.reload();
+    // }
     
     useEffect(() => {
         dispatch(getTasks(user.result._id));
         console.log(tasks)
-    }, [dispatch])
+    }, [dispatch, load])
 
     const handleAccept = (id) => {
         history.push({

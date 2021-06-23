@@ -150,7 +150,7 @@ const AnnotaterMyAnnotationsPage = () => {
                                     </TableCell>
                                     <TableCell>{row.title}</TableCell>
                                     <TableCell>{row.totalImage}</TableCell>
-                                    <TableCell>{row.timeRemaining}</TableCell>
+                                    <TableCell>{row.timeRemaining} {row.timeRemaining == 1 ? "day" : "days"}</TableCell>
                                     <TableCell>
                                         <Grid container spacing={1}>
                                             <Grid item xs={12} md={6} lg={6}>
