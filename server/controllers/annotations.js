@@ -5,38 +5,45 @@ import Task from '../models/task.js';
 
 // CREATE ANNOTATION
 export const createAnnotation = async( req, res ) => {
-    const {annotationData, imageId} = req.body;
+    const {annotationsData} = req.body;
     const lastIndex = true;
 
-    if(!imageId)
+    console.log("annotationsData", annotationsData)
+
+    const total = annotationsData?.length
+    await annotationsData?.map(async(anno, index) => {
+        if(!anno.imageId)
         return res.status(400).json({ errorMessage: "Image ID not given."});
 
-    const image= await Image.findOne({_id: imageId});
-    if(!image)
-    return res.status(400).json({ errorMessage: "No image with this ID was found."});
+        const image= await Image.findOne({_id: anno.imageId});
+        if(!image)
+        return res.status(400).json({ errorMessage: "No image with this ID was found."});
 
-    const task= await Task.findOne({_id: image.task});
-    if(lastIndex==true){
+        const task= await Task.findOne({_id: image.task});
         if(!task)
         return res.status(400).json({ errorMessage: "No task with this ID was found."});
-        
-        task.totalAnnotater.push(req.user.id)
-        const updatedTask = await Task.findByIdAndUpdate(task._id, task, { new: true });
-    }
-    const newAnnotation = new Annotation ({ 
-        image:imageId, 
-        task: task._id, 
-        annotater: req.user.id,
-        boundingBox: annotationData
-    });
-    try {
-        const savedAnnotation = await newAnnotation.save();
-        console.log(savedAnnotation);
-        res.status(200).json(savedAnnotation);
+
+        if(total-1 === index){
+            console.log("hello this is total")
+            task.totalAnnotater.push(req.user.id)
+            const updatedTask = await Task.findByIdAndUpdate(task._id, task, { new: true });
+        }
+
+        const newAnnotation = new Annotation ({ 
+            image:anno.imageId, 
+            task: task._id, 
+            annotater: req.user.id,
+            boundingBox: anno.annotationData
+        });
+        try {
+            const savedAnnotation = await newAnnotation.save();
+            console.log(savedAnnotation);
+        } catch (error) {
+            console.log(error);
+        }
+    })
+    res.status(200).json(annotationsData)   
     
-    } catch (error) {
-        console.log(error);
-    }
 };
 
 //GET ALL ANNOTATION 
