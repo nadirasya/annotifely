@@ -89,8 +89,11 @@ export const updateTime = async( req, res ) => {
 
 export const downloadTask = async (req,res)  => {
     try {
-        const taskId = req.params.id;
-        const image = await Image.find({task: taskId}).populate('task', 'id');
+        const annotationId = req.params.id;
+        const annotation = await Annotation.findById(annotationId).populate('task', 'id title');
+
+        if (annotation.annotater.toString() !== req.user.id)
+        return res.status(400).json({ errorMesssage: "Unauthorized"});
 
         const path ="Data_Image.json"; 
         const filePath = fs.writeFileSync(path, JSON.stringify(image,0,2));

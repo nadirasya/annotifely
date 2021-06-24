@@ -71,45 +71,40 @@ export const getAnnotationByIdImage = async (req,res)  => {
 //EDIT ANNOTATION BY ID IMAGE
 export const editAnnotation = async( req, res ) => {
     try{
-        const {x, y, height, width} = req.body;
-        const imageId = req.params.id;
+        const {x, y, height, width,imageId} = req.body;
+        const taskId = req.params.id;
 
-        if(!imageId)
-        return res.status(400).json(imageId);
+        if(!taskId)
+        return res.status(400).json(taskId);
       
-        const annotation = await Annotation.find({image:imageId});
+        const annotation = await Annotation.find({task:taskId});
         if(!annotation)
         return res.status(400).json(annotation);
 
         // if (annotation.annotater.toString() !== req.user.id)
         //     return res.status(400).json({ errorMesssage: "Unauthorized"});
-        
-            // const boundingBox = []; 
-            // boundingBox.push ({
-            //     x: x,
-            //     y: y,
-            //     height: height,
-            //     width: width
-            // });
-        const query ={image:imageId, annotater:req.user.id}
-        // console.log(query)
+    
+        //  console.log(image);
+            const boundingBox = []; 
+            boundingBox.push ({
+                x: x,
+                y: y,
+                height: height,
+                width: width
+            });
+
+        const query ={image:"60d2c99aa901552a88df1991",annotater:req.user.id}
+        console.log(query)
         const update = {
-            $set: {'boundingBox.$.x':x,
-                    'boundingBox.$.y':y,
-                    'boundingBox.$.width':width,
-                   'boundingBox.$.height':height}
+            $set: {'boundingBox.$' : boundingBox}
         };
         console.log(update)
-        const result = await Annotation.find(query);
-        // annotation.boundingBox.x = x;
-        // annotation.boundingBox.y = y;
-        // annotation.boundingBox.height = height;
-        // annotation.boundingBox.width = width;
+        const result = await Annotation.updateOne(query,update);
         console.log(result)
-        const savedAnnotation = await result.save();
-
-        res.status(201).json(savedAnnotation);
-
+        // annotation.boundingBox = boundingBox;
+        // const savedAnnotation = await annotation.save();
+            // console.log(savedAnnotation);
+        res.status(201).json(result); 
 
     }
     catch(err){
