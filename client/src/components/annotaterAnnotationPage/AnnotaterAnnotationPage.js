@@ -11,9 +11,10 @@ import createAnnotationObject from './createAnnotation';
 import { Annotorious } from '@recogito/annotorious';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAnnotation, storeAnnotations, fetchAnnotations } from '../../actions/annotations';
-
+import { Prompt } from 'react-router-dom';
 
 import '@recogito/annotorious/dist/annotorious.min.css';
+import annotations from '../../reducers/annotations';
 
 const AnnotaterAnnotationPage = props => {
     const classes = useStyles();
@@ -26,9 +27,16 @@ const AnnotaterAnnotationPage = props => {
 
     // The current Annotorious instance
     const [ anno, setAnno ] = useState();
-    const [ selected, setSelected ] = useState();
+    const [ selected, setSelected ] = useState(' ');
     const [ histories, setHistories ] = useState({annotations: [], current: ''});
+    const [ isPrompt, setIsPrompt ] = useState(true);
 
+    if (isPrompt) {
+      window.onbeforeunload = () => true
+    } else {
+      window.onbeforeunload = undefined
+    }
+     
     let images = useSelector((state) => state.images['allImage'])
     const annotationStore = useSelector((state) => state.annotations)
     const currentIndex = location.state.index;
@@ -86,8 +94,10 @@ const AnnotaterAnnotationPage = props => {
           annotorious.on('selectAnnotation', function(annotation) {
             console.log('selected', annotation);
             setSelected(annotation)
+
           });
         }
+
     
         // Keep current Annotorious instance in state
         setAnno(annotorious);
@@ -131,6 +141,7 @@ const AnnotaterAnnotationPage = props => {
         const height = value.split(',')[3];
         const boundingBox = {x, y, width, height}
         annotationData.push(boundingBox)
+
       })
       console.log(annotationData)
       await anno.destroy();
@@ -142,6 +153,7 @@ const AnnotaterAnnotationPage = props => {
         })
       }
       else {
+        await setIsPrompt(false)
         await dispatch(fetchAnnotations());
         const annotationTemp = {annotationData, imageId: images[currentIndex]?._id}
         await annotationStore.push(annotationTemp)
@@ -153,8 +165,27 @@ const AnnotaterAnnotationPage = props => {
       }
       console.log("annotationStore", annotationStore)
     }
-    
+
+
     return (
+    <div>
+      {
+        isPrompt === true ?
+          <Prompt
+          message={(location, action) => {
+          if (action === 'POP') {
+            console.log("Backing up...")
+          }
+      
+          return location.pathname.startsWith("/annotater/task/annotation")
+            ? true
+            : 
+            // `Are you sure you want to go to ${location.pathname}?`
+            'Are you sure you want to leave?'
+        }} />
+     : null
+      }
+    { 
     images?.length == null ?
     <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
       <CircularProgress/>
@@ -166,6 +197,8 @@ const AnnotaterAnnotationPage = props => {
                <b>{ location.state?.type == "edit"? "Edit" : null } Annotation Form</b> 
             </Typography>
         </div>
+
+        <form>
         <div className={classes.labelContainer}>
             <div>
                 <div className={classes.taskLabel}>
@@ -205,7 +238,7 @@ const AnnotaterAnnotationPage = props => {
                         <b>{currentIndex+1}/{totalImage}</b>
                       </Typography>
                     </div>
-                    <Button color="primary" variant="contained" className={classes.buttonContainer} onClick={handleButton}>
+                      <Button color="primary" variant="contained" className={classes.buttonContainer} onClick={handleButton}>
                         <Typography variant="h6">
                           {
                             currentIndex==totalImage-1?
@@ -213,13 +246,14 @@ const AnnotaterAnnotationPage = props => {
                             <b>Next</b>
                           }
                         </Typography>
-                    </Button>
+                     </Button>
                 </div>
             </div>
         </div>
-        
+        </form>
     </div>
-    
+    }
+    </div>
     )
 };
 
