@@ -89,10 +89,8 @@ export const editAnnotation = async( req, res ) => {
         if(!image)
         return res.status(400).json({ errorMessage: "No image with this ID was found."});
 
-        //REMOVE ANNOTATION
         const query={_id:annotation, annotater: req.user.id, image: anno.imageId}
         const result = await Annotation.updateOne(query, {$set: { "boundingBox" : anno.annotationData}});
-        // const result = await Annotation.findOne(query);
         console.log("result is", result);
 
 });
