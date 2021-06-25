@@ -28,3 +28,4 @@ export const getTotalImage = (id) => API.get(`/images/total/${id}`)
 
 export const createAnnotation = (annotationData) => API.post('/annotations/createAnnotation', annotationData); 
 export const fetchAnnotations = () => API.get('/annotations/getAnnotation');
+export const getAnnotationByIdTask = (id, annotaterId) => API.get(`/annotations/getAnnotationByIdTask/${id}`, {params: {annotaterId}})

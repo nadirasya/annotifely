@@ -24,7 +24,6 @@ export const createAnnotation = async( req, res ) => {
         return res.status(400).json({ errorMessage: "No task with this ID was found."});
 
         if(total-1 === index){
-            console.log("hello this is total")
             task.totalAnnotater.push(req.user.id)
             const updatedTask = await Task.findByIdAndUpdate(task._id, task, { new: true });
         }
@@ -56,15 +55,17 @@ export const getAnnotation = async (req,res)  => {
         res.status(500).send();
     }
 }
-//GET ANNOTATION By ID IMAGE
-export const getAnnotationByIdImage = async (req,res)  => {
+//GET ANNOTATION By ID TASK
+export const getAnnotationByIdTask = async (req,res)  => {
+    const {annotaterId} = req.query;
     try {
-        const imageId= req.params.id;
-        const annotation = await Annotation.find({image:imageId}).populate('annotater task', 'name title totalImage');
+        const taskId = req.params.id;
+        const annotation = await Annotation.find({task:taskId, annotater: annotaterId}).populate('annotater task', 'name title totalImage');
         res.status(200).json(annotation);
     }
     catch(err) {
-        res.status(500).send();
+        console.log(err)
+        // res.status(500).send();
     }
 }
 

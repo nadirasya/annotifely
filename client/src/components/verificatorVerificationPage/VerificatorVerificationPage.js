@@ -4,9 +4,9 @@ import { useHistory, useLocation } from 'react-router-dom'
 import useStyles from './styles';
 import createAnnotation from './createAnnotation';
 import { Annotorious } from '@recogito/annotorious';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Input from './Input'
-
+import createAnnotationObject from './createAnnotation';
 
 
 import '@recogito/annotorious/dist/annotorious.min.css';
@@ -23,19 +23,23 @@ const VerificatorVerificationPage = props => {
     // The current Annotorious instance
     const [ anno, setAnno ] = useState();
 
-    const [ selected, setSelected ] = useState();
-    const [ histories, setHistories ] = useState({annotations: [], current: ''});
-    // let images = useSelector((state) => state.images['allImage'])
-    // const currentIndex = location.state.index;
-    // const id = location.state.id;
-    // const totalImage = images?.length;
+    let images = useSelector((state) => state.images['allImage'])
+    const annotatedStore = useSelector((state) => state.annotations['annotations'])
+    const currentIndex = location.state.index;
+    const id = location.state.id;
+    const totalImage = images?.length;
+    const annotationsTemp = []
     
+    
+
     // Current drawing tool name
     const [ tool, setTool ] = useState();
 
     useEffect(() => {
         let annotorious = null;
         
+        console.log("annotatedStore", annotatedStore);
+
         if (imgEl.current) {
           // Init
           annotorious = new Annotorious({
@@ -44,22 +48,26 @@ const VerificatorVerificationPage = props => {
             readOnly: true,
           });
           
-            annotorious.setAnnotations(createAnnotation({id: 123, label: 'test', x: 0, y: 0, width: 300.891, height: 450.67}));
+          annotatedStore[currentIndex]?.boundingBox?.map((box)=>{
+              console.log("hello")
+            annotationsTemp.push(createAnnotationObject({id: box._id, label: images[currentIndex]?.task[0]?.label, x: box.x, y: box.y, width: box.width, height: box.height})) 
+          })
+          annotorious.setAnnotations(annotationsTemp);
         }
     
         // Keep current Annotorious instance in state
         setAnno(annotorious);
-      }, []);
+      }, [images, currentIndex]);
 
     const handleButton = async() => {
     }
     
     return (
-    // images?.length == null ?
-    // <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
-    //   <CircularProgress/>
-    // </div>
-    //   :
+    images?.length == null ?
+    <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
+      <CircularProgress/>
+    </div>
+      :
     <div style={{paddingLeft: '5%', paddingRight: '2%', paddingBottom: '3%'}}>
         <div className={classes.pageTitle}>
             <Typography variant="h4">
@@ -70,14 +78,14 @@ const VerificatorVerificationPage = props => {
             <div>
                 <div className={classes.taskLabel}>
                     <Typography variant="h6">
-                        Tandai ...
+                        {images[currentIndex]?.task[0]?.instruction}
                     </Typography>
                 </div> 
                 <div className={classes.imageContainer}>
                     <img
                         ref={imgEl} 
                         style={{maxWidth: '100%', maxHeight: '100%'}}
-                        src="https://images.unsplash.com/photo-1593642532871-8b12e02d091c?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
+                        src={ images[currentIndex]?.imageURL }
                         />
                     </div>
                 </div>

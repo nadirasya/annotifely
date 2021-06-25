@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Grid, withStyles } from '@material-ui/core';
 import useStyles from './styles';
 import FeedbackForm from '../annotaterFeedbackForm/FeedbackForm';
-import { getAnnotaterTask } from '../../actions/tasks';
+import { getAnnotaterTask, getTasksById } from '../../actions/tasks';
 import { useHistory } from 'react-router';
 import EmptyTask from './EmptyTask';
+import { getAnnotationByIdTask } from '../../actions/annotations';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -18,30 +19,26 @@ const StyledTableCell = withStyles((theme) => ({
     },
 }))(TableCell);
 
-
 const AnnotaterMyAnnotationsPage = () => {
     const classes = useStyles();
     const history = useHistory();
     const dispatch = useDispatch(); 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
     const tasks = useSelector((state) => state.tasks)
+    const annotations = useSelector((state) => state.annotationStore )
+    
     // tasks = tasks.unavailable
 
     const [feedbackForm, setFeedbackForm] = useState(false);
 
     useEffect(()=> {
         dispatch(getAnnotaterTask(user.result._id));
-        console.log("this is useeffect",tasks)
     }, [dispatch])
 
     const handleShowFeedback =  () => setFeedbackForm(true);
 
     const handleClickCancel = ()  => {
         setFeedbackForm(false)
-    }
-
-    const handleAccept = (id) => {
-        console.log(id);
     }
 
     const handleAddAnnotation = () => {
@@ -82,12 +79,15 @@ const AnnotaterMyAnnotationsPage = () => {
         )
     }
 
-    const handleEdit = ({id}) => {
+    const handleEdit = (id) => {
+        console.log(id)
+        dispatch(getAnnotationByIdTask(id, user.result._id));
+        dispatch(getTasksById(id));
+        console.log("annotations", annotations)
         history.push({
             pathname: '/annotater/task/annotation',
             state: { id: id, index: 0, type: 'edit'}
         })
-        // dispatch(getTasksById(id));
     }
 
 
@@ -159,7 +159,7 @@ const AnnotaterMyAnnotationsPage = () => {
                                                 </Button>
                                             </Grid>
                                             <Grid item xs={12} md={6} lg={6}>
-                                            <Button variant="contained" disableElevation className={classes.buttonTertiary} onClick={() => handleEdit(row.id)}>
+                                            <Button variant="contained" disableElevation className={classes.buttonTertiary} onClick={() => handleEdit(row._id)}>
                                                 <Typography variant="subtitle2">Edit</Typography>
                                             </Button>
                                             </Grid>
