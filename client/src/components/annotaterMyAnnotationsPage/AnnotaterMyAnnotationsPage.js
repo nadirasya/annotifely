@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Grid, withStyles } from '@material-ui/core';
+import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Grid, CircularProgress, withStyles } from '@material-ui/core';
 import useStyles from './styles';
 import FeedbackForm from '../annotaterFeedbackForm/FeedbackForm';
 import { getAnnotaterTask, getTasksById } from '../../actions/tasks';
@@ -26,14 +26,23 @@ const AnnotaterMyAnnotationsPage = () => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
     const tasks = useSelector((state) => state.tasks)
     const annotations = useSelector((state) => state.annotationStore )
-    
+    const timer = useRef();
+    const [loading, setLoading] = useState(true);
+
     // tasks = tasks.unavailable
 
     const [feedbackForm, setFeedbackForm] = useState(false);
 
     useEffect(()=> {
         dispatch(getAnnotaterTask(user.result._id));
+
+        clearTimeout(timer.current);
+
     }, [dispatch])
+
+    timer.current = window.setTimeout(() => {
+        setLoading(false);
+    }, 1500);
 
     const handleShowFeedback =  () => setFeedbackForm(true);
 
@@ -93,32 +102,37 @@ const AnnotaterMyAnnotationsPage = () => {
 
     return (
     <div>
-        {
-            feedbackForm ?
-            <div className={classes.feedbackFormContainer}>
-                <OutsideAlerter>
-                    <FeedbackForm 
-                        feedback={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'} 
-                        handleClickCancel={handleClickCancel} 
-                        feedbackForm={feedbackForm}/>
-                </OutsideAlerter>
-            </div>
-            : 
-            null
-        }
+    { feedbackForm ?
+        <div className={classes.feedbackFormContainer}>
+            <OutsideAlerter>
+                <FeedbackForm 
+                    feedback={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'} 
+                    handleClickCancel={handleClickCancel} 
+                    feedbackForm={feedbackForm}/>
+            </OutsideAlerter>
+        </div>
+        : 
+        null
+    }
 
     <Container className={classes.container}>
-        {
-            !tasks.length ?
-            <EmptyTask handleAddAnnotation={handleAddAnnotation} />
+        <div className={classes.pageTitle}>
+            <Typography className={classes.h4}>
+                <b> My Annotations List</b> 
+            </Typography>
+        </div>
+        { !tasks.length ?
+            <div>
+                { loading ? 
+                    <div style={{display: 'flex', justifyContent: 'center'}}> 
+                        <CircularProgress />
+                    </div>
+                    : 
+                    <EmptyTask handleAddAnnotation={handleAddAnnotation} />
+                }
+            </div>
             :
             <div>
-                <div className={classes.pageTitle}>
-                    <Typography className={classes.h4}>
-                    <b> My Annotations List</b> 
-                    </Typography>
-                </div>
-                
                 <div style={{height: '75vh'}}>
                     <div className={classes.tableContainer}>
                         <TableContainer component={Paper} className={classes.table}>
@@ -126,7 +140,7 @@ const AnnotaterMyAnnotationsPage = () => {
                                 <TableHead>
                                 <TableRow className={classes.tableRow} style={{alignItems: "left", backgroundColor: '#567068'}} >
                                     <StyledTableCell>
-                                        <Typography variant="subtitle1" color="secondary"><b>Clients</b></Typography>
+                                        <Typography variant="subtitle1" color="secondary"><b>Client</b></Typography>
                                     </StyledTableCell>
                                     <StyledTableCell>
                                         <Typography variant="subtitle1" color="secondary"><b>Title</b></Typography>
@@ -174,7 +188,7 @@ const AnnotaterMyAnnotationsPage = () => {
                 </div>
             </div>
         }
-        </Container>
+    </Container>
     </div>
     )
 };

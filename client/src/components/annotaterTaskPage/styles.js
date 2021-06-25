@@ -20,6 +20,17 @@ export default makeStyles((theme) => ({
         display: 'flex', 
         justifyContent: 'center'
     },
+    centerBox: {
+        justifyContent: "center",
+        alignItems: "center",
+        // border: "1px solid black"
+    },
+    boxImage: {
+        // marginTop: '3vh',
+        height: '65vh',
+        display:"flex",
+        padding: 8,
+    },
     h2: {
         fontSize: 'calc(50% + 3.5vw)',
     },
