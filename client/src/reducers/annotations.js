@@ -1,16 +1,24 @@
-import { CREATE_ANNOTATION, STORE_ANNOTATION, GET_ANNOTATION, FETCH_ANNOTATION } from '../constants/actionTypes';
+import { CREATE_ANNOTATION, STORE_ANNOTATION, GET_ANNOTATION, FETCH_ANNOTATION, FETCH_ANNOTATION_BY_ID } from '../constants/actionTypes';
 
-export default (annotations = [], action) => {
+export default (annotationStore = { annotatedData: [], annotations: [] }, action) => {
     switch(action.type){
         case CREATE_ANNOTATION:
-            return [...annotations, action.payload];
+            annotationStore["annotatedData"] = []
+            return annotationStore;
         case STORE_ANNOTATION:
-            return [...annotations, action.payload];
+            let annotatedDataTemp = annotationStore["annotatedData"]
+            annotatedDataTemp = [...annotatedDataTemp, action.payload]
+            annotationStore["annotatedData"] = annotatedDataTemp
+            return annotationStore;
         case GET_ANNOTATION:
-            return action.payload;
+            annotationStore["annotatedData"] = action.payload
+            return annotationStore;
         case FETCH_ANNOTATION:
-            return annotations;
+            return annotationStore;
+        case FETCH_ANNOTATION_BY_ID:
+            annotationStore['annotations'] = action.payload
+            return annotationStore;
         default:
-            return annotations;
+            return annotationStore;
     }
 }

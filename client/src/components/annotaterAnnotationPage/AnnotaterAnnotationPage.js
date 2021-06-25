@@ -29,12 +29,13 @@ const AnnotaterAnnotationPage = props => {
     const [ selected, setSelected ] = useState();
     const [ histories, setHistories ] = useState({annotations: [], current: ''});
 
-    let images = useSelector((state) => state.images['allImage'])
-    const annotationStore = useSelector((state) => state.annotations)
+    const images = useSelector((state) => state.images['allImage'])
+    const annotationStore = useSelector((state) => state.annotations['annotatedData'])
+    const annotatedStore = useSelector((state) => state.annotations['annotations'])
     const currentIndex = location.state.index;
     const id = location.state.id;
     const totalImage = images?.length;
-    
+    const annotationsTemp = []
     // Current drawing tool name
     const [ tool, setTool ] = useState();
 
@@ -51,7 +52,15 @@ const AnnotaterAnnotationPage = props => {
           });
           
           if(location.state?.type == "edit"){
-              annotorious.setAnnotations(createAnnotationObject({id: 123, label: 'test', x: 0, y: 0, width: 300.891, height: 450.67}));
+            annotatedStore[currentIndex]?.boundingBox?.map((box)=>{
+              annotationsTemp.push(createAnnotationObject({id: box._id, label: images[currentIndex]?.task[0]?.label, x: box.x, y: box.y, width: box.width, height: box.height})) 
+            })
+            annotorious.setAnnotations(annotationsTemp);
+            const currentAnnotation = annotationsTemp;
+            const pushAnnotation = histories.annotations
+            pushAnnotation.push(currentAnnotation);
+            const index = pushAnnotation.length - 1;
+            setHistories({['annotations']: pushAnnotation, ['current']: index})
           }
           annotorious.on('createSelection', async function(selection) {
     
@@ -124,15 +133,15 @@ const AnnotaterAnnotationPage = props => {
       const annotationData = []
       const annotations = await anno.getAnnotations().forEach(function(element, index){
         let value = element.target.selector.value;
-        value = value.split(':')[1];
-        const x = value.split(',')[0];
-        const y = value.split(',')[1];
-        const width = value.split(',')[2];
-        const height = value.split(',')[3];
+        value = value?.split(':')[1];
+        const x = value?.split(',')[0];
+        const y = value?.split(',')[1];
+        const width = value?.split(',')[2];
+        const height = value?.split(',')[3];
         const boundingBox = {x, y, width, height}
         annotationData.push(boundingBox)
       })
-      console.log(annotationData)
+      // console.log("anno: ", anno.getAnnotations())
       await anno.destroy();
       if(currentIndex!=totalImage-1){
         dispatch(storeAnnotations(annotationData, images[currentIndex]?._id))
@@ -145,11 +154,20 @@ const AnnotaterAnnotationPage = props => {
         await dispatch(fetchAnnotations());
         const annotationTemp = {annotationData, imageId: images[currentIndex]?._id}
         await annotationStore.push(annotationTemp)
-        dispatch(createAnnotation(annotationStore))
-        history.push({
-          pathname: '/annotater/task',
-          state: { load: true }
-        })
+        if(location.state?.type == "edit"){
+          console.log("annotations edited", annotationStore)
+          history.push({
+            pathname: '/annotater/my-annotation',
+            state: { load: true }
+          })
+        } else {
+          console.log("created")
+          // dispatch(createAnnotation(annotationStore))
+          history.push({
+            pathname: '/annotater/task',
+            state: { load: true }
+          })
+        }
       }
       console.log("annotationStore", annotationStore)
     }
@@ -178,9 +196,7 @@ const AnnotaterAnnotationPage = props => {
                         ref={imgEl} 
                         style={{maxWidth: '100%', maxHeight: '100%'}}
                         
-                        src={ location.state?.type == "edit" ? 
-                        "https://images.unsplash.com/photo-1593642532871-8b12e02d091c?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
-                        : images[currentIndex]?.imageURL }
+                        src={ images[currentIndex]?.imageURL }
                         />
                     </div>
                 </div>

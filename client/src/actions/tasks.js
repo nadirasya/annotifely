@@ -48,7 +48,6 @@ export const getAnnotaterTask = (id) => async (dispatch) => {
 export const getTasksById = (id) => async(dispatch) => {
     try {
         const { data } = await api.getTasksById(id);
-        console.log("this is actions", data)
         dispatch({ type: FETCH_IMAGES, payload: data })
     } catch (error) {
         console.log(error);

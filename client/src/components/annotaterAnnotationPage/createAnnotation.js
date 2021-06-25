@@ -1,5 +1,5 @@
 export default function createAnnotation({id, label, x, y, width, height}){
-    return [
+    return (
         { 
           "@context": "http://www.w3.org/ns/anno.jsonld",
           "id": `${id}`,
@@ -17,5 +17,5 @@ export default function createAnnotation({id, label, x, y, width, height}){
             }]
           }
         }
-      ]
+    )
 }

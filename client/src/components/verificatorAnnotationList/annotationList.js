@@ -2,10 +2,11 @@ import React, {useState, useEffect, useRef} from 'react';
 import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Grid, withStyles } from '@material-ui/core';
+import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, withStyles } from '@material-ui/core';
 import makeStyles from './styles';
 
-import { getAnnotations } from '../../actions/annotations';
+import { getAnnotations, getAnnotationByIdTask } from '../../actions/annotations';
+import { getTasksById } from '../../actions/tasks';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -18,57 +19,39 @@ const StyledTableCell = withStyles((theme) => ({
     },
 }))(TableCell);
 
-function createData(id, annotater, title, totalImage, submitted) {
-    return { id, annotater, title, totalImage, submitted };
-}
-  
-const rows = [
-    createData(1, 'Dharma Baskara', 'Cari kendaraan roda 2', 6, 24),
-    createData(2, 'Irfan Mahendra', 'Cari barang berbahan kaca', 9, 37),
-    createData(3, 'Reina Shabira', 'Cari daun menjari', 16, 24),
-    createData(4, 'Kevin Andrio', 'Cari jembatan', 3, 67),
-    createData(5, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(6, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(7, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(8, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(9, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(10, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(5, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(6, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(7, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(8, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(9, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-    createData(10, 'Tasya Anasti', 'Cari dan tandai objek manusia', 1, 49),
-]
-
 const AnnotationList = () => {
     const classes = makeStyles();
 
     const dispatch = useDispatch(); 
     const history = useHistory();
-    let annotations = useSelector((state) => state.annotations)
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
-
-
-    // const handleAccept = (id) => {
-    //     console.log(id);
-    // }
+    const annotations = useSelector((state) => state.annotations['annotatedData'])
 
     useEffect(() => {
-        dispatch(getAnnotations(user.result._id));
-        console.log(annotations)
+        dispatch(getAnnotations());
     }, [dispatch])
 
 
+    const handleReview = (id, userId) => {
+        dispatch(getAnnotationByIdTask(id, userId));
+        dispatch(getTasksById(id));
+        history.push({
+            pathname: '/verificator/verification-page',
+            state: { id: id, index: 0 }
+        })
+    }
+
     return (
     <div>
+        {/* {annotations == undefined ?
+            <CircularProgress/>
+        : */}
         <Container className={classes.container}>
             <div className={classes.pageTitle}>
                 <Typography className={classes.h4}>
                 <b> Annotations List</b> 
                 </Typography>
             </div>
-            
             <div style={{height: '75vh'}}>
             <div className={classes.tableContainer}>
                 <TableContainer component={Paper} className={classes.table}>
@@ -98,13 +81,13 @@ const AnnotationList = () => {
                             <TableCell component="th" scope="row">
                                 <Typography variant="subtitle1" ><b>{annotation?.annotater[0]?.name}</b></Typography>
                             </TableCell>
-                            <TableCell>{annotation?.title}</TableCell>
-                            <TableCell>{annotation?.totalImage}</TableCell>
+                            <TableCell>{annotation?.task[0]?.title}</TableCell>
+                            <TableCell>{annotation?.task[0]?.totalImage}</TableCell>
                             <TableCell>
                                 {annotation.submitted === 0 ? 'Today' : annotation.submitted === 1 ? `${annotation.submitted} day ago` : `${annotation.submitted} days ago`}
                             </TableCell>
                             <TableCell>
-                                <Button variant="contained" disableElevation className={classes.buttonTertiary}>
+                                <Button variant="contained" disableElevation className={classes.buttonTertiary} onClick={() => handleReview(annotation.task[0]._id, annotation.annotater[0]._id)}>
                                     <Typography variant="subtitle2">Review</Typography>
                                 </Button>
                             </TableCell>
@@ -116,6 +99,7 @@ const AnnotationList = () => {
             </div>
             </div>
         </Container>
+{/* } */}
     </div>
     )
 };
