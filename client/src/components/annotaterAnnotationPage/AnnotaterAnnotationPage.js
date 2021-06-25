@@ -10,7 +10,7 @@ import ToolsButton from './ToolsButton';
 import createAnnotationObject from './createAnnotation';
 import { Annotorious } from '@recogito/annotorious';
 import { useDispatch, useSelector } from 'react-redux';
-import { createAnnotation, storeAnnotations, fetchAnnotations } from '../../actions/annotations';
+import { createAnnotation, editAnnotation, storeAnnotations, fetchAnnotations } from '../../actions/annotations';
 
 
 import '@recogito/annotorious/dist/annotorious.min.css';
@@ -132,7 +132,11 @@ const AnnotaterAnnotationPage = props => {
     const handleButton = async() => {
       const annotationData = []
       const annotations = await anno.getAnnotations().forEach(function(element, index){
+        console.log(element)
         let value = element.target.selector.value;
+        if(value == undefined){
+          value = element.target.selector[0].value;
+        }
         value = value?.split(':')[1];
         const x = value?.split(',')[0];
         const y = value?.split(',')[1];
@@ -147,7 +151,7 @@ const AnnotaterAnnotationPage = props => {
         dispatch(storeAnnotations(annotationData, images[currentIndex]?._id))
         history.push({
           pathname: '/annotater/task/annotation',
-          state: { id: id, index: currentIndex+1 }
+          state: { id: id, index: currentIndex+1, type: location.state?.type == "edit" ? "edit" : null}
         })
       }
       else {
@@ -155,18 +159,19 @@ const AnnotaterAnnotationPage = props => {
         const annotationTemp = {annotationData, imageId: images[currentIndex]?._id}
         await annotationStore.push(annotationTemp)
         if(location.state?.type == "edit"){
-          console.log("annotations edited", annotationStore)
+          console.log("annotations edited", annotationStore, " id:", id)
+          dispatch(editAnnotation(annotationStore, id))
           history.push({
             pathname: '/annotater/my-annotation',
             state: { load: true }
           })
         } else {
-          console.log("created")
-          // dispatch(createAnnotation(annotationStore))
+          dispatch(createAnnotation(annotationStore))
           history.push({
             pathname: '/annotater/task',
             state: { load: true }
           })
+          
         }
       }
       console.log("annotationStore", annotationStore)

@@ -13,6 +13,16 @@ export const createAnnotation = (annotationStore) =>  async(dispatch) => {
     }
 }
 
+export const editAnnotation = (annotationStore, id) => async(dispatch) => {
+    try {
+        const {data} = await api.editnnotation({annotationsData: annotationStore}, id)
+
+        dispatch({ type: CREATE_ANNOTATION, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const storeAnnotations = (annotationData, imageId) => async(dispatch) => {
     const annotation = {annotationData, imageId};
     dispatch({ type: STORE_ANNOTATION, payload: annotation })

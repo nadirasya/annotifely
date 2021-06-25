@@ -1,3 +1,4 @@
+import { query } from 'express';
 import mongoose from 'mongoose';
 import Annotation from '../models/annotation.js';
 import Image from '../models/image.js';
@@ -6,9 +7,6 @@ import Task from '../models/task.js';
 // CREATE ANNOTATION
 export const createAnnotation = async( req, res ) => {
     const {annotationsData} = req.body;
-    const lastIndex = true;
-
-    console.log("annotationsData", annotationsData)
 
     const total = annotationsData?.length
     await annotationsData?.map(async(anno, index) => {
@@ -69,51 +67,33 @@ export const getAnnotationByIdTask = async (req,res)  => {
     }
 }
 
-//EDIT ANNOTATION BY ID IMAGE
+//EDIT ANNOTATION BY ID TASK
 export const editAnnotation = async( req, res ) => {
-    try{
-        const {x, y, height, width} = req.body;
-        const imageId = req.params.id;
+    
+    const {annotationsData} = req.body;
+    const taskId = req.params.id;
 
-        if(!imageId)
-        return res.status(400).json(imageId);
-      
-        const annotation = await Annotation.find({image:imageId});
-        if(!annotation)
-        return res.status(400).json(annotation);
+    if(!taskId)
+    return res.status(400).json(taskId);
 
-        // if (annotation.annotater.toString() !== req.user.id)
-        //     return res.status(400).json({ errorMesssage: "Unauthorized"});
-        
-            // const boundingBox = []; 
-            // boundingBox.push ({
-            //     x: x,
-            //     y: y,
-            //     height: height,
-            //     width: width
-            // });
-        const query ={image:imageId, annotater:req.user.id}
-        // console.log(query)
-        const update = {
-            $set: {'boundingBox.$.x':x,
-                    'boundingBox.$.y':y,
-                    'boundingBox.$.width':width,
-                   'boundingBox.$.height':height}
-        };
-        console.log(update)
-        const result = await Annotation.find(query);
-        // annotation.boundingBox.x = x;
-        // annotation.boundingBox.y = y;
-        // annotation.boundingBox.height = height;
-        // annotation.boundingBox.width = width;
-        console.log(result)
-        const savedAnnotation = await result.save();
-
-        res.status(201).json(savedAnnotation);
+    const annotation = await Annotation.find({task:taskId});
+    if(!annotation)
+    return res.status(400).json(annotation);
 
 
-    }
-    catch(err){
-        res.status(500).send();
-    }
+    await annotationsData?.map(async(anno, index) => {
+        if(!anno.imageId)
+        return res.status(400).json({ errorMessage: "Image ID not given."});
+
+        const image= await Image.findOne({_id:anno.imageId});
+        if(!image)
+        return res.status(400).json({ errorMessage: "No image with this ID was found."});
+
+        //REMOVE ANNOTATION
+        const query={_id:annotation, annotater: req.user.id, image: anno.imageId}
+        const result = await Annotation.updateOne(query, {$set: { "boundingBox" : anno.annotationData}});
+        // const result = await Annotation.findOne(query);
+        console.log("result is", result);
+
+});
 };
