@@ -1,9 +1,9 @@
 import React, {  useState } from 'react';
-import { IconButton, Typography, Paper, Grid, Button, Slide } from '@material-ui/core';
+import { Typography, Paper, Grid, Button, Slide } from '@material-ui/core';
 import {useDispatch} from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { signinAnnotater, signinVerificator, signinClient, signup } from '../../actions/auth';
+import { signinAnnotater, signinVerificator, signinClient } from '../../actions/auth';
 import Input from './Input';
 import useStyles from './styles';
 

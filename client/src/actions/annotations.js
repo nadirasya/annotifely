@@ -40,9 +40,8 @@ export const getAnnotations = () => async (dispatch) => {
         if ( data )
         console.log({data});
         data.map((annotation) => {
-            //Calculate time difference
             const createdDate = moment(annotation?.task?.createdAt);
-            annotation['submitted'] = currentDate.diff(createdDate, 'days');
+            return annotation['submitted'] = currentDate.diff(createdDate, 'days');
         })
     
         dispatch({ type: GET_ANNOTATION, payload: data });

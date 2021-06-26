@@ -21,7 +21,6 @@ export const getTasksById = async (req, res) => {
         return res.status(400).json(tasks); 
 
         const image = await Image.find({task: id}).populate('task', 'id title label instruction timeSpan');
-        console.log("this is controller", image)
         res.status(200).json(image);
     } catch (error) {
         res.status(500).send();

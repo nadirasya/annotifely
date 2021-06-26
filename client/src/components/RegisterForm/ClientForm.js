@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { Avatar, Button, Paper, CssBaseline, TextField, Grid, Typography, Container, Slide } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Avatar, Button, Paper, Grid, Typography, Slide } from '@material-ui/core';
 import { AccountCircle } from '@material-ui/icons';
 import {useDispatch} from 'react-redux';
 import { useHistory } from 'react-router-dom';
