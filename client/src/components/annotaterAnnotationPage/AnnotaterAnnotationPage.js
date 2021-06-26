@@ -11,7 +11,7 @@ import createAnnotationObject from './createAnnotation';
 import { Annotorious } from '@recogito/annotorious';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAnnotation, editAnnotation, storeAnnotations, fetchAnnotations } from '../../actions/annotations';
-
+import { Prompt } from 'react-router-dom';
 
 import '@recogito/annotorious/dist/annotorious.min.css';
 
@@ -28,6 +28,13 @@ const AnnotaterAnnotationPage = props => {
     const [ anno, setAnno ] = useState();
     const [ selected, setSelected ] = useState();
     const [ histories, setHistories ] = useState({annotations: [], current: ''});
+    const [ isPrompt, setIsPrompt ] = useState(true);
+
+    if (isPrompt) {
+      window.onbeforeunload = () => true
+    } else {
+      window.onbeforeunload = undefined
+    }
 
     const images = useSelector((state) => state.images['allImage'])
     const annotationStore = useSelector((state) => state.annotations['annotatedData'])
@@ -155,6 +162,7 @@ const AnnotaterAnnotationPage = props => {
         })
       }
       else {
+        await setIsPrompt(false)
         await dispatch(fetchAnnotations());
         const annotationTemp = {annotationData, imageId: images[currentIndex]?._id}
         await annotationStore.push(annotationTemp)
@@ -178,6 +186,24 @@ const AnnotaterAnnotationPage = props => {
     }
     
     return (
+    <div>
+    {
+      isPrompt === true ?
+        <Prompt
+          message={(location, action) => {
+          if (action === 'POP') {
+            console.log("Backing up...")
+          }
+      
+          return location.pathname.startsWith("/annotater/task/annotation")
+            ? true
+            : 
+            // `Are you sure you want to go to ${location.pathname}?`
+            'Are you sure you want to leave?'
+        }} />
+     : null
+    }
+    {
     images?.length == null ?
     <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
       <CircularProgress/>
@@ -240,7 +266,8 @@ const AnnotaterAnnotationPage = props => {
         </div>
         
     </div>
-    
+  }
+  </div>
     )
 };
 

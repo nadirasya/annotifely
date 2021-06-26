@@ -16,10 +16,13 @@ import VerificatorVerificationPage from './components/verificatorVerificationPag
 import VerificatorAnnotationList from './components/verificatorAnnotationList/annotationList';
 import theme from './theme';
 
+import UserLeaveConfirmation from './userLeaveConfirmation';
 
 
 const App = () => {
     
+    const [confirmOpen, setConfirmOpen] = useState(true);
+
     const VerificatorRoutes = () => {
         return (
             <div>
@@ -54,7 +57,7 @@ const App = () => {
                 <CssBaseline />
                 <Navbar />
                 <Switch>
-                    <Route path='/annotater' exact component = {AnnotaterHomePage} />
+                    <Route path='/annotater' exact component = {AnnotaterHomePage}/>
                     <Route path='/annotater/task' exact component = {AnnotaterTaskPage} />
                     <Route path='/annotater/task/annotation' exact component = {AnnotaterAnnotationPage} />
                     <Route path='/annotater/my-annotation' exact component = {AnnotaterMyAnnotationsPage} />
@@ -101,7 +104,9 @@ const App = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <BrowserRouter>
+            <BrowserRouter getUserConfirmation={(message, callback) => {
+                return UserLeaveConfirmation(message, callback, confirmOpen, setConfirmOpen);
+                }} >
                 <Switch>
                     <Route path='/' exact component = {LandingPage} />
                     <Route path='/no-permission' exact component = {AccessDenied} />

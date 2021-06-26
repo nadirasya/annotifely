@@ -1,4 +1,4 @@
-import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Grid, Container, Card, CardContent, withStyles } from '@material-ui/core';
+import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Grid, Container, Card, CardContent, CircularProgress, withStyles } from '@material-ui/core';
 
 import React, { useState, useEffect, useRef } from 'react';
 import {useHistory} from 'react-router-dom';
@@ -29,13 +29,22 @@ const HomePage = () => {
     const dispatch = useDispatch(); 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
     let tasks = useSelector((state) => state.tasks)
+    const timer = useRef();
+    const [loading, setLoading] = useState(true);
 
 
     const [tutorial, setTutorial] = useState(false);
 
     useEffect(() => {
         dispatch(getTasks(user.result._id));
+
+        clearTimeout(timer.current);
+
     }, [dispatch])
+
+    timer.current = window.setTimeout(() => {
+        setLoading(false);
+    }, 1500);
 
     const handleShowTutorial =  () => setTutorial((prevTutorial) => !prevTutorial);
 
@@ -90,6 +99,7 @@ const HomePage = () => {
             :
             null
         }
+
         <Container className={classes.container}>
             <div className={classes.pageTitle}>
                 <Typography className={classes.h4}>
@@ -97,10 +107,17 @@ const HomePage = () => {
                 </Typography>
             </div>
 
-            {
-                !tasks.length ?
-                <EmptyTask />
-                :
+            { !tasks.length ?
+                <div>
+                    { loading ? 
+                        <div style={{display: 'flex', justifyContent: 'center', height: '40vh'}}> 
+                            <CircularProgress />
+                        </div>
+                        : 
+                        <EmptyTask />
+                    }
+                </div>
+            :
             <div style={{height: '40vh'}}>
                 <div className={classes.tableContainer}>
                     <TableContainer component={Paper} style={{ maxHeight: '40vh' }}>
@@ -108,7 +125,7 @@ const HomePage = () => {
                             <TableHead>
                             <TableRow className={classes.tableRow} style={{alignItems: "left"}} >
                                 <StyledTableCell>
-                                    <Typography variant="subtitle1" color="secondary"><b>Clients</b></Typography>
+                                    <Typography variant="subtitle1" color="secondary"><b>Client</b></Typography>
                                 </StyledTableCell>
                                 <StyledTableCell>
                                     <Typography variant="subtitle1" color="secondary"><b>Title</b></Typography>

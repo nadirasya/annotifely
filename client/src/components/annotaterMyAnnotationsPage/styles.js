@@ -52,7 +52,7 @@ export default makeStyles((theme) => ({
         alignItems: "center",
     },
     boxImage: {
-        marginTop: '20vh',
+        marginTop: '15vh',
         // height: 300,
         display:"flex",
         padding: 8,
