@@ -30,3 +30,5 @@ export const createAnnotation = (annotationData) => API.post('/annotations/creat
 export const editnnotation = (annotationData, id) => API.put(`/annotations/editAnnotation/${id}`, annotationData); 
 export const fetchAnnotations = () => API.get('/annotations/getAnnotation');
 export const getAnnotationByIdTask = (id, annotaterId) => API.get(`/annotations/getAnnotationByIdTask/${id}`, {params: {annotaterId}})
+
+export const createVerification = (score, feedback, imageId) => API.post('/verifications/createVerification', {score, feedback, imageId});

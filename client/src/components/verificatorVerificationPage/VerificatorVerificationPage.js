@@ -30,7 +30,6 @@ const VerificatorVerificationPage = props => {
     const totalImage = images?.length;
     const annotationsTemp = []
     
-    
 
     // Current drawing tool name
     const [ tool, setTool ] = useState();
@@ -60,6 +59,13 @@ const VerificatorVerificationPage = props => {
       }, [images, currentIndex]);
 
     const handleButton = async() => {
+        await anno.destroy();
+        if(currentIndex!=totalImage-1){
+            history.push({
+              pathname: '/verificator/verification-page',
+              state: { id: id, index: currentIndex+1 }
+            })
+        }
     }
     
     return (
@@ -125,13 +131,17 @@ const VerificatorVerificationPage = props => {
                 </div>
                 <div className={classes.submitButtonContainer}>
                     <div className={classes.imageCounter}>
-                      <Typography variant="h4">
-                        <b>1/1</b>
-                      </Typography>
+                        <Typography variant="h4">
+                            <b>{currentIndex+1}/{totalImage}</b>
+                        </Typography>
                     </div>
                     <Button color="primary" variant="contained" className={classes.buttonContainer} onClick={handleButton}>
                         <Typography variant="h6">
-                            <b>Submit</b>
+                          {
+                            currentIndex==totalImage-1?
+                            <b>Submit</b> :
+                            <b>Next</b>
+                          }
                         </Typography>
                     </Button>
                 </div>
