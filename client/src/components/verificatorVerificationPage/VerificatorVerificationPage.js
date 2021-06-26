@@ -7,9 +7,12 @@ import { Annotorious } from '@recogito/annotorious';
 import { useDispatch, useSelector } from 'react-redux';
 import Input from './Input'
 import createAnnotationObject from './createAnnotation';
+import { createVerification, storeVerification, fetchVerification } from '../../actions/verifications';
 
 
 import '@recogito/annotorious/dist/annotorious.min.css';
+
+const initialState = { score: '', feedback: '' };
 
 const VerificatorVerificationPage = props => {
     const classes = useStyles();
@@ -23,21 +26,23 @@ const VerificatorVerificationPage = props => {
     // The current Annotorious instance
     const [ anno, setAnno ] = useState();
 
+    // Current drawing tool name
+    const [ tool, setTool ] = useState();
+
+    const [ verificationData, setVerificationData ] = useState(initialState);
+
     let images = useSelector((state) => state.images['allImage'])
     const annotatedStore = useSelector((state) => state.annotations['annotations'])
+    const verifications = useSelector((state) => state.verifications)
     const currentIndex = location.state.index;
     const id = location.state.id;
     const totalImage = images?.length;
     const annotationsTemp = []
-    
-
-    // Current drawing tool name
-    const [ tool, setTool ] = useState();
 
     useEffect(() => {
         let annotorious = null;
         
-        console.log("annotatedStore", annotatedStore);
+        console.log("verifications", verifications);
 
         if (imgEl.current) {
           // Init
@@ -48,7 +53,6 @@ const VerificatorVerificationPage = props => {
           });
           
           annotatedStore[currentIndex]?.boundingBox?.map((box)=>{
-              console.log("hello")
             annotationsTemp.push(createAnnotationObject({id: box._id, label: images[currentIndex]?.task[0]?.label, x: box.x, y: box.y, width: box.width, height: box.height})) 
           })
           annotorious.setAnnotations(annotationsTemp);
@@ -59,14 +63,29 @@ const VerificatorVerificationPage = props => {
       }, [images, currentIndex]);
 
     const handleButton = async() => {
-        await anno.destroy();
+        console.log("annotation id", annotatedStore[currentIndex]?._id)
+        await anno.destroy(); 
         if(currentIndex!=totalImage-1){
+            dispatch(storeVerification(verificationData, annotatedStore[currentIndex]?._id));
+            console.log(verifications)
+            setVerificationData(initialState)
             history.push({
               pathname: '/verificator/verification-page',
               state: { id: id, index: currentIndex+1 }
             })
+        } else {
+            dispatch(fetchVerification())
+            await verifications.push({ verificationData: verificationData, annotationId: annotatedStore[currentIndex]?._id})
+            console.log("about to dispatch")
+            dispatch(createVerification(verifications))
+            history.push('/verificator')
+
         }
     }
+
+    const handleChange = (e) => {
+        setVerificationData({ ...verificationData, [e.target.name] : e.target.value });
+    };
     
     return (
     images?.length == null ?
@@ -104,11 +123,12 @@ const VerificatorVerificationPage = props => {
                         </Typography>
                         <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                             <Input
-                                // handleChange={handleChange}
+                                handleChange={handleChange}
                                 type="text"
                                 label="Score"
                                 name="score"
                                 half
+                                value={verificationData.score}
                             />
                             <Typography variant="h6" className={classes.label} htmlFor="form-task" style={{marginLeft: '15px'}}>
                                 <b>/100</b>
@@ -120,12 +140,13 @@ const VerificatorVerificationPage = props => {
                             <b>Feedback</b>
                         </Typography>
                         <Input
-                            // handleChange={handleChange}
+                            handleChange={handleChange}
                             type="text"
                             label="Feedback"
                             name="feedback"
                             multiline
                             rows={10}
+                            value={verificationData.feedback}
                         />
                     </div>
                 </div>

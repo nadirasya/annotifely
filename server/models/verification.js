@@ -2,12 +2,9 @@ import mongoose from 'mongoose';
 
 const verificationSchema = mongoose.Schema({
     id: { type: String },
-    image: [{
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Image' }],
-    annotater: [{ 
+    annotation: [{ 
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Annotater' }],
+                ref: 'Annotation' }],
     verificator: [{ 
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Verificator' }],

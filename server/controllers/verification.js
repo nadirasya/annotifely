@@ -3,32 +3,33 @@ import Annotation from "../models/annotation.js";
 import Image from "../models/image.js";
 
 export const createVerification = async (req, res) => {
+    const verificationData = req.body;
+    const total = verificationData?.length
 
-    const {score, feedback, imageId} = req.body;
+    console.log("verificationData", verificationData)
 
-    // console.log("this is", imageId)
-    if(!imageId)
-        return res.status(400).json({ errorMessage: "Image ID not given."});
+    await verificationData?.map(async(verification, index) => {
+        console.log(index+1, ". ", "annotatationId: ", verification.annotationId, " ", verification.verificationData.score, " ", verification.verificationData.feedback)
+    
 
-    const image= await Image.findOne({_id: imageId});
-    if(!image)
-    return res.status(400).json({ errorMessage: "No image with this ID was found."});
+    if(!verification.annotationId)
+        return res.status(400).json({ errorMessage: "annotation ID not given."});
 
-    const annotation= await Annotation.find({image: image}).populate('annotater', 'id')
-
+    const annotation= await Annotation.findOne({_id: verification.annotationId});
     if(!annotation)
     return res.status(400).json({ errorMessage: "No annotation with this ID was found."});
 
     // save verification in the database
-    const newVerification = new Verification ({ score:score, feedback:feedback, imageId:imageId, annotater:annotation.annotater, verificator:req.user.id});
+    const newVerification = new Verification ({ score:verification.verificationData.score, feedback:verification.verificationData.feedback, annotation:verification.annotationId, verificator:req.user.id});
     
     try {
         const savedVerification = await newVerification.save();
-        res.status(200).json(savedVerification);
+        return res.status(200).json(savedVerification);
     
         } catch (error) {
             console.log(error);
         }
+    })
 }
 
 //GET VERIFICATION BY ID TASK

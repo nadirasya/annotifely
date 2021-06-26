@@ -10,8 +10,6 @@ import { ThemeProvider } from '@material-ui/core';
 import theme from './theme';
 
 const UserLeaveConfirmation = (message, callback, confirmOpen, setConfirmOpen) => {
-    console.log('callback', callback);
-  
     const container = document.createElement("div");
     container.setAttribute("custom-confirmation-navigation", "");
     document.body.appendChild(container)

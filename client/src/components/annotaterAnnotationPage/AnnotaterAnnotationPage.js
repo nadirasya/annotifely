@@ -58,7 +58,7 @@ const AnnotaterAnnotationPage = props => {
             // readOnly: true,
           });
           
-          if(location.state?.type == "edit"){
+          if(location.state?.type === "edit"){
             annotatedStore[currentIndex]?.boundingBox?.map((box)=>{
               annotationsTemp.push(createAnnotationObject({id: box._id, label: images[currentIndex]?.task[0]?.label, x: box.x, y: box.y, width: box.width, height: box.height})) 
             })

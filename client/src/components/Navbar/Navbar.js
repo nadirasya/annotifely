@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { AppBar, Typography, Toolbar, Button, IconButton, Menu, MenuItem } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { useDispatch } from 'react-redux';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import useStyles from './styles';
 import logoSmall from '../images/logoSmall.png';
