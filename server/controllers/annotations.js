@@ -1,15 +1,16 @@
-import { query } from 'express';
+
 import mongoose from 'mongoose';
 import Annotation from '../models/annotation.js';
 import Image from '../models/image.js';
+import task from '../models/task.js';
 import Task from '../models/task.js';
 
 // CREATE ANNOTATION
 export const createAnnotation = async( req, res ) => {
     const {annotationsData} = req.body;
 
-    const total = annotationsData?.length
-    await annotationsData?.map(async(anno, index) => {
+    const total = annotationsData.length
+    await annotationsData.map(async(anno, index) => {
         if(!anno.imageId)
         return res.status(400).json({ errorMessage: "Image ID not given."});
 
@@ -46,13 +47,16 @@ export const createAnnotation = async( req, res ) => {
 //GET ALL ANNOTATION 
 export const getAnnotation = async (req,res)  => {
     try {
-        const annotation = await Annotation.find().populate('annotater task', 'name title totalImage');
+
+        const annotation = await (await Annotation.find().populate('annotater task', 'name title totalImage'));
+             
         res.status(200).json(annotation);
     }
     catch(err) {
         res.status(500).send();
     }
 }
+
 //GET ANNOTATION By ID TASK
 export const getAnnotationByIdTask = async (req,res)  => {
     const {annotaterId} = req.query;
@@ -81,7 +85,7 @@ export const editAnnotation = async( req, res ) => {
     return res.status(400).json(annotation);
 
 
-    await annotationsData?.map(async(anno, index) => {
+    await annotationsData.map(async(anno, index) => {
         if(!anno.imageId)
         return res.status(400).json({ errorMessage: "Image ID not given."});
 

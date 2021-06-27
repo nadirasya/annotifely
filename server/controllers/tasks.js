@@ -1,7 +1,7 @@
 import Task from '../models/task.js';
 import Image from '../models/image.js';
-import mongoose from 'mongoose';
-import task from '../models/task.js';
+import Annotation from '../models/annotation.js';
+import fs from 'fs';
 
 export const getTasks = async (req, res) => { 
     try {
@@ -88,21 +88,21 @@ export const updateTime = async( req, res ) => {
 
 export const downloadTask = async (req,res)  => {
     try {
-        const annotationId = req.params.id;
-        const annotation = await Annotation.findById(annotationId).populate('task', 'id title');
+        const taskId = req.params.id;
 
-        if (annotation.annotater.toString() !== req.user.id)
-        return res.status(400).json({ errorMesssage: "Unauthorized"});
-
-        const path ="Data_Image.json"; 
-        const filePath = fs.writeFileSync(path, JSON.stringify(image,0,2));
+        const download = await Annotation.find({task:taskId});
+        // console.log(download);
+        
+        const path ="AnnotationsResult.json"; 
+        const filePath = fs.writeFileSync(path, JSON.stringify(download,0,2));
         filePath.on('finish',() => {
             filePath.close();
             console.log('Download Completed'); 
         });
-        res.status(200).json(image);
+        res.status(200).json(download);
     }
     catch(err) {
         res.status(500).send();
     }
 }
+

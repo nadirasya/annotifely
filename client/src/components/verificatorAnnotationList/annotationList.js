@@ -24,7 +24,7 @@ const AnnotationList = () => {
 
     const dispatch = useDispatch(); 
     const history = useHistory();
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const annotations = useSelector((state) => state.annotations['annotatedData'])
 
     useEffect(() => {
