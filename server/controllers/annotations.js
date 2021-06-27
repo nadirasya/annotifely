@@ -8,8 +8,8 @@ import Task from '../models/task.js';
 export const createAnnotation = async( req, res ) => {
     const {annotationsData} = req.body;
 
-    const total = annotationsData.length
-    await annotationsData.map(async(anno, index) => {
+    const total = annotationsData?.length
+    await annotationsData?.map(async(anno, index) => {
         if(!anno.imageId)
         return res.status(400).json({ errorMessage: "Image ID not given."});
 
@@ -84,7 +84,7 @@ export const editAnnotation = async( req, res ) => {
     return res.status(400).json(annotation);
 
 
-    await annotationsData.map(async(anno, index) => {
+    await annotationsData?.map(async(anno, index) => {
         if(!anno.imageId)
         return res.status(400).json({ errorMessage: "Image ID not given."});
 
