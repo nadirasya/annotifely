@@ -2,7 +2,6 @@
 import mongoose from 'mongoose';
 import Annotation from '../models/annotation.js';
 import Image from '../models/image.js';
-import task from '../models/task.js';
 import Task from '../models/task.js';
 
 // CREATE ANNOTATION
