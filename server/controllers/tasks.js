@@ -92,7 +92,6 @@ export const downloadTask = async (req,res)  => {
 
         const download = await Annotation.find({task:taskId});
         // console.log(download);
-        
         const path ="AnnotationsResult.json"; 
         const filePath = fs.writeFileSync(path, JSON.stringify(download,0,2));
         filePath.on('finish',() => {
