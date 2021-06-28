@@ -34,6 +34,7 @@ export const fetchAnnotations = () => async(dispatch) => {
 
 export const getAnnotations = () => async (dispatch) => {
     const currentDate = moment()
+    console.log('recentl date', currentDate);
     
     try{
         const { data } = await api.fetchAnnotations();
@@ -41,8 +42,9 @@ export const getAnnotations = () => async (dispatch) => {
         console.log({data});
         data.map((annotation) => {
             //Calculate time difference
-            const createdDate = moment(annotation?.task?.createdAt);
-            annotation['submitted'] = currentDate.diff(createdDate, 'days');
+            const createdDate = moment(annotation.createdAt).startOf(currentDate).fromNow();
+            // annotation['submitted'] = currentDate.diff(createdDate, 'days');
+            annotation['submitted'] = createdDate;
         })
     
         dispatch({ type: GET_ANNOTATION, payload: data });

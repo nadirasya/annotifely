@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getClientTask, updateTime } from '../../actions/tasks';
 
-import {Container, Button, Typography, Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, withStyles  } from '@material-ui/core';
+import {Container, Button, Typography, Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, withStyles  } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import useStyles from './TaskListComponents/styles';
@@ -29,11 +29,20 @@ const TaskList = () => {
     const history = useHistory();
     const [additionalTimeTask, setAdditionalTimeTask] = useState(false);
     const [selectedTask, setSelectedTask] = useState();
+    const timer = useRef();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         console.log("hello this is useEffect")
         dispatch(getClientTask());
+
+        clearTimeout(timer.current);
+        
     }, [dispatch] );
+
+    timer.current = window.setTimeout(() => {
+        setLoading(false);
+    }, 1500);
 
     const handleAddTimeForm = (task) => {
         setSelectedTask(task);
@@ -106,7 +115,15 @@ const TaskList = () => {
             <main>
                 {
                     tasks.length === 0 ?
-                    <EmptyTask handleAddTask={handleAddTask}/>
+                        <div>
+                            { loading ? 
+                                <div style={{display: 'flex', justifyContent: 'center', marginTop: '10vh'}}> 
+                                    <CircularProgress />
+                                </div>
+                                :
+                            <EmptyTask handleAddTask={handleAddTask}/>
+                            }
+                        </div>
                     :
                     <div className={classes.titleContainer}>
                     <Grid container spacing={0}  direction="column" alignItems="center" justify="center" >

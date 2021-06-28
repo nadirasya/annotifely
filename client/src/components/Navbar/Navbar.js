@@ -45,7 +45,7 @@ const Navbar = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="secondary" style={{maxHeight: '8vh'}}>
+      <AppBar position="static" color="white" style={{maxHeight: '8vh'}}>
         <Toolbar>
           <div className={classes.logoContainer}>
             <img src={logoSmall} alt="logo" className={classes.logo} />

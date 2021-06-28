@@ -140,19 +140,19 @@ const AnnotaterMyAnnotationsPage = () => {
                                 <TableHead>
                                 <TableRow className={classes.tableRow} style={{alignItems: "left", backgroundColor: '#567068'}} >
                                     <StyledTableCell>
-                                        <Typography variant="subtitle1" color="secondary"><b>Client</b></Typography>
+                                        <Typography variant="subtitle1"><b>Client</b></Typography>
                                     </StyledTableCell>
                                     <StyledTableCell>
-                                        <Typography variant="subtitle1" color="secondary"><b>Title</b></Typography>
+                                        <Typography variant="subtitle1"><b>Title</b></Typography>
                                     </StyledTableCell>
                                     <StyledTableCell >
-                                        <Typography variant="subtitle1" color="secondary"><b>Total Image</b></Typography>
+                                        <Typography variant="subtitle1"><b>Total Image</b></Typography>
                                     </StyledTableCell>
                                     <StyledTableCell>
-                                        <Typography variant="subtitle1" color="secondary"><b>Time Remaining</b></Typography>
+                                        <Typography variant="subtitle1"><b>Time Remaining</b></Typography>
                                     </StyledTableCell>
                                     <StyledTableCell  style={{width: '20%'}}>
-                                        <Typography variant="subtitle1" color="secondary"><b>Action</b></Typography>
+                                        <Typography variant="subtitle1"><b>Action</b></Typography>
                                     </StyledTableCell>
                                 </TableRow>
                                 </TableHead>

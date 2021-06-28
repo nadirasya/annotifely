@@ -1,5 +1,6 @@
 import React, {  useState } from 'react';
-import { IconButton, Typography, Paper, Grid, Button, Slide } from '@material-ui/core';
+import { Typography, Paper, Grid, Button, Slide } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import {useDispatch} from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -16,26 +17,38 @@ const LoginForm = ({loginForm}) => {
     const classes = useStyles();
     const history = useHistory();
     const dispatch = useDispatch();
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+    const [accountValid, setAccountValid] = useState(true);
 
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
         
         if(formData.role==="annotater"){
-            dispatch(signinAnnotater(formData, history));
+            await dispatch(signinAnnotater(formData, history))
+            if (!user){
+                setAccountValid(false)
+            }
         } 
         else if (formData.role==="client"){
-            dispatch(signinClient(formData, history));
+            await dispatch(signinClient(formData, history));
+            if (!user){
+                setAccountValid(false)
+            }
         }
         else {
-            dispatch(signinVerificator(formData, history));
+            await dispatch(signinVerificator(formData, history));
+            if (!user){
+                setAccountValid(false)
+            }
         }
         // dispatch(signup(formData, history));
     };
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name] : e.target.value });
+        setAccountValid(true);
     };
 
     const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -49,23 +62,29 @@ const LoginForm = ({loginForm}) => {
             </Typography>
             <div className={classes.roleButtonContainer} >
                 <Button size="large">
-                    <Typography variant="h6" color={ formData.role === "annotater" ? "inherit" : "primary"} onClick={() => {setFormData({...formData, role: "annotater"})}}>
+                    <Typography variant="h6" color={ formData.role === "annotater" ? "primary" : "secondary"} onClick={() => {setFormData({...formData, role: "annotater"})}}>
                         <b>Annotater</b>
                     </Typography>
                 </Button>
                 <Button size="large">
-                    <Typography variant="h6" color={ formData.role === "client" ? "inherit" : "primary"} onClick={() => {setFormData({...formData, role: "client"})}}>
+                    <Typography variant="h6" color={ formData.role === "client" ? "primary" : "secondary"} onClick={() => {setFormData({...formData, role: "client"})}}>
                         <b>Client</b>
                     </Typography>
                 </Button>
                 <Button size="large">
-                    <Typography variant="h6" color={ formData.role === "verificator" ? "inherit" : "primary"} onClick={() => {setFormData({...formData, role: "verificator"})}}>
+                    <Typography variant="h6" color={ formData.role === "verificator" ? "primary" : "secondary"} onClick={() => {setFormData({...formData, role: "verificator"})}}>
                         <b>Verificator</b>
                     </Typography>
                 </Button>
             </div>
             <form className={classes.form} onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
+                    { !accountValid ?    
+                        <div className={classes.alertContainer}>
+                            <Alert severity="error">Invalid email or password.</Alert>
+                        </div>
+                        : null
+                    }
                     <Input name="email" label="Email Address" handleChange={handleChange} type="email"/>
                     <Input name="password" label="Password" handleChange={handleChange} type={ showPassword ? "text" : "password"} handleShowPassword={handleShowPassword}/>
                     </Grid>
