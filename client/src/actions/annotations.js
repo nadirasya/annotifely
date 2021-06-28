@@ -34,16 +34,27 @@ export const fetchAnnotations = () => async(dispatch) => {
 
 export const getAnnotations = () => async (dispatch) => {
     const currentDate = moment()
-    
+    const annoTemp = []
     try{
-        const { data } = await api.fetchAnnotations();
+        let { data } = await api.fetchAnnotations();
         if ( data )
         console.log({data});
         data.map((annotation) => {
-            const createdDate = moment(annotation?.task?.createdAt);
-            return annotation['submitted'] = currentDate.diff(createdDate, 'days');
+            const taskId = annotation.task[0]._id
+            const annotaterId = annotation.annotater[0]._id
+            console.log("task", taskId, " annotater", annotaterId)
+            const check = annoTemp.some((anno) => anno.task[0]._id === taskId && anno.annotater[0]._id === annotaterId)
+            if(check === false){
+                console.log("false")
+                const createdDate = moment(annotation?.task?.createdAt);
+                annotation['submitted'] = currentDate.diff(createdDate, 'days');
+                annoTemp.push(annotation);
+            } else {
+                console.log("true");
+            }
         })
-    
+        console.log("annoTemp", annoTemp)
+        // data = annoTemp;
         dispatch({ type: GET_ANNOTATION, payload: data });
     } catch (error) {
         console.log(error);
