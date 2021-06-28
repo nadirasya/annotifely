@@ -125,22 +125,22 @@ const HomePage = () => {
                             <TableHead>
                             <TableRow className={classes.tableRow} style={{alignItems: "left"}} >
                                 <StyledTableCell>
-                                    <Typography variant="subtitle1" color="secondary"><b>Client</b></Typography>
+                                    <Typography variant="subtitle1"><b>Client</b></Typography>
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                    <Typography variant="subtitle1" color="secondary"><b>Title</b></Typography>
+                                    <Typography variant="subtitle1"><b>Title</b></Typography>
                                 </StyledTableCell>
                                 <StyledTableCell >
-                                    <Typography variant="subtitle1" color="secondary"><b>Total Image</b></Typography>
+                                    <Typography variant="subtitle1"><b>Total Image</b></Typography>
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                    <Typography variant="subtitle1" color="secondary"><b>Annotaters</b></Typography>
+                                    <Typography variant="subtitle1"><b>Annotaters</b></Typography>
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                    <Typography variant="subtitle1" color="secondary"><b>Created At</b></Typography>
+                                    <Typography variant="subtitle1"><b>Created At</b></Typography>
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                    <Typography variant="subtitle1" color="secondary"><b>Action</b></Typography>
+                                    <Typography variant="subtitle1"><b>Action</b></Typography>
                                 </StyledTableCell>
                             </TableRow>
                             </TableHead>

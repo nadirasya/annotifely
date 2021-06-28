@@ -43,7 +43,7 @@ const UserLeaveConfirmation = (message, callback, confirmOpen, setConfirmOpen) =
             <Button autoFocus onClick={handleConfirm} color="primary" variant="outlined">
               OK
             </Button>
-            <Button onClick={handleCancel} color="primary" autoFocus variant="contained" disabledElevation>
+            <Button onClick={handleCancel} color="primary" autoFocus variant="contained" disableElevation>
               Cancel
             </Button>
           </DialogActions>

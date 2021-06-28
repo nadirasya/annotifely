@@ -25,6 +25,15 @@ export default makeStyles((theme) => ({
         backgroundColor: '#CFCFCF',
         color: theme.palette.getContrastText('#CFCFCF'),
     },
+    centerBox: {
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    boxImage: {
+        height: '65vh',
+        display:"flex",
+        padding: 8,
+    },
     h4: {
         fontSize: 'calc(80% + 1.5vw)',
     },

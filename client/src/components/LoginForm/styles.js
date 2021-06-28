@@ -52,5 +52,12 @@ export default makeStyles((theme) => ({
     display: 'flex',
     // alignItems: 'center',
     justifyContent: 'center'
-  }
+  },
+  alertContainer: {
+    width: '100%', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    // display: 'flex',
+    padding: 10
+  },
 }));

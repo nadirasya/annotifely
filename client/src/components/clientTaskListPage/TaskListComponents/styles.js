@@ -15,7 +15,7 @@ const useStyles= makeStyles((theme) => ({
         marginTop: '10px'
     },
     boxImage: {
-        marginTop: '15vh',
+        marginTop: '20vh',
         // height: 300,
         display:"flex",
         padding: 8,
