@@ -10,13 +10,14 @@ export const getTasks = (id) => async (dispatch) => {
         const { data } = await api.fetchTasks();
         data.map((task, index) => {
             //Calculate time difference
-            const checkAnnotater = task.totalAnnotater.some((annotaterId) => annotaterId == id)
+            const checkAnnotater = task.totalAnnotater.some((annotaterId) => annotaterId === id)
            if (checkAnnotater === false){
                 task.totalAnnotater=task.totalAnnotater.length
                 const createdDate = moment(task.createdAt);
                 task['timeRemaining'] = currentDate.diff(createdDate, 'days');
                 availableTask.push(task);
            } 
+           return availableTask;
         })
         dispatch({ type: FETCH_ALL, payload: availableTask });
     } catch (error) {
@@ -31,13 +32,14 @@ export const getAnnotaterTask = (id) => async (dispatch) => {
         const { data } = await api.fetchTasks();
         data.map((task, index) => {
             //Calculate time difference
-            const checkAnnotater = task.totalAnnotater.some((annotaterId) => annotaterId == id)
-           if (checkAnnotater == true){
+            const checkAnnotater = task.totalAnnotater.some((annotaterId) => annotaterId === id)
+           if (checkAnnotater === true){
                 task.totalAnnotater=task.totalAnnotater.length
                 const createdDate = moment(task.createdAt);
                 task['timeRemaining'] =  task.timeSpan - currentDate.diff(createdDate, 'days');
                 finishedTask.push(task)
            }
+           return finishedTask
         })
         dispatch({ type: FETCH_TASK, payload: finishedTask });
     } catch (error) {
@@ -65,6 +67,7 @@ export const getClientTask = () => async (dispatch) => {
             const createdDate = moment(task.createdAt);
             task['timeRemaining'] =  task.timeSpan - currentDate.diff(createdDate, 'days');
             task.totalAnnotater=task.totalAnnotater.length
+            return task;
         })
 
         dispatch({ type: FETCH_ALL, payload: data });

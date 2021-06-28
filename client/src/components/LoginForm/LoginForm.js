@@ -4,7 +4,7 @@ import Alert from '@material-ui/lab/Alert';
 import {useDispatch} from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { signinAnnotater, signinVerificator, signinClient, signup } from '../../actions/auth';
+import { signinAnnotater, signinVerificator, signinClient } from '../../actions/auth';
 import Input from './Input';
 import useStyles from './styles';
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ThemeProvider, CssBaseline } from '@material-ui/core';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
@@ -10,7 +10,6 @@ import AnnotaterMyAnnotationsPage from './components/annotaterMyAnnotationsPage/
 import TaskForm from './components/clientTaskForm/TaskForm';
 import AnnotaterAnnotationPage from './components/annotaterAnnotationPage/AnnotaterAnnotationPage';
 import ClientTaskList from './components/clientTaskListPage/TaskList';
-import ClientHomePage from './components/clientHomePage/HomePage';
 import AccessDenied from './components/AccessDenied/AccessDenied';
 import VerificatorVerificationPage from './components/verificatorVerificationPage/VerificatorVerificationPage';
 import VerificatorAnnotationList from './components/verificatorAnnotationList/annotationList';
@@ -69,7 +68,7 @@ const App = () => {
 
 
     const NavBarRoutes = () => {
-        const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
+        const [user] = useState(JSON.parse(localStorage.getItem('profile'))); 
 
         const checkUser = (allowedRole) => {
 

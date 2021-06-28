@@ -51,7 +51,7 @@ const TaskForm= () => {
                     />
                 <Grid item>
                     <ButtonBase className={classes.image} >
-                        <img className={classes.img} src={picture} />
+                        <img className={classes.img} src={picture} alt=''/>
                     </ButtonBase>
                 </Grid>
                 </Box>

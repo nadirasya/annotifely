@@ -1,4 +1,4 @@
-import { query } from 'express';
+
 import mongoose from 'mongoose';
 import Annotation from '../models/annotation.js';
 import Image from '../models/image.js';
@@ -46,13 +46,16 @@ export const createAnnotation = async( req, res ) => {
 //GET ALL ANNOTATION 
 export const getAnnotation = async (req,res)  => {
     try {
-        const annotation = await Annotation.find().populate('annotater task', 'name title totalImage');
+
+        const annotation = await (await Annotation.find().populate('annotater task', 'name title totalImage'));
+             
         res.status(200).json(annotation);
     }
     catch(err) {
         res.status(500).send();
     }
 }
+
 //GET ANNOTATION By ID TASK
 export const getAnnotationByIdTask = async (req,res)  => {
     const {annotaterId} = req.query;
