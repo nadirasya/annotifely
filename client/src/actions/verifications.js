@@ -1,9 +1,8 @@
-import { CREATE_VERIFICATION, STORE_VERIFICATION, GET_VERIFICATION } from '../constants/actionTypes';
+import { CREATE_VERIFICATION, STORE_VERIFICATION, GET_VERIFICATION, GET_VERIFICATION_BY_ID } from '../constants/actionTypes';
 import * as api from '../api';
 
 export const createVerification = (verificationData) => async(dispatch) => {
     try {
-        console.log("hello this is action")
         const { data } = await api.createVerification(verificationData);
         
         dispatch({ type: CREATE_VERIFICATION, data });
@@ -19,4 +18,13 @@ export const storeVerification = (verificationData, annotationId) => async(dispa
 
 export const fetchVerification = () => async(dispatch) => {
     dispatch({ type: GET_VERIFICATION });
+}
+
+export const getVerificationById = (annotationId) => async(dispatch) => {
+    try {
+        const { data } = await api.getVerificationById(annotationId);
+        dispatch({ type: GET_VERIFICATION_BY_ID, payload: data });
+    } catch (error) {
+        console.log(error);   
+    }
 }

@@ -1,13 +1,13 @@
-import { CREATE_ANNOTATION, FETCH_ANNOTATION, STORE_ANNOTATION, GET_ANNOTATION, FETCH_ANNOTATION_BY_ID } from '../constants/actionTypes';
+import { CREATE_ANNOTATION, FETCH_ANNOTATION, STORE_ANNOTATION, GET_ANNOTATION, FETCH_ANNOTATION_BY_ID, CLEANUP_ANNOTATION } from '../constants/actionTypes';
 
 import * as api from '../api';
 import moment from 'moment';
 
 export const createAnnotation = (annotationStore) =>  async(dispatch) => {
     try {
-        const { data } = await api.createAnnotation({annotationsData: annotationStore});
+        await api.createAnnotation({annotationsData: annotationStore});
 
-        dispatch({ type: CREATE_ANNOTATION, payload: data });
+        dispatch({ type: CREATE_ANNOTATION });
     } catch (error) {
         console.log(error);
     }
@@ -30,6 +30,10 @@ export const storeAnnotations = (annotationData, imageId) => async(dispatch) => 
 
 export const fetchAnnotations = () => async(dispatch) => {
     dispatch({ type: FETCH_ANNOTATION });
+}
+
+export const cleanupAnnotations = () => async(dispatch) => {
+    dispatch({ type: CLEANUP_ANNOTATION });
 }
 
 export const getAnnotations = () => async (dispatch) => {

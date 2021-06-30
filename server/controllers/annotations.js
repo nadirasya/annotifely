@@ -1,8 +1,8 @@
-
 import mongoose from 'mongoose';
 import Annotation from '../models/annotation.js';
 import Image from '../models/image.js';
 import Task from '../models/task.js';
+import Verification from '../models/verification.js';
 
 // CREATE ANNOTATION
 export const createAnnotation = async( req, res ) => {
@@ -46,9 +46,13 @@ export const createAnnotation = async( req, res ) => {
 //GET ALL ANNOTATION 
 export const getAnnotation = async (req,res)  => {
     try {
-
-        const annotation = await (await Annotation.find().populate('annotater task', 'name title totalImage'));
-             
+        const annotation = []
+        const annotationData = await Annotation.find().populate('annotater task', 'name title totalImage');
+        const verification = await Verification.find();
+        annotationData.map((anno) => {
+            const idChecker = verification.some((verif) => verif.annotation[0]._id.toString()==anno._id.toString())
+            if(idChecker === false) annotation.push(anno);
+        })
         res.status(200).json(annotation);
     }
     catch(err) {

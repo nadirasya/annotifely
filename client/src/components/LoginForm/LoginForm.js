@@ -94,8 +94,7 @@ const LoginForm = ({loginForm}) => {
                                Confirm
                             </Typography>
                         </Button>
-                    </div>
-                    
+                    </div>     
             </form>
         </Paper>
         </Slide>
