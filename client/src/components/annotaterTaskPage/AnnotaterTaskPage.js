@@ -5,7 +5,7 @@ import { Container, Typography, Table, TableBody, TableCell, TableContainer, Tab
 import useStyles from './styles';
 import EmptyTask from './EmptyTask';
 import { getTasks, getTasksById } from '../../actions/tasks';
-import AnnotaterAnnotationPage from '../annotaterAnnotationPage/AnnotaterAnnotationPage';
+import { cleanupAnnotations } from '../../actions/annotations';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -31,18 +31,15 @@ const AnnotaterTaskPage = () => {
     let load = location?.state?.load;
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
 
-    // if(load===true){
-    //     load = false;
-    //     window.location.reload();
-    // }
-    
+    useEffect(() => {
+        dispatch(cleanupAnnotations());
+    }, [])
+
     useEffect(() => {
         dispatch(getTasks(user.result._id));
         console.log(tasks)
-
         clearTimeout(timer.current);
-        
-    }, [dispatch, load])
+    }, [dispatch, load===true])
 
     timer.current = window.setTimeout(() => {
         setLoading(false);
@@ -65,7 +62,7 @@ const AnnotaterTaskPage = () => {
                    <b> Task List </b> 
                 </Typography>
             </div>
-            { tasks.length ?
+            { !tasks.length ?
                 <div>
                     { loading ? 
                         <div style={{display: 'flex', justifyContent: 'center'}}> 

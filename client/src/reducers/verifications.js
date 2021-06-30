@@ -1,4 +1,4 @@
-import { CREATE_VERIFICATION, STORE_VERIFICATION, GET_VERIFICATION } from '../constants/actionTypes';
+import { CREATE_VERIFICATION, STORE_VERIFICATION, GET_VERIFICATION, GET_VERIFICATION_BY_ID } from '../constants/actionTypes';
 
 export default (verifications = [], action) => {
     switch(action.type){
@@ -8,6 +8,8 @@ export default (verifications = [], action) => {
             return [...verifications, action.payload];
         case GET_VERIFICATION:
             return verifications;
+        case GET_VERIFICATION_BY_ID:
+            return verifications = action.payload;
         default:
             return verifications;
     }

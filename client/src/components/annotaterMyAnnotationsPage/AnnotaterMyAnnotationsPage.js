@@ -44,7 +44,16 @@ const AnnotaterMyAnnotationsPage = () => {
         setLoading(false);
     }, 1500);
 
-    const handleShowFeedback =  () => setFeedbackForm(true);
+    const handleShowFeedback =  (id) => {
+        console.log(id)
+        dispatch(getAnnotationByIdTask(id, user.result._id));
+        dispatch(getTasksById(id));
+        console.log("annotations", annotations)
+        history.push({
+            pathname: '/annotater/verification',
+            state: { id: id, index: 0}
+        })
+    }
 
     const handleClickCancel = ()  => {
         setFeedbackForm(false)
@@ -92,7 +101,6 @@ const AnnotaterMyAnnotationsPage = () => {
         console.log(id)
         dispatch(getAnnotationByIdTask(id, user.result._id));
         dispatch(getTasksById(id));
-        console.log("annotations", annotations)
         history.push({
             pathname: '/annotater/task/annotation',
             state: { id: id, index: 0, type: 'edit'}
@@ -168,7 +176,7 @@ const AnnotaterMyAnnotationsPage = () => {
                                     <TableCell>
                                         <Grid container spacing={1}>
                                             <Grid item xs={12} md={6} lg={6}>
-                                                <Button variant="contained" disableElevation className={classes.buttonTertiary} onClick={handleShowFeedback}>
+                                                <Button variant="contained" disableElevation className={classes.buttonTertiary} onClick={() => handleShowFeedback(row._id)}>
                                                     <Typography variant="subtitle2" >Feedback</Typography>
                                                 </Button>
                                             </Grid>

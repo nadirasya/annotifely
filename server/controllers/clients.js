@@ -4,7 +4,6 @@ import Task from '../models/task.js';
 export const getClients = async (req, res) => { 
     try {
         const client = await Client.find();
-        console.log('client hitted')
         res.status(200).json(client);
     } catch (error) {
         console.log(error)

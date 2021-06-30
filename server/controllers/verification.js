@@ -6,10 +6,7 @@ export const createVerification = async (req, res) => {
     const verificationData = req.body;
     const total = verificationData?.length
 
-    console.log("verificationData", verificationData)
-
     await verificationData?.map(async(verification, index) => {
-        console.log(index+1, ". ", "annotatationId: ", verification.annotationId, " ", verification.verificationData.score, " ", verification.verificationData.feedback)
     
 
     if(!verification.annotationId)
@@ -41,5 +38,19 @@ export const getVerification = async (req,res)  => {
     }
     catch(err) {
         res.status(500).send();
+    }
+}
+
+//GET VERIFICATION BY ID ANNOTATION 
+export const getVerificationById = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        if(id !== undefined){
+        const feedback = await Verification.find({annotation: id});
+        return res.status(200).json(feedback);
+        }
+    }
+    catch(err) {
     }
 }

@@ -11,6 +11,7 @@ import createAnnotationObject from './createAnnotation';
 import { Annotorious } from '@recogito/annotorious';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAnnotation, editAnnotation, storeAnnotations, fetchAnnotations } from '../../actions/annotations';
+import { getTasks } from '../../actions/tasks';
 import { Prompt } from 'react-router-dom';
 
 import '@recogito/annotorious/dist/annotorious.min.css';
@@ -29,6 +30,8 @@ const AnnotaterAnnotationPage = props => {
     const [ selected, setSelected ] = useState();
     const [ histories, setHistories ] = useState({annotations: [], current: ''});
     const [ isPrompt, setIsPrompt ] = useState(true);
+    const [ remove, setRemove ] = useState(false)
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
 
     if (isPrompt) {
       window.onbeforeunload = () => true
@@ -107,6 +110,9 @@ const AnnotaterAnnotationPage = props => {
     
         // Keep current Annotorious instance in state
         setAnno(annotorious);
+
+        if(annotorious !== null)
+        return () => annotorious.destroy();
       }, [images, currentIndex]);
 
 
@@ -152,8 +158,7 @@ const AnnotaterAnnotationPage = props => {
         const boundingBox = {x, y, width, height}
         annotationData.push(boundingBox)
       })
-      // console.log("anno: ", anno.getAnnotations())
-      await anno.destroy();
+      console.log("anno", anno)
       if(currentIndex!=totalImage-1){
         dispatch(storeAnnotations(annotationData, images[currentIndex]?._id))
         history.push({
@@ -175,11 +180,12 @@ const AnnotaterAnnotationPage = props => {
           })
         } else {
           dispatch(createAnnotation(annotationStore))
+          dispatch(getTasks(user.result._id));
           history.push({
             pathname: '/annotater/task',
             state: { load: true }
           })
-          
+          console.log(annotationStore)
         }
       }
       console.log("annotationStore", annotationStore)

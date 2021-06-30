@@ -7,6 +7,7 @@ import Navbar from './components/Navbar/Navbar';
 import AnnotaterHomePage from './components/annotaterHomePage/HomePage';
 import AnnotaterTaskPage from './components/annotaterTaskPage/AnnotaterTaskPage';
 import AnnotaterMyAnnotationsPage from './components/annotaterMyAnnotationsPage/AnnotaterMyAnnotationsPage';
+import AnnotaterVerificationPage from './components/AnnotaterVerificationPage/AnnotaterVerificationPage';
 import TaskForm from './components/clientTaskForm/TaskForm';
 import AnnotaterAnnotationPage from './components/annotaterAnnotationPage/AnnotaterAnnotationPage';
 import ClientTaskList from './components/clientTaskListPage/TaskList';
@@ -60,6 +61,7 @@ const App = () => {
                     <Route path='/annotater/task' exact component = {AnnotaterTaskPage} />
                     <Route path='/annotater/task/annotation' exact component = {AnnotaterAnnotationPage} />
                     <Route path='/annotater/my-annotation' exact component = {AnnotaterMyAnnotationsPage} />
+                    <Route path='/annotater/verification' exact component = {AnnotaterVerificationPage} />
                     <Redirect to='/no-permission' />
                 </Switch>
             </div>

@@ -6,7 +6,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import ConfirmationForm from '../ConfirmationForm/ConfirmationForm';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { createTask } from '../../actions/tasks';
+import { createTask, getClientTask } from '../../actions/tasks';
 import Input from './Input';
 import useStyles from './styles';
 
@@ -19,14 +19,22 @@ const TaskForm= () => {
     const [url, setUrl] = useState('');
     const [onPreviewUrl, setOnPreviewUrl] = useState(null);
     const [confirmation, setConfirmation] = useState(false);
+    const [imageToRemove, setImageToRemove] = useState();
 
     const classes = useStyles();
     const history = useHistory();
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        // setTaskData(initialState)
+        console.log("taskData.UrlImage is", taskData.UrlImage)
+    }, []);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(createTask(taskData, history)); 
+        dispatch(getClientTask());
+        setTaskData(initialState);
         history.push('/client')
     };
 
@@ -89,18 +97,20 @@ const TaskForm= () => {
         setOnPreviewUrl(index);
     }
 
-    const handleRemoveImage = () => {
+    const handleRemoveImage = (index) => {
         setConfirmation(true)
+        setImageToRemove(index)
     }
 
     const handleCancelRemoveImage = () => {
         setConfirmation(false)
     }
 
-    const onRemoveImage = (index) => {
-        console.log("remove", index);
+    const onRemoveImage = () => {
+        setConfirmation(false)
+        console.log("remove", imageToRemove);
         const imageUrlTemp = taskData.UrlImage;
-        imageUrlTemp.splice(index);
+        imageUrlTemp.splice(imageToRemove);
         console.log(imageUrlTemp)
         setTaskData({ ...taskData, ['UrlImage'] : imageUrlTemp});
     }
@@ -209,7 +219,6 @@ const TaskForm= () => {
                         </ButtonBase>
                         : 
                         <Grid item xs={12} sm={12} className={classes.imagePreview}>
-                            
                             <Typography variant="h6" style={{color: '#CFCFCF'}}>
                                 {pictureError === true ? "Image Not Found" : "Image Preview"}
                             </Typography>
@@ -277,7 +286,7 @@ const TaskForm= () => {
             { confirmation == true ? 
                 <div className={classes.popupContainer}>
                     <OutsideAlerter>
-                        <ConfirmationForm message="Are you sure you want to delete this image?" handleClickCancel={handleCancelRemoveImage} handleClickConfirm={handleRemoveImage} confirmationForm={true}/> 
+                        <ConfirmationForm message="Are you sure you want to delete this image?" handleClickCancel={handleCancelRemoveImage} handleClickConfirm={onRemoveImage} confirmationForm={true}/> 
                     </OutsideAlerter>
                 </div>
                 : null

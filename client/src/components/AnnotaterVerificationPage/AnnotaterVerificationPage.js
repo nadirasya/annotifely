@@ -7,14 +7,12 @@ import { Annotorious } from '@recogito/annotorious';
 import { useDispatch, useSelector } from 'react-redux';
 import Input from './Input'
 import createAnnotationObject from './createAnnotation';
-import { createVerification, storeVerification, fetchVerification } from '../../actions/verifications';
-
+import { createVerification, storeVerification, fetchVerification, getVerificationById } from '../../actions/verifications';
 
 import '@recogito/annotorious/dist/annotorious.min.css';
 
-const initialState = { score: '', feedback: '' };
 
-const VerificatorVerificationPage = props => {
+const AnnotaterVerificationPage = props => {
     const classes = useStyles();
     const location = useLocation();
     const history = useHistory();
@@ -29,8 +27,6 @@ const VerificatorVerificationPage = props => {
     // Current drawing tool name
     const [ tool, setTool ] = useState();
 
-    const [ verificationData, setVerificationData ] = useState(initialState);
-
     let images = useSelector((state) => state.images['allImage'])
     const annotatedStore = useSelector((state) => state.annotations['annotations'])
     const verifications = useSelector((state) => state.verifications)
@@ -38,6 +34,12 @@ const VerificatorVerificationPage = props => {
     const id = location.state.id;
     const totalImage = images?.length;
     const annotationsTemp = []
+
+    useEffect(() => {
+        if(annotatedStore[currentIndex]?._id !== undefined){
+            dispatch(getVerificationById(annotatedStore[currentIndex]?._id))
+        }
+    },[annotatedStore, currentIndex])
 
     useEffect(() => {
         let annotorious = null;
@@ -59,37 +61,23 @@ const VerificatorVerificationPage = props => {
         // Keep current Annotorious instance in state
         setAnno(annotorious);
 
-        if(annotorious !== null) {
-            return () => annotorious.destroy();}
-      }, [images, currentIndex]);
+        if(annotorious !== null)
+        return () => annotorious.destroy();
 
-    const handleButton = async() => {
-        console.log("annotation id", annotatedStore[currentIndex]?._id)
+    }, [images, currentIndex]);
+    
+    const handleButton = () => {
         if(currentIndex!=totalImage-1){
-            dispatch(storeVerification(verificationData, annotatedStore[currentIndex]?._id));
-            console.log(verifications)
-            setVerificationData(initialState)
             history.push({
-              pathname: '/verificator/verification-page',
+              pathname: '/annotater/verification',
               state: { id: id, index: currentIndex+1 }
             })
         } else {
-            dispatch(fetchVerification())
-            await verifications.push({ verificationData: verificationData, annotationId: annotatedStore[currentIndex]?._id})
-            console.log("about to dispatch")
-            dispatch(createVerification(verifications))
-            history.push({
-                pathname: '/verificator',
-                state: { load: true }
-              })
+            history.push('/annotater/my-annotation')
 
         }
     }
 
-    const handleChange = (e) => {
-        setVerificationData({ ...verificationData, [e.target.name] : e.target.value });
-    };
-    
     return (
     images?.length == null ?
     <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
@@ -126,12 +114,11 @@ const VerificatorVerificationPage = props => {
                         </Typography>
                         <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                             <Input
-                                handleChange={handleChange}
                                 type="text"
                                 label="Score"
                                 name="score"
                                 half
-                                value={verificationData.score}
+                                value={verifications[0]?.score}
                             />
                             <Typography variant="h6" className={classes.label} htmlFor="form-task" style={{marginLeft: '15px'}}>
                                 <b>/100</b>
@@ -143,13 +130,12 @@ const VerificatorVerificationPage = props => {
                             <b>Feedback</b>
                         </Typography>
                         <Input
-                            handleChange={handleChange}
                             type="text"
                             label="Feedback"
                             name="feedback"
                             multiline
                             rows={10}
-                            value={verificationData.feedback}
+                            value={verifications[0]?.feedback}
                         />
                     </div>
                 </div>
@@ -163,7 +149,7 @@ const VerificatorVerificationPage = props => {
                         <Typography variant="h6">
                           {
                             currentIndex==totalImage-1?
-                            <b>Submit</b> :
+                            <b>Done</b> :
                             <b>Next</b>
                           }
                         </Typography>
@@ -177,4 +163,4 @@ const VerificatorVerificationPage = props => {
     )
 };
 
-export default VerificatorVerificationPage;
+export default AnnotaterVerificationPage;

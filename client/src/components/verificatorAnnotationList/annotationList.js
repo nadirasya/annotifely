@@ -25,17 +25,21 @@ const AnnotationList = () => {
 
     const dispatch = useDispatch(); 
     const history = useHistory();
+    const location = useLocation();
+
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+    const [loading, setLoading] = useState(true);
     const annotations = useSelector((state) => state.annotations['annotatedData'])
     const timer = useRef();
-    const [loading, setLoading] = useState(true);
+    let load = location?.state?.load;
+    
 
     useEffect(() => {
         dispatch(getAnnotations());
 
         clearTimeout(timer.current);
 
-    }, [dispatch])
+    }, [dispatch, load===true])
 
     timer.current = window.setTimeout(() => {
         setLoading(false);

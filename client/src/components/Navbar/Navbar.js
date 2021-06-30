@@ -44,7 +44,7 @@ const Navbar = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="white" style={{maxHeight: '8vh'}}>
+      <AppBar position="static" style={{maxHeight: '8vh', backgroundColor: 'white'}}>
         <Toolbar>
           <div className={classes.logoContainer}>
             <img src={logoSmall} alt="logo" className={classes.logo} />
@@ -77,7 +77,6 @@ const Navbar = () => {
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 onClick={handleMenu}
-                color="inherit"
               >
                 <AccountCircle />
               </IconButton>
