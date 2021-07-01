@@ -28,7 +28,8 @@ const HomePage = () => {
     const history = useHistory();
     const dispatch = useDispatch(); 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
-    let tasks = useSelector((state) => state.tasks)
+    let tasks = useSelector((state) => state.tasks.taskList)
+    const totalTask = useSelector((state) => state.tasks.total)
     const timer = useRef();
     const [loading, setLoading] = useState(true);
 
@@ -107,7 +108,7 @@ const HomePage = () => {
                 </Typography>
             </div>
 
-            { !tasks.length ?
+            { !tasks?.length ?
                 <div>
                     { loading ? 
                         <div style={{display: 'flex', justifyContent: 'center', height: '40vh'}}> 
@@ -209,9 +210,14 @@ const HomePage = () => {
                                                 <b>Total</b> <br />
                                                 <b>Annotations</b>
                                             </Typography>
-                                            <Typography className={classes.h2}>
-                                                <b>102</b>
-                                            </Typography>
+                                            {
+                                                totalTask !== undefined ?
+                                                <Typography className={classes.h2}>
+                                                    <b>{totalTask}</b>
+                                                </Typography>
+                                                :
+                                                <CircularProgress/>
+                                            }
                                         </CardContent>
                                     </Card>
                                     </Button>
@@ -221,12 +227,17 @@ const HomePage = () => {
                                     <Card className={classes.cardTertiary}>
                                         <CardContent className={classes.cardContent}>
                                             <Typography className={classes.h6} >
-                                                <b>Accepted</b> <br />
-                                                <b>Annotations</b>
+                                                <b>Performance</b> <br />
+                                                <b>Score</b>
                                             </Typography>
-                                            <Typography className={classes.h2}>
-                                                <b>89</b>
-                                            </Typography>
+                                            {
+                                                totalTask !== undefined ?
+                                                <Typography className={classes.h2}>
+                                                    <b>89</b>
+                                                </Typography>
+                                                :
+                                                <CircularProgress/>
+                                            }
                                         </CardContent>
                                     </Card>
                                     </Button>

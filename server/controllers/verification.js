@@ -29,17 +29,6 @@ export const createVerification = async (req, res) => {
     })
 }
 
-//GET VERIFICATION BY ID TASK
-export const getVerification = async (req,res)  => {
-    try {
-        const feedback = await Verification.find({annotater: req.user.id});
-
-        return res.status(200).json(feedback);
-    }
-    catch(err) {
-        res.status(500).send();
-    }
-}
 
 //GET VERIFICATION BY ID ANNOTATION 
 export const getVerificationById = async (req, res) => {
@@ -52,5 +41,23 @@ export const getVerificationById = async (req, res) => {
         }
     }
     catch(err) {
+    }
+}
+
+//GET ANNOTATER PERFORMANCE SCORE BY ANNOTATER ID
+export const getPerformanceScore = async (req, res) => {
+    const { id } = req.params;
+    const annotaterId = '60dbee51fe849b1a68b9780b';
+    let score = 0;
+    try {
+        const verifications = await Verification.find().populate('annotations', 'annotater');
+        verifications.map((verification) => {
+            if(verification.annotation[0] === annotaterId){
+                score += verification.score;
+            }
+        })
+        res.status(200).json(score);
+    } catch (error) {
+        res.status(500).send();
     }
 }

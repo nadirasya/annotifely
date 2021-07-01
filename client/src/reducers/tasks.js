@@ -1,15 +1,20 @@
 import { FETCH_ALL, CREATE, FETCH_TASK, UPDATE_TIME } from '../constants/actionTypes';
 
-export default (tasks = [], action) => {
+export default (tasks = {taskList: [], total: ''}, action) => {
     switch(action.type){
         case FETCH_ALL:
-            return action.payload;
+            tasks['taskList'] = action.payload.availableTask;
+            tasks['total'] = action.payload.totalTask;
+            return tasks;
         case FETCH_TASK: 
-            return action.payload;
+            return tasks['taskList'] = action.payload;
         case CREATE:
-            return [...tasks, action.payload];
+            let taskTemp = tasks['taskList']
+            taskTemp = [...taskTemp, action.payload]
+            tasks['taskList'] = taskTemp;
+            return tasks;
         case UPDATE_TIME:
-            return action.payload;
+            return tasks['taskList'] = action.payload;
         default:
             return tasks;
     }

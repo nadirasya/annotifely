@@ -6,6 +6,7 @@ import moment from 'moment';
 export const getTasks = (id) => async (dispatch) => {
     const currentDate = moment()
     const availableTask = []
+    let totalTask = 0;
     try{
         const { data } = await api.fetchTasks();
         data.map((task, index) => {
@@ -16,10 +17,12 @@ export const getTasks = (id) => async (dispatch) => {
                 const createdDate = moment(task.createdAt);
                 task['timeRemaining'] = currentDate.diff(createdDate, 'days');
                 availableTask.push(task);
-           } 
+           } else {
+               totalTask += 1;
+           }
            return availableTask;
         })
-        dispatch({ type: FETCH_ALL, payload: availableTask });
+        dispatch({ type: FETCH_ALL, payload: {availableTask, totalTask} });
     } catch (error) {
         console.log(error);
     }
@@ -70,7 +73,7 @@ export const getClientTask = () => async (dispatch) => {
             return task;
         })
 
-        dispatch({ type: FETCH_ALL, payload: data });
+        dispatch({ type: FETCH_ALL, payload: {availableTask: data} });
     } catch (error) {
         console.log(error);
     }
