@@ -25,7 +25,7 @@ const StyledTableCell = withStyles((theme) => ({
 const TaskList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const tasks = useSelector((state) => state.tasks);
+    const tasks = useSelector((state) => state.tasks.taskList)
     const history = useHistory();
     const [additionalTimeTask, setAdditionalTimeTask] = useState(false);
     const [selectedTask, setSelectedTask] = useState();
@@ -33,7 +33,6 @@ const TaskList = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        console.log("hello this is useEffect")
         dispatch(getClientTask());
 
         clearTimeout(timer.current);
@@ -114,7 +113,7 @@ const TaskList = () => {
         <Container className={classes.container}>
             <main>
                 {
-                    tasks.length === 0 ?
+                    tasks?.length === 0 ?
                         <div>
                             { loading ? 
                                 <div style={{display: 'flex', justifyContent: 'center', marginTop: '10vh'}}> 
@@ -158,7 +157,7 @@ const TaskList = () => {
                                     </TableHead>
 
                                     <TableBody>
-                                        {tasks.map((task) => (
+                                        {tasks?.map((task) => (
                                             <TableRow key={task?._id}>
                                                 <TableCell align="left">{task?.title}</TableCell>
                                                 <TableCell align="left">{task?.totalImage}</TableCell>

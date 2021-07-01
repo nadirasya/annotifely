@@ -27,7 +27,7 @@ const AnnotaterTaskPage = () => {
     const timer = useRef();
     const [loading, setLoading] = useState(true);
 
-    let tasks = useSelector((state) => state.tasks)
+    let tasks = useSelector((state) => state.tasks.taskList)
     let load = location?.state?.load;
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
 
