@@ -4,9 +4,9 @@ import Image from "../models/image.js";
 
 export const createVerification = async (req, res) => {
     const verificationData = req.body;
-    const total = verificationData?.length
+    const total = verificationData.length
 
-    await verificationData?.map(async(verification, index) => {
+    await verificationData.map(async(verification, index) => {
     
 
     if(!verification.annotationId)
