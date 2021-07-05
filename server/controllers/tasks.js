@@ -1,6 +1,7 @@
 import Task from '../models/task.js';
 import Image from '../models/image.js';
 import Annotation from '../models/annotation.js';
+import cloudinary from 'cloudinary';
 import fs from 'fs';
 
 export const getTasks = async (req, res) => { 
@@ -45,7 +46,10 @@ export const createTask = async( req, res ) => {
     
     // save image in the database
     UrlImage.map(async(image) => {
-        const newImage = new Image ({ imageURL: image, task:savedTask._id })
+        const result = await cloudinary.v2.uploader.upload(image, {use_filename:true, unique_filename:false, overwrite:true, invalidate:true});
+       console.log(result);
+
+        const newImage = new Image ({ imageURL: result.secure_url, task:savedTask._id })
         try {
             await newImage.save();
         } catch (error) {

@@ -47,6 +47,12 @@ const TaskForm= () => {
         
         img.src = url;
         
+        if (!img.src.match(/\.(jpg|jpeg|png)$/)) {
+            alert('Image format must be jpg, jpeg, png');
+           console.log('select valid image.');
+           return false
+          }
+          
         if (img.complete) {
           callback(true);
         } else {
