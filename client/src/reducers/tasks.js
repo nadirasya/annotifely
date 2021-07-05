@@ -1,6 +1,6 @@
-import { FETCH_ALL, CREATE, FETCH_TASK, UPDATE_TIME } from '../constants/actionTypes';
+import { FETCH_ALL, CREATE, FETCH_TASK, UPDATE_TIME, GET_PERFORMANCE_SCORE } from '../constants/actionTypes';
 
-export default (tasks = {taskList: [], total: ''}, action) => {
+export default (tasks = {taskList: [], total: '', performanceScore: ''}, action) => {
     switch(action.type){
         case FETCH_ALL:
             tasks['taskList'] = action.payload.availableTask;
@@ -15,6 +15,9 @@ export default (tasks = {taskList: [], total: ''}, action) => {
             return tasks;
         case UPDATE_TIME:
             return tasks['taskList'] = action.payload;
+        case GET_PERFORMANCE_SCORE:
+            tasks['performanceScore'] = action.payload;
+            return tasks;
         default:
             return tasks;
     }

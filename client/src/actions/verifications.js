@@ -1,4 +1,4 @@
-import { CREATE_VERIFICATION, STORE_VERIFICATION, GET_VERIFICATION, GET_VERIFICATION_BY_ID } from '../constants/actionTypes';
+import { CREATE_VERIFICATION, STORE_VERIFICATION, GET_VERIFICATION, GET_VERIFICATION_BY_ID, GET_PERFORMANCE_SCORE } from '../constants/actionTypes';
 import * as api from '../api';
 
 export const createVerification = (verificationData) => async(dispatch) => {
@@ -24,6 +24,15 @@ export const getVerificationById = (annotationId) => async(dispatch) => {
     try {
         const { data } = await api.getVerificationById(annotationId);
         dispatch({ type: GET_VERIFICATION_BY_ID, payload: data });
+    } catch (error) {
+        console.log(error);   
+    }
+}
+
+export const getPerformanceScore = (annotationId) => async(dispatch) => {
+    try {
+        const { data } = await api.getPerformanceScore(annotationId);
+        dispatch({ type: GET_PERFORMANCE_SCORE, payload: data });
     } catch (error) {
         console.log(error);   
     }

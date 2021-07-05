@@ -22,6 +22,7 @@ const annotationSchema = mongoose.Schema({
         type: Date,
         default: new Date(),
     },
+    totalScore: { type: Number },
 })
 
 

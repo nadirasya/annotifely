@@ -4,6 +4,7 @@ import { Container, Typography, Table, TableBody, TableCell, TableContainer, Tab
 import useStyles from './styles';
 import FeedbackForm from '../annotaterFeedbackForm/FeedbackForm';
 import { getAnnotaterTask, getTasksById } from '../../actions/tasks';
+import { getAnnotationByIdAnnotater } from '../../actions/annotations';
 import { useHistory } from 'react-router';
 import EmptyTask from './EmptyTask';
 import { getAnnotationByIdTask } from '../../actions/annotations';
@@ -35,7 +36,7 @@ const AnnotaterMyAnnotationsPage = () => {
 
     useEffect(()=> {
         dispatch(getAnnotaterTask(user.result._id));
-
+        dispatch(getAnnotationByIdAnnotater(user.result._id));
         clearTimeout(timer.current);
 
     }, [dispatch])
@@ -148,9 +149,6 @@ const AnnotaterMyAnnotationsPage = () => {
                                 <TableHead>
                                 <TableRow className={classes.tableRow} style={{alignItems: "left", backgroundColor: '#567068'}} >
                                     <StyledTableCell>
-                                        <Typography variant="subtitle1"><b>Client</b></Typography>
-                                    </StyledTableCell>
-                                    <StyledTableCell>
                                         <Typography variant="subtitle1"><b>Title</b></Typography>
                                     </StyledTableCell>
                                     <StyledTableCell >
@@ -158,6 +156,9 @@ const AnnotaterMyAnnotationsPage = () => {
                                     </StyledTableCell>
                                     <StyledTableCell>
                                         <Typography variant="subtitle1"><b>Time Remaining</b></Typography>
+                                    </StyledTableCell>
+                                    <StyledTableCell>
+                                        <Typography variant="subtitle1"><b>Score</b></Typography>
                                     </StyledTableCell>
                                     <StyledTableCell  style={{width: '20%'}}>
                                         <Typography variant="subtitle1"><b>Action</b></Typography>
@@ -167,9 +168,6 @@ const AnnotaterMyAnnotationsPage = () => {
                                 <TableBody>
                                 {tasks?.map((row) => (
                                     <TableRow key={row._id} style={{alignItems: "left"}}>
-                                    <TableCell component="th" scope="row">
-                                        <Typography variant="subtitle1" ><b>{row.client[0]?.name}</b></Typography>
-                                    </TableCell>
                                     <TableCell>{row.title}</TableCell>
                                     <TableCell>{row.totalImage}</TableCell>
                                     <TableCell>{row.timeRemaining} {row.timeRemaining == 1 ? "day" : "days"}</TableCell>

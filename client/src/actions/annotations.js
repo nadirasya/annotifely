@@ -68,3 +68,13 @@ export const getAnnotationByIdTask = (id, annotaterId) => async(dispatch) => {
         console.log(error);
     }
 }
+
+export const getAnnotationByIdAnnotater = (annotaterId) => async(dispatch) => {
+    try {
+        const { data } = await api.getAnnotationByIdAnnotater(annotaterId);
+
+        console.log("data", data);
+    } catch (error) {
+        
+    }
+}

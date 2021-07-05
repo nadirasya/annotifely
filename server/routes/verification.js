@@ -7,5 +7,5 @@ const router = express.Router();
 
 router.post('/createVerification', findUser, createVerification);
 router.get('/getVerificationById/:id', findUser, getVerificationById);
-router.get('/getPerformanceScore', getPerformanceScore);
+router.get('/getPerformanceScore/:id', getPerformanceScore);
 export default router;

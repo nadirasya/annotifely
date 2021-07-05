@@ -30,6 +30,8 @@ export const createAnnotation = (annotationData) => API.post('/annotations/creat
 export const editnnotation = (annotationData, id) => API.put(`/annotations/editAnnotation/${id}`, annotationData); 
 export const fetchAnnotations = () => API.get('/annotations/getAnnotation');
 export const getAnnotationByIdTask = (id, annotaterId) => API.get(`/annotations/getAnnotationByIdTask/${id}`, {params: {annotaterId}})
+export const getAnnotationByIdAnnotater = (annotaterId) => API.get('/annotations/getAnnotationByIdAnnotater', {params: {annotaterId}});
 
 export const createVerification = (verificationData) => API.post('/verifications/createVerification', verificationData);
 export const getVerificationById = (annotationId) => API.get(`/verifications/getVerificationById/${annotationId}`);
+export const getPerformanceScore = (annotaterId) => API.get(`/verifications/getPerformanceScore/${annotaterId}`);

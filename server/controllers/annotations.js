@@ -8,7 +8,8 @@ import Verification from '../models/verification.js';
 export const createAnnotation = async( req, res ) => {
     const {annotationsData} = req.body;
 
-    const total = annotationsData?.length
+    const total = annotationsData?.length;
+    
     await annotationsData?.map(async(anno, index) => {
         if(!anno.imageId)
         return res.status(400).json({ errorMessage: "Image ID not given."});
@@ -23,7 +24,7 @@ export const createAnnotation = async( req, res ) => {
 
         if(total-1 === index){
             task.totalAnnotater.push(req.user.id)
-            const updatedTask = await Task.findByIdAndUpdate(task._id, task, { new: true });
+            await Task.findByIdAndUpdate(task._id, task, { new: true });
         }
 
         const newAnnotation = new Annotation ({ 
@@ -60,7 +61,7 @@ export const getAnnotation = async (req,res)  => {
     }
 }
 
-//GET ANNOTATION By ID TASK
+//GET ANNOTATION BY ID TASK
 export const getAnnotationByIdTask = async (req,res)  => {
     const {annotaterId} = req.query;
     try {
@@ -102,3 +103,17 @@ export const editAnnotation = async( req, res ) => {
 
 });
 };
+
+//GET ANNOTATION BY ID ANNOTATER 
+export const getAnnotationByIdAnnotater = async( req, res ) => {
+    const {annotaterId} = req.query;
+    const id = "60b9ff6d5e261b3f58693e33"
+    
+    try {
+        const data = await Annotation.find({annotater: annotaterId}).populate('task', 'client title totalImage');
+
+        res.status(200).json(data);
+    } catch (error) {
+        res.status(500).send();
+    }
+}

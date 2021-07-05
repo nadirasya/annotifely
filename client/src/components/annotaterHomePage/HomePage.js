@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import {useHistory} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTasks, getTasksById } from '../../actions/tasks';
+import { getPerformanceScore } from '../../actions/verifications';
 import { getClients } from '../../actions/clients';
 
 import useStyles from './styles';
@@ -28,8 +29,9 @@ const HomePage = () => {
     const history = useHistory();
     const dispatch = useDispatch(); 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
-    let tasks = useSelector((state) => state.tasks.taskList)
+    const tasks = useSelector((state) => state.tasks.taskList)
     const totalTask = useSelector((state) => state.tasks.total)
+    const verifications = useSelector((state) => state.tasks.performanceScore)
     const timer = useRef();
     const [loading, setLoading] = useState(true);
 
@@ -38,7 +40,7 @@ const HomePage = () => {
 
     useEffect(() => {
         dispatch(getTasks(user.result._id));
-
+        dispatch(getPerformanceScore(user.result._id));
         clearTimeout(timer.current);
 
     }, [dispatch])
@@ -231,9 +233,9 @@ const HomePage = () => {
                                                 <b>Score</b>
                                             </Typography>
                                             {
-                                                totalTask !== undefined ?
+                                                verifications !== undefined ?
                                                 <Typography className={classes.h2}>
-                                                    <b>89</b>
+                                                    <b>{verifications}</b>
                                                 </Typography>
                                                 :
                                                 <CircularProgress/>
