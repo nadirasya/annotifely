@@ -1,0 +1,28 @@
+[
+  {
+    "image": [
+      "60e282a11032b657f0d5e927"
+    ],
+    "annotater": [
+      "60b9ff6d5e261b3f58693e33"
+    ],
+    "task": [
+      {
+        "_id": "60e2829f1032b657f0d5e921",
+        "title": "Cari Pensil"
+      }
+    ],
+    "createdAt": "2021-07-06T04:29:47.916Z",
+    "_id": "60e3e0fafd3344277cce5036",
+    "boundingBox": [
+      {
+        "_id": "60e3e0fafd3344277cce5037",
+        "x": 281.40625,
+        "y": 118,
+        "width": 68,
+        "height": 236
+      }
+    ],
+    "__v": 0
+  }
+]
