@@ -47,7 +47,7 @@ export const createTask = async( req, res ) => {
     // save image in the database
     UrlImage.map(async(image) => {
         const result = await cloudinary.v2.uploader.upload(image, {use_filename:true, unique_filename:false, overwrite:true, invalidate:true});
-       console.log(result);
+    //    console.log(result);
 
         const newImage = new Image ({ imageURL: result.secure_url, task:savedTask._id })
         try {
@@ -95,6 +95,7 @@ export const updateTime = async( req, res ) => {
 export const downloadTask = async (req,res)  => {
     try {
         const taskId = req.params.id;
+        // const taskId = "60e313019b768f4f08d6a7ae"
 
         const download = await Annotation.find({task:taskId});
         // console.log(download);
@@ -109,7 +110,9 @@ export const downloadTask = async (req,res)  => {
         res.status(200).json(download);
     }
     catch(err) {
-        res.status(500).send();
+        // res.status(500).send();
+        console.log("test")
+        console.log(err)
     }
 }
 

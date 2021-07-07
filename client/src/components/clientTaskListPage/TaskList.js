@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getClientTask, updateTime } from '../../actions/tasks';
+import { getClientTask, updateTime, downloadTask } from '../../actions/tasks';
 
 import {Container, Button, Typography, Box, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, withStyles  } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
@@ -83,6 +83,12 @@ const TaskList = () => {
         }, [ref]);
     }
     
+    const handleDownload = (id) => {
+        dispatch(downloadTask(id));
+        alert('Task downloaded!');
+        dispatch(getClientTask());
+    }
+
       /**
        * Component that alerts if you click outside of it
        */
@@ -162,10 +168,16 @@ const TaskList = () => {
                                                 <TableCell align="left">{task?.title}</TableCell>
                                                 <TableCell align="left">{task?.totalImage}</TableCell>
                                                 <TableCell align="left">{task?.totalAnnotater}</TableCell>
-                                                <TableCell align="left">{task?.timeRemaining} days </TableCell>
                                                 <TableCell align="left">
-                                                    <Button variant="contained" className={classes.buttonTertiary}> 
-                                                    Download
+                                                    {
+                                                        task?.timeRemaining === 1 ? `${task?.timeRemaining} day` :
+                                                        task?.timeRemaining <= 1 ? '-':
+                                                        `${task?.timeRemaining} days`
+                                                    } 
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    <Button variant="contained" className={classes.buttonTertiary} onClick={() => handleDownload(task?._id)}> 
+                                                        Download
                                                     </Button>
                                                 </TableCell>
                                                 <TableCell align="left">

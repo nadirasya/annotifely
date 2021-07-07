@@ -4,6 +4,7 @@ import { Container, Typography, Table, TableBody, TableCell, TableContainer, Tab
 import useStyles from './styles';
 import FeedbackForm from '../annotaterFeedbackForm/FeedbackForm';
 import { getAnnotaterTask, getTasksById } from '../../actions/tasks';
+import { getAnnotationByIdAnnotater } from '../../actions/annotations';
 import { useHistory } from 'react-router';
 import EmptyTask from './EmptyTask';
 import { getAnnotationByIdTask } from '../../actions/annotations';
@@ -25,7 +26,7 @@ const AnnotaterMyAnnotationsPage = () => {
     const dispatch = useDispatch(); 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
     const tasks = useSelector((state) => state.tasks)
-    const annotations = useSelector((state) => state.annotationStore )
+    const annotations = useSelector((state) => state.annotations.annotations )
     const timer = useRef();
     const [loading, setLoading] = useState(true);
 
@@ -35,7 +36,7 @@ const AnnotaterMyAnnotationsPage = () => {
 
     useEffect(()=> {
         dispatch(getAnnotaterTask(user.result._id));
-
+        dispatch(getAnnotationByIdAnnotater(user.result._id));
         clearTimeout(timer.current);
 
     }, [dispatch])
@@ -48,7 +49,6 @@ const AnnotaterMyAnnotationsPage = () => {
         console.log(id)
         dispatch(getAnnotationByIdTask(id, user.result._id));
         dispatch(getTasksById(id));
-        console.log("annotations", annotations)
         history.push({
             pathname: '/annotater/verification',
             state: { id: id, index: 0}
@@ -148,9 +148,6 @@ const AnnotaterMyAnnotationsPage = () => {
                                 <TableHead>
                                 <TableRow className={classes.tableRow} style={{alignItems: "left", backgroundColor: '#567068'}} >
                                     <StyledTableCell>
-                                        <Typography variant="subtitle1"><b>Client</b></Typography>
-                                    </StyledTableCell>
-                                    <StyledTableCell>
                                         <Typography variant="subtitle1"><b>Title</b></Typography>
                                     </StyledTableCell>
                                     <StyledTableCell >
@@ -159,33 +156,58 @@ const AnnotaterMyAnnotationsPage = () => {
                                     <StyledTableCell>
                                         <Typography variant="subtitle1"><b>Time Remaining</b></Typography>
                                     </StyledTableCell>
-                                    <StyledTableCell  style={{width: '20%'}}>
-                                        <Typography variant="subtitle1"><b>Action</b></Typography>
+                                    <StyledTableCell>
+                                    </StyledTableCell>
+                                    <StyledTableCell>
                                     </StyledTableCell>
                                 </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                {tasks?.map((row) => (
+                                {annotations?.map((row) => (
                                     <TableRow key={row._id} style={{alignItems: "left"}}>
-                                    <TableCell component="th" scope="row">
-                                        <Typography variant="subtitle1" ><b>{row.client[0]?.name}</b></Typography>
+                                    <TableCell>{row.task[0]?.title}</TableCell>
+                                    <TableCell>{row.task[0]?.totalImage}</TableCell>
+                                    <TableCell>
+                                        {
+                                            row?.timeRemaining === 1 ? `${row?.timeRemaining} day` :
+                                            row?.timeRemaining <= 1 ? '-':
+                                            `${row?.timeRemaining} days`
+                                        } 
                                     </TableCell>
-                                    <TableCell>{row.title}</TableCell>
-                                    <TableCell>{row.totalImage}</TableCell>
-                                    <TableCell>{row.timeRemaining} {row.timeRemaining == 1 ? "day" : "days"}</TableCell>
                                     <TableCell>
                                         <Grid container spacing={1}>
                                             <Grid item xs={12} md={6} lg={6}>
-                                                <Button variant="contained" disableElevation className={classes.buttonTertiary} onClick={() => handleShowFeedback(row._id)}>
-                                                    <Typography variant="subtitle2" >Feedback</Typography>
-                                                </Button>
+                                                {
+                                                    row.totalScore? 
+                                                    <Button variant="contained" disableElevation className={classes.buttonTertiary} onClick={() => handleShowFeedback(row._id)}>
+                                                        <Typography variant="subtitle2" >Feedback</Typography>
+                                                    </Button>
+                                                    :
+                                                    <Button variant="contained" disableElevation className={classes.buttonTertiaryDisabled} disabled>
+                                                        <Typography variant="subtitle2" >Feedback</Typography>
+                                                    </Button>
+                                                }
                                             </Grid>
                                             <Grid item xs={12} md={6} lg={6}>
-                                            <Button variant="contained" disableElevation className={classes.buttonTertiary} onClick={() => handleEdit(row._id)}>
-                                                <Typography variant="subtitle2">Edit</Typography>
-                                            </Button>
+                                                {
+                                                    row.timeRemaining>=1 ? 
+                                                    <Button variant="contained" disableElevation className={classes.buttonTertiary} onClick={() => handleEdit(row?.task[0]?._id)}>
+                                                        <Typography variant="subtitle2">Edit</Typography>
+                                                    </Button>
+                                                    :
+                                                    <Button variant="contained" disableElevation className={classes.buttonTertiaryDisabled} disabled>
+                                                        <Typography variant="subtitle2">Edit</Typography>
+                                                    </Button>
+                                                }
                                             </Grid>
                                         </Grid>
+                                    </TableCell>
+                                    <TableCell>
+                                        {row.totalScore !== 100 &&  row.totalScore !== undefined?
+                                        <div style={{backgroundColor: 'yellow', color: 'black', padding: '5px', display: 'flex', justifyContent: 'center', borderRadius: '15px'}} >
+                                            Please check the feedback and edit the annotation to improve your score 
+                                        </div>
+                                        : null}
                                     </TableCell>
                                     </TableRow>
                                 ))}

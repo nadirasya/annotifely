@@ -62,7 +62,7 @@ const AnnotaterTaskPage = () => {
                    <b> Task List </b> 
                 </Typography>
             </div>
-            { !tasks.length ?
+            { !tasks?.length ?
                 <div>
                     { loading ? 
                         <div style={{display: 'flex', justifyContent: 'center'}}> 
