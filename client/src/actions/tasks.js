@@ -1,7 +1,7 @@
 import { FETCH_ALL, CREATE, FETCH_IMAGES, FETCH_TASK, UPDATE_TIME } from '../constants/actionTypes';
 import * as api from '../api';
 import moment from 'moment';
-
+import download from 'downloadjs';
 
 export const getTasks = (id) => async (dispatch) => {
     const currentDate = moment()
@@ -106,10 +106,19 @@ export const updateTime = (timespan, id) => async(dispatch) => {
 
 export const downloadTask = (id) => async() => {
     try {
-        const { data } = await api.downloadTasks(id);
+        const { data } = await api.downloadTasks((id), {
+            responseType: 'blob',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        const json = JSON.stringify(data,null,2)
+        download(json, 'AnnotationsResult.json');
         console.log("download", data)
         
     } catch (error) {
         console.log(error);
     }
 }
+
+

@@ -85,7 +85,7 @@ const TaskList = () => {
     
     const handleDownload = (id) => {
         dispatch(downloadTask(id));
-        alert('Task downloaded!');
+        // alert('Task downloaded!');
         dispatch(getClientTask());
     }
 
