@@ -95,18 +95,8 @@ export const updateTime = async( req, res ) => {
 export const downloadTask = async (req,res)  => {
     try {
         const taskId = req.params.id;
-        // const taskId = "60e313019b768f4f08d6a7ae"
-
-        const download = await Annotation.find({task:taskId});
-        // console.log(download);
-
-        const filename ="AnnotationsResult.json";
-        // const path = `${__dirname}/upload-folder`;
-        const filePath = fs.writeFileSync(filename, JSON.stringify(download,null,2), (err) => {
-            if (err) throw err;
-            console.log('Data written to file');
-        });
-        res.download(filename);
+        const download = await Annotation.find({task:taskId}, {image:1, boundingBox:1, _id:0}).populate('image', 'imageURL');
+       console.log(download);
         res.status(200).json(download);
     }
     catch(err) {
