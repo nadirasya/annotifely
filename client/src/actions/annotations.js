@@ -1,4 +1,4 @@
-import { CREATE_ANNOTATION, FETCH_ANNOTATION, STORE_ANNOTATION, GET_ANNOTATION, FETCH_ANNOTATION_BY_ID, CLEANUP_ANNOTATION } from '../constants/actionTypes';
+import { CREATE_ANNOTATION, FETCH_ANNOTATION, STORE_ANNOTATION, GET_ANNOTATION, FETCH_ANNOTATION_BY_ID, CLEANUP_ANNOTATION, GET_ANNOTATION_BY_ID } from '../constants/actionTypes';
 
 import * as api from '../api';
 import moment from 'moment';
@@ -70,10 +70,18 @@ export const getAnnotationByIdTask = (id, annotaterId) => async(dispatch) => {
 }
 
 export const getAnnotationByIdAnnotater = (annotaterId) => async(dispatch) => {
+    const currentDate = moment()
     try {
         const { data } = await api.getAnnotationByIdAnnotater(annotaterId);
 
         console.log("data", data);
+        data.map((anno) => {
+            //Calculate time difference
+            const createdDate = moment(anno?.task[0]?.createdAt);
+            anno['timeRemaining'] =  anno?.task[0]?.timeSpan - currentDate.diff(createdDate, 'days');
+            return anno;
+        })
+        dispatch({ type: GET_ANNOTATION_BY_ID, payload: data })
     } catch (error) {
         
     }

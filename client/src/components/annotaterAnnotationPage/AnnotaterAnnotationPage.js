@@ -30,8 +30,7 @@ const AnnotaterAnnotationPage = props => {
     const [ selected, setSelected ] = useState();
     const [ histories, setHistories ] = useState({annotations: [], current: ''});
     const [ isPrompt, setIsPrompt ] = useState(true);
-    const [ remove, setRemove ] = useState(false)
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))); 
+    const [ user, setUser ] = useState(JSON.parse(localStorage.getItem('profile'))); 
 
     if (isPrompt) {
       window.onbeforeunload = () => true

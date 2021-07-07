@@ -36,6 +36,11 @@ export default makeStyles((theme) => ({
         color: '#F2EBEB',
         width: '80%',
     },
+    buttonTertiaryDisabled: {
+        backgroundColor: '#CFCFCF',
+        color: '#9A9A9A',
+        width: '80%',
+    },
     feedbackFormContainer: {
         position:'fixed',
         width: '100%', 

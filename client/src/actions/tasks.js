@@ -13,10 +13,13 @@ export const getTasks = (id) => async (dispatch) => {
             //Calculate time difference
             const checkAnnotater = task.totalAnnotater.some((annotaterId) => annotaterId === id)
            if (checkAnnotater === false){
-                task.totalAnnotater=task.totalAnnotater.length
                 const createdDate = moment(task.createdAt);
-                task['timeRemaining'] = currentDate.diff(createdDate, 'days');
-                availableTask.push(task);
+                const dateChecker = task.timeSpan - currentDate.diff(createdDate, 'days');
+                if(dateChecker > 1 ){
+                    task.totalAnnotater=task.totalAnnotater.length
+                    task['timeRemaining'] = currentDate.diff(createdDate, 'days');
+                    availableTask.push(task);
+                }
            } else {
                totalTask += 1;
            }
@@ -96,6 +99,16 @@ export const updateTime = (timespan, id) => async(dispatch) => {
         const { data } = await api.updateTime({timespan: timespan}, id);
 
         dispatch({ type: UPDATE_TIME, data });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const downloadTask = (id) => async() => {
+    try {
+        const { data } = await api.downloadTasks(id);
+        console.log("download", data)
+        
     } catch (error) {
         console.log(error);
     }

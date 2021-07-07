@@ -1,0 +1,29 @@
+[
+  {
+    "image": [
+      {
+        "_id": "60e313059b768f4f08d6a7b4",
+        "imageURL": "https://res.cloudinary.com/annotifely202/image/upload/v1625494277/photo-1593642532400-2682810df593.jpg"
+      }
+    ],
+    "annotater": [
+      "60b9ff6d5e261b3f58693e33"
+    ],
+    "task": [
+      "60e313019b768f4f08d6a7ae"
+    ],
+    "createdAt": "2021-07-06T03:18:05.228Z",
+    "_id": "60e3d20789d1cc2c400930a8",
+    "boundingBox": [
+      {
+        "_id": "60e3d20789d1cc2c400930a9",
+        "x": 690.40625,
+        "y": 19,
+        "width": 313,
+        "height": 294
+      }
+    ],
+    "__v": 0,
+    "totalScore": 95
+  }
+]

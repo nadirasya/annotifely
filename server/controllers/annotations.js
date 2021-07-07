@@ -107,10 +107,9 @@ export const editAnnotation = async( req, res ) => {
 //GET ANNOTATION BY ID ANNOTATER 
 export const getAnnotationByIdAnnotater = async( req, res ) => {
     const {annotaterId} = req.query;
-    const id = "60b9ff6d5e261b3f58693e33"
     
     try {
-        const data = await Annotation.find({annotater: annotaterId}).populate('task', 'client title totalImage');
+        const data = await Annotation.find({annotater: annotaterId}).populate('task', 'client title totalImage createdAt timeSpan');
 
         res.status(200).json(data);
     } catch (error) {
