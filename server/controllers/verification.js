@@ -3,7 +3,7 @@ import Annotation from "../models/annotation.js";
 
 export const createVerification = async (req, res) => {
     const verificationData = req.body;
-    const total = verificationData.length
+    const total = verificationData?.length
 
     await verificationData?.map(async(verification) => {
         if(!verification.annotationId) return res.status(400).json({ errorMessage: "annotation ID not given."});

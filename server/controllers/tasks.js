@@ -59,6 +59,8 @@ export const createTask = async( req, res ) => {
 };
 
 export const updateTime = async( req, res ) => {
+    'use Strict';
+
     try{
         const {timespan} = req.body;
         const taskId = req.params.id;
@@ -95,14 +97,16 @@ export const downloadTask = async (req,res)  => {
         const taskId = req.params.id;
         // const taskId = "60e313019b768f4f08d6a7ae"
 
-        const download = await Annotation.find({task:taskId}).populate('image', 'imageURL');
-        // console.log("download", download);
-        const path ="AnnotationsResult.json"; 
-        const filePath = await fs.writeFileSync(path, JSON.stringify(download,0,2));
-        filePath?.on('finish',() => {
-            filePath.close();
-            console.log('Download Completed'); 
+        const download = await Annotation.find({task:taskId});
+        // console.log(download);
+
+        const filename ="AnnotationsResult.json";
+        // const path = `${__dirname}/upload-folder`;
+        const filePath = fs.writeFileSync(filename, JSON.stringify(download,null,2), (err) => {
+            if (err) throw err;
+            console.log('Data written to file');
         });
+        res.download(filename);
         res.status(200).json(download);
     }
     catch(err) {
