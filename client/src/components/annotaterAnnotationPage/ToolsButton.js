@@ -7,7 +7,7 @@ const ToolsButton = ({image, label, onClick, selected}) => {
     const classes = useStyles();
 
     return (
-        <Button style={{width: 100}} onClick={onClick}>
+        <Button style={{width: 80}} onClick={onClick}>
             <div>
                 <div>
                     <img src={image} alt="logo" className={classes.logo}/>
