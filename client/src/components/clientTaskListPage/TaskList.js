@@ -36,7 +36,6 @@ const TaskList = () => {
         dispatch(getClientTask());
 
         clearTimeout(timer.current);
-        
     }, [dispatch] );
 
     timer.current = window.setTimeout(() => {
@@ -176,9 +175,16 @@ const TaskList = () => {
                                                     } 
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Button variant="contained" className={classes.buttonTertiary} onClick={() => handleDownload(task?._id)}> 
-                                                        Download
-                                                    </Button>
+                                                    {
+                                                        task?.timeRemaining < 1 ?
+                                                        <Button variant="contained" className={classes.buttonTertiary} onClick={() => handleDownload(task?._id)}> 
+                                                            Download
+                                                        </Button>
+                                                        :
+                                                        <Button variant="contained" className={classes.buttonTertiaryDisabled} disabled> 
+                                                            Download
+                                                        </Button>
+                                                    }
                                                 </TableCell>
                                                 <TableCell align="left">
                                                     <Button onClick={() => handleAddTimeForm(task)}>

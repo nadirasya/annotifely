@@ -89,7 +89,7 @@ export const editAnnotation = async( req, res ) => {
     return res.status(400).json(annotation);
 
 
-    await annotationsData?.map(async(anno, index) => {
+    await annotationsData?.map(async(anno) => {
         if(!anno.imageId)
         return res.status(400).json({ errorMessage: "Image ID not given."});
 
@@ -97,10 +97,11 @@ export const editAnnotation = async( req, res ) => {
         if(!image)
         return res.status(400).json({ errorMessage: "No image with this ID was found."});
 
-        const query={_id:annotation, annotater: req.user.id, image: anno.imageId}
-        const result = await Annotation.updateOne(query, {$set: { "boundingBox" : anno.annotationData}});
-        console.log("result is", result);
-
+        const query={_id:annotation, annotater: req.user.id, image: anno.imageId};
+        //UPDATE ANNOTATION
+        await Annotation.updateOne(query, {$set: { "boundingBox" : anno.annotationData}, $unset: { totalScore: "" }});
+        //REMOVE VERIFICATION
+        await Verification.findOneAndDelete({annotation: annotation[0]._id});
 });
 };
 
