@@ -73,21 +73,30 @@ const AnnotaterAnnotationPage = props => {
             setHistories({['annotations']: pushAnnotation, ['current']: index})
           }
           annotorious.on('createSelection', async function(selection) {
-    
             // Tag to insert
             selection.body = [{
               type: 'TextualBody',
               purpose: 'tagging',
               value: images[currentIndex]?.task[0]?.label
             }];
+
+            const width = selection.target.selector.value?.split(',')[2];
+            const heigth = selection.target.selector.value?.split(',')[3];
+
+            console.log("selection", width, "and", heigth)
           
-            await annotorious.updateSelected(selection);
-            annotorious.saveSelected();
-            const currentAnnotation = annotorious.getAnnotations()
-            const pushAnnotation = histories.annotations
-            pushAnnotation.push(currentAnnotation);
-            const index = pushAnnotation.length - 1;
-            setHistories({['annotations']: pushAnnotation, ['current']: index})
+            if(width && heigth > 15){
+              await annotorious.updateSelected(selection);
+              annotorious.saveSelected();
+              const currentAnnotation = annotorious.getAnnotations()
+              const pushAnnotation = histories.annotations
+              pushAnnotation.push(currentAnnotation);
+              const index = pushAnnotation.length - 1;
+              setHistories({['annotations']: pushAnnotation, ['current']: index})
+            } else {
+              alert('Bounding box is to small');
+            }
+            
           });
     
           annotorious.on('updateAnnotation', (annotation, previous) => {
@@ -158,7 +167,6 @@ const AnnotaterAnnotationPage = props => {
         const boundingBox = {x, y, width, height}
         annotationData.push(boundingBox)
       })
-      console.log("anno", anno)
       if(currentIndex!=totalImage-1){
         dispatch(storeAnnotations(annotationData, images[currentIndex]?._id))
         history.push({
@@ -172,7 +180,6 @@ const AnnotaterAnnotationPage = props => {
         const annotationTemp = {annotationData, imageId: images[currentIndex]?._id}
         await annotationStore.push(annotationTemp)
         if(location.state?.type == "edit"){
-          console.log("annotations edited", annotationStore, " id:", id)
           dispatch(editAnnotation(annotationStore, id))
           history.push({
             pathname: '/annotater/my-annotation',
@@ -188,7 +195,6 @@ const AnnotaterAnnotationPage = props => {
           console.log(annotationStore)
         }
       }
-      console.log("annotationStore", annotationStore)
     }
     
     return (

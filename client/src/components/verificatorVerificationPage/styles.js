@@ -29,7 +29,6 @@ export default makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'space-between',
         flexDirection: 'column'
-
     },
     imageContainer: {
         display:'flex', 

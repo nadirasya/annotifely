@@ -64,7 +64,6 @@ const VerificatorVerificationPage = props => {
       }, [images, currentIndex]);
 
     const handleButton = async() => {
-        console.log("annotation id", annotatedStore[currentIndex]?._id)
         if(currentIndex!=totalImage-1){
             dispatch(storeVerification(verificationData, annotatedStore[currentIndex]?._id));
             console.log(verifications)
@@ -76,7 +75,6 @@ const VerificatorVerificationPage = props => {
         } else {
             dispatch(fetchVerification())
             await verifications.push({ verificationData: verificationData, annotationId: annotatedStore[currentIndex]?._id})
-            console.log("about to dispatch")
             dispatch(createVerification(verifications))
             history.push({
                 pathname: '/verificator',

@@ -46,7 +46,6 @@ const AnnotaterMyAnnotationsPage = () => {
     }, 1500);
 
     const handleShowFeedback =  (id) => {
-        console.log(id)
         dispatch(getAnnotationByIdTask(id, user.result._id));
         dispatch(getTasksById(id));
         history.push({
@@ -98,7 +97,6 @@ const AnnotaterMyAnnotationsPage = () => {
     }
 
     const handleEdit = (id) => {
-        console.log(id)
         dispatch(getAnnotationByIdTask(id, user.result._id));
         dispatch(getTasksById(id));
         history.push({
@@ -179,7 +177,7 @@ const AnnotaterMyAnnotationsPage = () => {
                                             <Grid item xs={12} md={6} lg={6}>
                                                 {
                                                     row.totalScore? 
-                                                    <Button variant="contained" disableElevation className={classes.buttonTertiary} onClick={() => handleShowFeedback(row._id)}>
+                                                    <Button variant="contained" disableElevation className={classes.buttonTertiary} onClick={() => handleShowFeedback(row?.task[0]?._id)}>
                                                         <Typography variant="subtitle2" >Feedback</Typography>
                                                     </Button>
                                                     :
