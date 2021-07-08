@@ -54,6 +54,10 @@ const useStyles= makeStyles((theme) => ({
         color: '#ffffff',
         variant: "contained",
     },
+    buttonTertiaryDisabled: {
+        backgroundColor: '#CFCFCF',
+        color: '#9A9A9A',
+    },
     icon:
     {
         marginRight: theme.spacing(1),

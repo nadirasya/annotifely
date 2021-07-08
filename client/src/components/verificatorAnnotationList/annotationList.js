@@ -106,8 +106,8 @@ const AnnotationList = () => {
                                     <TableCell>{annotation?.task[0]?.title}</TableCell>
                                     <TableCell>{annotation?.task[0]?.totalImage}</TableCell>
                                     <TableCell>
-                                        {/* {annotation.submitted === 0 ? 'Today' : annotation.submitted === 1 ? `${annotation.submitted} day ago` : `${annotation.submitted} days ago`} */}
-                                        {annotation.submitted > '24 hours ago' ? 'Today' : `${annotation.submitted}`}
+                                        {annotation.submitted === 0 ? 'Today' : annotation.submitted === 1 ? `${annotation.submitted} day ago` : `${annotation.submitted} days ago`}
+                                        {/* {annotation.submitted > '24 hours ago' ? 'Today' : `${annotation.submitted}`} */}
                                     </TableCell>
                                     <TableCell>
                                         <Button variant="contained" disableElevation className={classes.buttonTertiary} onClick={() => handleReview(annotation.task[0]._id, annotation.annotater[0]._id)}>

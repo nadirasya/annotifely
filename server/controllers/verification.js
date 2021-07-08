@@ -47,12 +47,11 @@ export const getVerificationById = async (req, res) => {
 //GET ANNOTATER PERFORMANCE SCORE BY ANNOTATER ID
 export const getPerformanceScore = async (req, res) => {
     const { id } = req.params;
-    const annotaterId = '60dbee51fe849b1a68b9780b';
     let score = 0;
     try {
-        const verifications = await Verification.find().populate('annotations', 'annotater');
+        const verifications = await Verification.find().populate('annotation', 'annotater');
         verifications.map((verification) => {
-            if(verification.annotation[0] === annotaterId){
+            if(verification.annotation[0].annotater[0].toString() === id.toString()){
                 score += verification.score;
             }
         })
