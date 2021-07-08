@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { Typography, Button, CircularProgress } from '@material-ui/core';
+import { Typography, Button, CircularProgress, Box, Container } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router-dom'
 import useStyles from './styles';
 import createAnnotation from './createAnnotation';
@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Input from './Input'
 import createAnnotationObject from './createAnnotation';
 import { createVerification, storeVerification, fetchVerification } from '../../actions/verifications';
-
+import BoundingBoxCriteria from '../BoundingBoxCriteriaContainer/BoundingBoxCriteriaContainer';
 
 import '@recogito/annotorious/dist/annotorious.min.css';
 
@@ -96,7 +96,8 @@ const VerificatorVerificationPage = props => {
       <CircularProgress/>
     </div>
       :
-    <div style={{paddingLeft: '5%', paddingRight: '2%', paddingBottom: '3%'}}>
+    <Container maxWidth="90vw">
+    <div style={{paddingLeft: '2%', paddingRight: '2%', paddingBottom: '3%'}}>
         <div className={classes.pageTitle}>
             <Typography variant="h4">
                <b>Verification Form</b> 
@@ -118,62 +119,66 @@ const VerificatorVerificationPage = props => {
                     </div>
                 </div>
                 
-            <div className={classes.rightContainer}>
-                <div>
+                <div className={classes.rightContainer}>
                     <div>
-                        <Typography variant="h6" className={classes.label} htmlFor="form-task">
-                            <b>Score</b>
-                        </Typography>
-                        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                        <div>
+                            <Typography variant="h6" className={classes.label} htmlFor="form-task">
+                                <b>Score</b>
+                            </Typography>
+                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                                <Input
+                                    handleChange={handleChange}
+                                    type="text"
+                                    label="Score"
+                                    name="score"
+                                    half
+                                    value={verificationData.score}
+                                />
+                                <Typography variant="h6" className={classes.label} htmlFor="form-task" style={{marginLeft: '15px'}}>
+                                    <b>/100</b>
+                                </Typography>
+                            </div>
+                        </div>
+                        <div>
+                            <Typography variant="h6" className={classes.label} htmlFor="form-task">
+                                <b>Feedback</b>
+                            </Typography>
                             <Input
                                 handleChange={handleChange}
                                 type="text"
-                                label="Score"
-                                name="score"
-                                half
-                                value={verificationData.score}
+                                label="Feedback"
+                                name="feedback"
+                                multiline
+                                rows={10}
+                                value={verificationData.feedback}
                             />
-                            <Typography variant="h6" className={classes.label} htmlFor="form-task" style={{marginLeft: '15px'}}>
-                                <b>/100</b>
+                        </div>
+
+                        <div>
+                            <BoundingBoxCriteria />
+                        </div>
+
+                    </div>
+                    <div className={classes.submitButtonContainer}>
+                        <div className={classes.imageCounter}>
+                            <Typography variant="h4">
+                                <b>{currentIndex+1}/{totalImage}</b>
                             </Typography>
                         </div>
+                        <Button color="primary" variant="contained" className={classes.buttonContainer} onClick={handleButton}>
+                            <Typography variant="h6">
+                            {
+                                currentIndex==totalImage-1?
+                                <b>Submit</b> :
+                                <b>Next</b>
+                            }
+                            </Typography>
+                        </Button>
                     </div>
-                    <div>
-                        <Typography variant="h6" className={classes.label} htmlFor="form-task">
-                            <b>Feedback</b>
-                        </Typography>
-                        <Input
-                            handleChange={handleChange}
-                            type="text"
-                            label="Feedback"
-                            name="feedback"
-                            multiline
-                            rows={10}
-                            value={verificationData.feedback}
-                        />
-                    </div>
-                </div>
-                <div className={classes.submitButtonContainer}>
-                    <div className={classes.imageCounter}>
-                        <Typography variant="h4">
-                            <b>{currentIndex+1}/{totalImage}</b>
-                        </Typography>
-                    </div>
-                    <Button color="primary" variant="contained" className={classes.buttonContainer} onClick={handleButton}>
-                        <Typography variant="h6">
-                          {
-                            currentIndex==totalImage-1?
-                            <b>Submit</b> :
-                            <b>Next</b>
-                          }
-                        </Typography>
-                    </Button>
                 </div>
             </div>
-        </div>
-        
     </div>
-    
+    </Container>
     )
 };
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { Typography, Button, CircularProgress } from '@material-ui/core';
+import { Typography, Button, CircularProgress, Grid } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router-dom'
 import useStyles from './styles';
 import boundingBoxLogo from '../images/bounding box.png';
@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createAnnotation, editAnnotation, storeAnnotations, fetchAnnotations } from '../../actions/annotations';
 import { getTasks } from '../../actions/tasks';
 import { Prompt } from 'react-router-dom';
+import BoundingBoxCriteria from '../BoundingBoxCriteriaContainer/BoundingBoxCriteriaContainer';
 
 import '@recogito/annotorious/dist/annotorious.min.css';
 
@@ -214,7 +215,7 @@ const AnnotaterAnnotationPage = props => {
       <CircularProgress/>
     </div>
       :
-    <div style={{paddingLeft: '5%', paddingRight: '2%', paddingBottom: '3%'}}>
+    <div style={{paddingLeft: '5%', paddingRight: '3%', paddingBottom: '3%'}}>
         <div className={classes.pageTitle}>
             <Typography variant="h4">
                <b>{ location.state?.type == "edit"? "Edit" : null } Annotation Form</b> 
@@ -245,12 +246,28 @@ const AnnotaterAnnotationPage = props => {
                         </Typography>
                     </div>
                     <div className={classes.toolsContainer}>
-                      <ToolsButton image={boundingBoxLogo} label="Bounding Box" onClick={toggleTool}/>
+                      <Grid container spacing={2}>
+                        <Grid item xs={3} md={3} lg={3}>
+                          
+                          <ToolsButton image={boundingBoxLogo} label="Bounding Box" onClick={toggleTool}/>
+                        </Grid>
+                        <Grid item xs={3} md={3} lg={3}>
                       <ToolsButton image={deleteLogo} label="Delete" onClick={onDelete} />
+                      </Grid>
+                      <Grid item xs={3} md={3} lg={3}>
                       <ToolsButton image={undoLogo} label="Undo" onClick={onUndo}/>
-                      <ToolsButton image={redoLogo} label="Redo" onClick={onRedo}/>
+                      </Grid>
+                      <Grid item xs={3} md={3} lg={3}>
+                        <ToolsButton image={redoLogo} label="Redo" onClick={onRedo}/>
+                      </Grid>
+                      </Grid>
+                    </div>
+                    <div>
+                      <BoundingBoxCriteria />
                     </div>
                 </div>
+
+
                 <div className={classes.submitButtonContainer}>
                     <div className={classes.imageCounter}>
                       <Typography variant="h4">
