@@ -54,6 +54,7 @@ export const getAnnotations = () => async (dispatch) => {
             }
         })
         data = annoTemp;
+        // console.log(data)
         dispatch({ type: GET_ANNOTATION, payload: data });
     } catch (error) {
         console.log(error);

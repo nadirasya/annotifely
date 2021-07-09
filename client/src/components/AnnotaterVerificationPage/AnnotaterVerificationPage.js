@@ -65,6 +65,15 @@ const AnnotaterVerificationPage = props => {
         return () => annotorious.destroy();
 
     }, [images, currentIndex]);
+
+    function searchImage(id, myArray){
+        for (var i=0; i < myArray.length; i++) {
+            if (myArray[i]._id === id) {
+                // console.log("found", myArray[i]?.imageURL)
+                return myArray[i]?.imageURL;
+            }
+        }
+    }
     
     const handleButton = () => {
         if(currentIndex!=totalImage-1){
@@ -101,7 +110,7 @@ const AnnotaterVerificationPage = props => {
                     <img
                         ref={imgEl} 
                         style={{maxWidth: '100%', maxHeight: '100%'}}
-                        src={ images[currentIndex]?.imageURL }
+                        src={ searchImage(annotatedStore[currentIndex].image[0], images) }
                         />
                     </div>
                 </div>

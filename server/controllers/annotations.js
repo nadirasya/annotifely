@@ -52,6 +52,7 @@ export const getAnnotation = async (req,res)  => {
         const verification = await Verification.find();
         annotationData.map((anno) => {
             const idChecker = verification.some((verif) => verif.annotation[0]._id.toString()==anno._id.toString())
+            console.log("anno", anno, "status", idChecker)
             if(idChecker === false) annotation.push(anno);
         })
         res.status(200).json(annotation);

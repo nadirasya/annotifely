@@ -41,6 +41,8 @@ const LandingPage = () => {
         history.push('/annotater')
     } else if(user?.role === "client") {
         history.push('/client')
+    } else if(user?.role === "verificator") {
+      history.push('/verificator')
     }
   }, [])
 
