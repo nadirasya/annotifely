@@ -62,7 +62,7 @@ const AnnotationList = () => {
                 <b> Annotations List</b> 
                 </Typography>
             </div>
-            { !annotations.length ?
+            { !annotations?.length ?
                 <div>
                     { loading ? 
                         <div style={{display: 'flex', justifyContent: 'center'}}> 
@@ -115,7 +115,8 @@ const AnnotationList = () => {
                                         </Button>
                                     </TableCell>
                                     </TableRow>
-                                ))}
+                                )
+                                )}
                                 </TableBody>
                             </Table>
                         </TableContainer>

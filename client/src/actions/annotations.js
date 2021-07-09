@@ -70,18 +70,27 @@ export const getAnnotationByIdTask = (id, annotaterId) => async(dispatch) => {
 }
 
 export const getAnnotationByIdAnnotater = (annotaterId) => async(dispatch) => {
-    const currentDate = moment()
+    const currentDate = moment();
+    const annoTemp = [];
+
     try {
         const { data } = await api.getAnnotationByIdAnnotater(annotaterId);
 
         console.log("data", data);
-        data.map((anno) => {
-            //Calculate time difference
-            const createdDate = moment(anno?.task[0]?.createdAt);
-            anno['timeRemaining'] =  anno?.task[0]?.timeSpan - currentDate.diff(createdDate, 'days');
-            return anno;
+        data.map((annotation) => {
+            const taskId = annotation.task[0]._id;
+            const annotaterId = annotation.annotater[0]._id;
+            const check = annoTemp.some(function(anno){ return (anno.annotater[0]._id === annotaterId  && anno.task[0]._id === taskId ) });
+            if(check === false){
+                //CALCULATE TIME DIFFERENCE
+                const createdDate = moment(annotation?.task[0]?.createdAt);
+                annotation['timeRemaining'] =  annotation?.task[0]?.timeSpan - currentDate.diff(createdDate, 'days');
+                annoTemp.push(annotation);
+            }
+            return annotation;
         })
-        dispatch({ type: GET_ANNOTATION_BY_ID, payload: data })
+        console.log('annoTemp', annoTemp)
+        dispatch({ type: GET_ANNOTATION_BY_ID, payload: annoTemp })
     } catch (error) {
         
     }
