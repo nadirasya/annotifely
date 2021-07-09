@@ -50,8 +50,6 @@ const AnnotaterAnnotationPage = props => {
     const [ tool, setTool ] = useState();
 
     useEffect(() => {
-      console.log(images[currentIndex]?._id)
-      console.log("Current",  currentIndex,"image is", images[currentIndex]._id, " and annotation is", annotatedStore[currentIndex].image[0]);
       // console.log(images)
         let annotorious = null;
         
@@ -123,24 +121,23 @@ const AnnotaterAnnotationPage = props => {
 
         if(annotorious !== null)
         return () => annotorious.destroy();
-      }, [annotatedStore, currentIndex]);
+      }, [annotatedStore, images, currentIndex]);
 
 
     // Toggles current tool + button label
     const toggleTool = () => {
         console.log("hey")
         setTool('rect');
-        anno.setDrawingTool('rect');
+        // anno.setDrawingTool('rect');
     }
 
     function searchImage(id, myArray){
       for (var i=0; i < myArray.length; i++) {
           if (myArray[i]._id === id) {
-              console.log("found", myArray[i]?.imageURL)
               return myArray[i]?.imageURL;
           }
       }
-    }
+  }
     
     const onDelete = () => {
       anno.removeAnnotation(selected)
@@ -249,7 +246,7 @@ const AnnotaterAnnotationPage = props => {
                         ref={imgEl} 
                         style={{maxWidth: '100%', maxHeight: '100%'}}
                         
-                        src={ location.state?.type === "edit" ? searchImage(annotatedStore[currentIndex].image[0], images) : images[currentIndex]?.imageURL }
+                        src={ location.state?.type === "edit" ?searchImage(annotatedStore[currentIndex].image[0], images) : images[currentIndex]?.imageURL }
                         />
                     </div>
                 </div>

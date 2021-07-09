@@ -67,7 +67,7 @@ export const updateTime = async( req, res ) => {
 
         const additionalTime = Number(timespan)
 
-        console.log("req.body", timespan)
+        console.log("req.body", taskId)
         if(!taskId)
         return res.status(400).json(taskId);
 
@@ -87,6 +87,7 @@ export const updateTime = async( req, res ) => {
 
     }
     catch(err){
+        console.log(err)
         res.status(500).send();
     }
 };

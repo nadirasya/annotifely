@@ -40,9 +40,11 @@ const VerificatorVerificationPage = props => {
     const annotationsTemp = []
 
     useEffect(() => {
+        setVerificationData(initialState)
+
         let annotorious = null;
 
-        if (imgEl.current) {
+        if (imgEl.current && images !== undefined) {
           // Init
           annotorious = new Annotorious({
             image: imgEl.current,
@@ -60,8 +62,8 @@ const VerificatorVerificationPage = props => {
         setAnno(annotorious);
 
         if(annotorious !== null) {
-            return () => annotorious.destroy();}
-      }, [images, currentIndex]);
+        return () => annotorious.destroy();}
+    }, [images, annotatedStore, currentIndex]);
 
     function searchImage(id, myArray){
         for (var i=0; i < myArray.length; i++) {
@@ -75,8 +77,8 @@ const VerificatorVerificationPage = props => {
     const handleButton = async() => {
         if(currentIndex!=totalImage-1){
             dispatch(storeVerification(verificationData, annotatedStore[currentIndex]?._id));
-            console.log(verifications)
-            setVerificationData(initialState)
+            // console.log(verifications)
+            // setVerificationData(initialState)
             history.push({
               pathname: '/verificator/verification-page',
               state: { id: id, index: currentIndex+1 }
@@ -98,7 +100,7 @@ const VerificatorVerificationPage = props => {
     };
     
     return (
-    images?.length == null ?
+    images?.length == null || annotatedStore[currentIndex] == null ?
     <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
       <CircularProgress/>
     </div>
