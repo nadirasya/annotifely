@@ -38,7 +38,7 @@ const AnnotationList = () => {
         dispatch(getAnnotations());
         clearTimeout(timer.current);
 
-    }, [dispatch, load===true])
+    }, [dispatch, load===true, annotations])
 
     timer.current = window.setTimeout(() => {
         setLoading(false);
@@ -61,7 +61,7 @@ const AnnotationList = () => {
                 <b> Annotations List</b> 
                 </Typography>
             </div>
-            { !annotations?.length ?
+            { annotations.length === 0 ?
                 <div>
                     { loading ? 
                         <div style={{display: 'flex', justifyContent: 'center'}}> 
@@ -97,7 +97,24 @@ const AnnotationList = () => {
                                 </TableRow>
                                 </TableHead>
                                 <TableBody>
-
+                                {annotations.map((annotation) => (
+                                    <TableRow key={annotation._id} style={{alignItems: "left"}}>
+                                    <TableCell component="th" scope="row">
+                                        <Typography variant="subtitle1" ><b>{annotation?.annotater[0]?.name}</b></Typography>
+                                    </TableCell>
+                                    <TableCell>{annotation?.task[0]?.title}</TableCell>
+                                    <TableCell>{annotation?.task[0]?.totalImage}</TableCell>
+                                    <TableCell>
+                                        {annotation.submitted === 0 ? 'Today' : annotation.submitted === 1 ? `${annotation.submitted} day ago` : `${annotation.submitted} days ago`}
+                                        {/* {annotation.submitted > '24 hours ago' ? 'Today' : `${annotation.submitted}`} */}
+                                    </TableCell>
+                                    <TableCell>
+                                        <Button variant="contained" disableElevation className={classes.buttonTertiary} onClick={() => handleReview(annotation.task[0]._id, annotation.annotater[0]._id)}>
+                                            <Typography variant="subtitle2">Review</Typography>
+                                        </Button>
+                                    </TableCell>
+                                    </TableRow>
+                                ))}
                                 </TableBody>
                             </Table>
                         </TableContainer>
