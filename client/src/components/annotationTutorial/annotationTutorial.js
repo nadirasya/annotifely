@@ -21,7 +21,7 @@ const annotationTutorial = ({tutorial}) => {
     
     return (
         <div>
-        <Slide in={tutorial} direction="down" mountOnEnter unmountOnExit>
+        <Slide in={tutorial} direction="down">
         <Paper className={classes.paper} elevation={3}>
             <div>
                <Button disabled><Typography variant="h6" style={{color: "#FFFFFF"}}>This is tutorial This is Tutorial This is Tutorial this is </Typography></Button>
