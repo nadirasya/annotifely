@@ -42,16 +42,21 @@ export const getAnnotations = () => async (dispatch) => {
     try{
         let { data } = await api.fetchAnnotations();
         if ( data )
-        console.log({data});
+        // console.log({data});
         data.map((annotation) => {
-            const taskId = annotation.task[0]._id;
-            const annotaterId = annotation.annotater[0]._id;
-            const check = annoTemp.some(function(anno){ return (anno.annotater[0]._id === annotaterId  && anno.task[0]._id === taskId ) });
-            if(check === false){
-                const createdDate = moment(annotation?.task?.createdAt);
-                annotation['submitted'] = currentDate.diff(createdDate, 'days');
-                annoTemp.push(annotation);
-            }
+            if(annotation.task.length !== 0){
+                const taskId = annotation.task[0]._id;
+                const annotaterId = annotation.annotater[0]._id;
+                const check = annoTemp.some(function(anno){ return (anno.annotater[0]._id === annotaterId  && anno.task[0]._id === taskId ) });
+                if(check === false){
+                    // console.log("task", annotation?.task[0]?.createdAt)
+                    const createdDate = moment(annotation?.task[0]?.createdAt);
+                    const timeTemp = currentDate.diff(createdDate, 'days');
+                    annotation['submitted'] = timeTemp;
+                    // console.log(timeTemp, "current date: ", currentDate, " created date: ", createdDate)
+                    annoTemp.push(annotation);
+                }
+            } 
         })
         data = annoTemp;
         // console.log(data)
@@ -64,6 +69,7 @@ export const getAnnotations = () => async (dispatch) => {
 export const getAnnotationByIdTask = (id, annotaterId) => async(dispatch) => {
     try {
         const { data } = await api.getAnnotationByIdTask(id, annotaterId);
+        console.log("data", data)
         dispatch({ type: FETCH_ANNOTATION_BY_ID, payload: data });
     } catch (error) {
         console.log(error);
@@ -77,7 +83,7 @@ export const getAnnotationByIdAnnotater = (annotaterId) => async(dispatch) => {
     try {
         const { data } = await api.getAnnotationByIdAnnotater(annotaterId);
 
-        console.log("data", data);
+        // console.log("data", data);
         data.map((annotation) => {
             const taskId = annotation.task[0]._id;
             const annotaterId = annotation.annotater[0]._id;
@@ -90,7 +96,7 @@ export const getAnnotationByIdAnnotater = (annotaterId) => async(dispatch) => {
             }
             return annotation;
         })
-        console.log('annoTemp', annoTemp)
+        // console.log('annoTemp', annoTemp)
         dispatch({ type: GET_ANNOTATION_BY_ID, payload: annoTemp })
     } catch (error) {
         

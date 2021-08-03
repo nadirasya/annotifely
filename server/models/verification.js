@@ -5,6 +5,7 @@ const verificationSchema = mongoose.Schema({
     annotation: [{ 
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Annotation' }],
+    idBoundingBox: { type: String },
     verificator: [{ 
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Verificator' }],
