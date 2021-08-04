@@ -30,14 +30,12 @@ const VerificatorVerificationPage = props => {
     const history = useHistory();
     const dispatch = useDispatch(); 
 
-    // Ref to the image DOM element
     const imgEl = useRef();
 
-    // The current Annotorious instance
     const [ anno, setAnno ] = useState();
-
-    // Current drawing tool name
     const [ tool, setTool ] = useState();
+    const [ verificationData, setVerificationData ] = useState();
+    const [ totalBox, setTotalBox ] = useState();
 
     let images = useSelector((state) => state.images['allImage'])
     const annotatedStore = useSelector((state) => state.annotations['annotations'])
@@ -48,23 +46,9 @@ const VerificatorVerificationPage = props => {
     const annotationsTemp = []
     let boundingBoxes = annotatedStore[currentIndex]?.boundingBox;
     
-
-    const generateInitialState = () => {
-        const temp = []
-        for(let i = 0; i < boundingBoxes?.length; i++){
-            temp.push({criteria1: 0, criteria2: 0})
-        }
-        console.log("temp", temp, )
-        setVerificationData(temp);
-    }
-
-    const [ verificationData, setVerificationData ] = useState();
-    
     useEffect(() => {
 
         generateInitialState();
-        console.log("verif", verificationData)
-
 
         let annotorious = null;
 
@@ -75,7 +59,7 @@ const VerificatorVerificationPage = props => {
             disableEditor: true,
             readOnly: true,
           });
-          
+
           boundingBoxes?.map((box)=>{
             annotationsTemp.push(createAnnotationObject({id: box._id, label: images[currentIndex]?.task[0]?.label, x: box.x, y: box.y, width: box.width, height: box.height})) 
           })
@@ -89,7 +73,14 @@ const VerificatorVerificationPage = props => {
         return () => annotorious.destroy();}
     }, [images, annotatedStore, currentIndex]);
 
-    
+    const generateInitialState = () => {
+        const temp = []
+        for(let i = 0; i < boundingBoxes?.length; i++){
+            temp.push({criteria1: 0, criteria2: 0})
+        }
+        console.log("temp", temp, )
+        setVerificationData(temp);
+    }
 
     function searchImage(id, myArray){
         for (var i=0; i < myArray.length; i++) {
@@ -97,6 +88,30 @@ const VerificatorVerificationPage = props => {
                 return myArray[i]?.imageURL;
             }
         }
+    }
+
+    const calculateScore = (num) => {
+        let score = 0
+        if((num !== 4)){
+            let boxScore = (((100*boundingBoxes.length)/totalBox)/boundingBoxes.length)/2
+            console.log("boxScore: ", boxScore)
+            switch (num) {
+                case 1:
+                    score = boxScore;
+                    break;
+                case 2:
+                    score = (boxScore*2)/3;
+                    break;
+                case 3:
+                    score = boxScore/3;
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            score = 0;
+        }
+        return score;
     }
 
     const handleButton = async() => {
@@ -116,7 +131,15 @@ const VerificatorVerificationPage = props => {
         //       })
 
         // }
-        console.log("verificationData", verificationData)
+        let score = 0
+        let verificationTemp = verificationData
+        verificationTemp.map((data, index) => {
+            score += calculateScore(data.criteria1)
+            score += calculateScore(data.criteria2)
+            data._id = boundingBoxes[index]._id
+        })
+        console.log("total score", score)
+        console.log("verif temp", verificationTemp)
     }
 
 
@@ -138,9 +161,12 @@ const VerificatorVerificationPage = props => {
         setVerificationData(temp)
     }
 
-
     const handleChange = (e) => {
         setVerificationData({ ...verificationData, [e.target.name] : e.target.value });
+    };
+
+    const handleTextField = e =>{
+        setTotalBox(e.target.value)
     };
     
     return (
@@ -226,7 +252,7 @@ const VerificatorVerificationPage = props => {
                         </TableContainer>
                         <div style={{marginTop:"10px", flexDirection: 'row', display:'flex',}}>
                             <Typography>Total bounding boxes are <b>{boundingBoxes?.length}</b> from</Typography>
-                            <TextField style={{width: "40px", marginLeft: "10px", marginRight: "10px"}}/>
+                            <TextField style={{width: "40px", marginLeft: "10px", marginRight: "10px"}} onChange={handleTextField}/>
                             <Typography>bounding boxes</Typography>
                         </div>
                     </div>

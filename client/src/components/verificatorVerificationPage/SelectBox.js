@@ -78,10 +78,10 @@ const SelectBox = ({label1, label2, label3, label4, disabled, selected, handleSe
           <MenuItem disabled value={0}>
             <em>Please select one</em>
           </MenuItem>
-          <MenuItem value={label1}>{label1}</MenuItem>
-          <MenuItem value={label2}>{label2}</MenuItem>
-          <MenuItem value={label3}>{label3}</MenuItem>
-          <MenuItem value={label4}>{label4}</MenuItem>
+          <MenuItem value={1}>{label1}</MenuItem>
+          <MenuItem value={2}>{label2}</MenuItem>
+          <MenuItem value={3}>{label3}</MenuItem>
+          <MenuItem value={4}>{label4}</MenuItem>
         </Select>
       </FormControl>
     </div>
