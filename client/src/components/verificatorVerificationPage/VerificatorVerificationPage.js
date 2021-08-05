@@ -91,7 +91,8 @@ const VerificatorVerificationPage = props => {
     }
 
     const calculateScore = (num) => {
-        let score = 0
+        let score = 0;
+
         if((num !== 4)){
             let boxScore = (((100*boundingBoxes.length)/totalBox)/boundingBoxes.length)/2
             console.log("boxScore: ", boxScore)
@@ -111,7 +112,8 @@ const VerificatorVerificationPage = props => {
         } else {
             score = 0;
         }
-        return score;
+        const verifications = {score}
+        return verifications;
     }
 
     const handleButton = async() => {
@@ -132,6 +134,7 @@ const VerificatorVerificationPage = props => {
 
         // }
         let score = 0
+        let feedback = ''
         let verificationTemp = verificationData
         verificationTemp.map((data, index) => {
             score += calculateScore(data.criteria1)
@@ -150,14 +153,15 @@ const VerificatorVerificationPage = props => {
     }
 
     const handleCriteria1 = (event) => {
-        let temp = verificationData
-        temp[event.target.name].criteria1 = event.target.value
-        setVerificationData(temp)
+        let temp = verificationData;
+        temp[event.target.name].criteria1 = event.target.value;
+        setVerificationData(temp);
+        console.log("criteria1", temp);
     }
 
     const handleCriteria2 = (event) => {
-        let temp = verificationData
-        temp[event.target.name].criteria2 = event.target.value
+        let temp = verificationData;
+        temp[event.target.name].criteria2 = event.target.value;
         setVerificationData(temp)
     }
 

@@ -5,7 +5,7 @@ import Image from "../models/image.js";
 export const createVerification = async (req, res) => {
     const verificationData = req.body;
 
-    await verificationData?.map(async(verification, index) => {
+    await verificationData.map(async(verification, index) => {
         console.log("verification", verification);
         if(!verification.annotationId)
             return res.status(400).json({ errorMessage: "annotation ID not given."});
@@ -17,7 +17,11 @@ export const createVerification = async (req, res) => {
         await Annotation.updateOne({_id: annotation}, {$set: { "totalScore" : verification.verificationData.score}});
 
         // save verification in the database
-        const newVerification = new Verification ({ score:verification.verificationData.score, feedback:verification.verificationData.feedback, annotation:verification.annotationId, verificator:req.user.id});
+        const newVerification = new Verification ({ score:verification.verificationData.score, 
+                                                    feedback:verification.verificationData.feedback, 
+                                                    annotation:verification.annotationId,
+                                                    boundingBox: verification.boundingBoxId, 
+                                                    verificator:req.user.id});
         
         try {
             const savedVerification = await newVerification.save();
