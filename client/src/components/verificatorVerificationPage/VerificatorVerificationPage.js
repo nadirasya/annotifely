@@ -1,18 +1,28 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { Typography, Button, CircularProgress, Box, Container } from '@material-ui/core';
+import { Typography, Button, CircularProgress, Box, Container, TableHead, Table, TableRow, TableContainer, Paper, TableCell, withStyles, TableBody, TextField, FormControlLabel, Checkbox } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router-dom'
 import useStyles from './styles';
-import createAnnotation from './createAnnotation';
 import { Annotorious } from '@recogito/annotorious';
 import { useDispatch, useSelector } from 'react-redux';
-import Input from './Input'
 import createAnnotationObject from './createAnnotation';
 import { createVerification, storeVerification, fetchVerification } from '../../actions/verifications';
-import BoundingBoxCriteria from '../BoundingBoxCriteriaContainer/BoundingBoxCriteriaContainer';
+import SelectBox from './SelectBox';
 
 import '@recogito/annotorious/dist/annotorious.min.css';
 
-const initialState = { score: '', feedback: '' };
+// const initialState = { score: '', feedback: '' };
+
+const StyledTableCell = withStyles((theme) => ({
+    head: {
+      backgroundColor: '#CFCFCF',
+      color: theme.palette.primary.dark,
+    },
+    body: {
+      fontSize: 14,
+      textTransform: 'none',
+    },
+}))(TableCell);
+
 
 const VerificatorVerificationPage = props => {
     const classes = useStyles();
@@ -20,16 +30,12 @@ const VerificatorVerificationPage = props => {
     const history = useHistory();
     const dispatch = useDispatch(); 
 
-    // Ref to the image DOM element
     const imgEl = useRef();
 
-    // The current Annotorious instance
     const [ anno, setAnno ] = useState();
-
-    // Current drawing tool name
     const [ tool, setTool ] = useState();
-
-    const [ verificationData, setVerificationData ] = useState(initialState);
+    const [ verificationData, setVerificationData ] = useState();
+    const [ totalBox, setTotalBox ] = useState();
 
     let images = useSelector((state) => state.images['allImage'])
     const annotatedStore = useSelector((state) => state.annotations['annotations'])
@@ -38,9 +44,11 @@ const VerificatorVerificationPage = props => {
     const id = location.state.id;
     const totalImage = images?.length;
     const annotationsTemp = []
-
+    let boundingBoxes = annotatedStore[currentIndex]?.boundingBox;
+    
     useEffect(() => {
-        setVerificationData(initialState)
+
+        generateInitialState();
 
         let annotorious = null;
 
@@ -51,8 +59,8 @@ const VerificatorVerificationPage = props => {
             disableEditor: true,
             readOnly: true,
           });
-          
-          annotatedStore[currentIndex]?.boundingBox?.map((box)=>{
+
+          boundingBoxes?.map((box)=>{
             annotationsTemp.push(createAnnotationObject({id: box._id, label: images[currentIndex]?.task[0]?.label, x: box.x, y: box.y, width: box.width, height: box.height})) 
           })
           annotorious.setAnnotations(annotationsTemp);
@@ -65,42 +73,104 @@ const VerificatorVerificationPage = props => {
         return () => annotorious.destroy();}
     }, [images, annotatedStore, currentIndex]);
 
+    const generateInitialState = () => {
+        const temp = []
+        for(let i = 0; i < boundingBoxes?.length; i++){
+            temp.push({criteria1: 0, criteria2: 0})
+        }
+        console.log("temp", temp, )
+        setVerificationData(temp);
+    }
+
     function searchImage(id, myArray){
         for (var i=0; i < myArray.length; i++) {
             if (myArray[i]._id === id) {
-                // console.log("found", myArray[i]?.imageURL)
                 return myArray[i]?.imageURL;
             }
         }
     }
 
-    const handleButton = async() => {
-        if(currentIndex!=totalImage-1){
-            dispatch(storeVerification(verificationData, annotatedStore[currentIndex]?._id));
-            // console.log(verifications)
-            // setVerificationData(initialState)
-            history.push({
-              pathname: '/verificator/verification-page',
-              state: { id: id, index: currentIndex+1 }
-            })
+    const calculateScore = (num) => {
+        let score = 0
+        if((num !== 4)){
+            let boxScore = (((100*boundingBoxes.length)/totalBox)/boundingBoxes.length)/2
+            console.log("boxScore: ", boxScore)
+            switch (num) {
+                case 1:
+                    score = boxScore;
+                    break;
+                case 2:
+                    score = (boxScore*2)/3;
+                    break;
+                case 3:
+                    score = boxScore/3;
+                    break;
+                default:
+                    break;
+            }
         } else {
-            dispatch(fetchVerification())
-            await verifications.push({ verificationData: verificationData, annotationId: annotatedStore[currentIndex]?._id})
-            dispatch(createVerification(verifications))
-            history.push({
-                pathname: '/verificator',
-                state: { load: true }
-              })
-
+            score = 0;
         }
+        return score;
+    }
+
+    const handleButton = async() => {
+        // if(currentIndex!=totalImage-1){
+        //     dispatch(storeVerification(verificationData, annotatedStore[currentIndex]?._id));
+        //     history.push({
+        //       pathname: '/verificator/verification-page',
+        //       state: { id: id, index: currentIndex+1 }
+        //     })
+        // } else {
+        //     dispatch(fetchVerification())
+        //     await verifications.push({ verificationData: verificationData, annotationId: annotatedStore[currentIndex]?._id})
+        //     dispatch(createVerification(verifications))
+        //     history.push({
+        //         pathname: '/verificator',
+        //         state: { load: true }
+        //       })
+
+        // }
+        let score = 0
+        let verificationTemp = verificationData
+        verificationTemp.map((data, index) => {
+            score += calculateScore(data.criteria1)
+            score += calculateScore(data.criteria2)
+            data._id = boundingBoxes[index]._id
+        })
+        console.log("total score", score)
+        console.log("verif temp", verificationTemp)
+    }
+
+
+    const handleSelectBox = (box) => {
+        console.log(box)
+        console.log(verificationData)
+        anno.selectAnnotation(box._id)
+    }
+
+    const handleCriteria1 = (event) => {
+        let temp = verificationData
+        temp[event.target.name].criteria1 = event.target.value
+        setVerificationData(temp)
+    }
+
+    const handleCriteria2 = (event) => {
+        let temp = verificationData
+        temp[event.target.name].criteria2 = event.target.value
+        setVerificationData(temp)
     }
 
     const handleChange = (e) => {
         setVerificationData({ ...verificationData, [e.target.name] : e.target.value });
     };
+
+    const handleTextField = e =>{
+        setTotalBox(e.target.value)
+    };
     
     return (
-    images?.length == null || annotatedStore[currentIndex] == null ?
+    images?.length == null || boundingBoxes?.length == 0 || verificationData === undefined?
     <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
       <CircularProgress/>
     </div>
@@ -130,43 +200,61 @@ const VerificatorVerificationPage = props => {
                 
                 <div className={classes.rightContainer}>
                     <div>
-                        <div>
-                            <Typography variant="h6" className={classes.label} htmlFor="form-task">
-                                <b>Score</b>
-                            </Typography>
-                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                                <Input
-                                    handleChange={handleChange}
-                                    type="text"
-                                    label="Score"
-                                    name="score"
-                                    half
-                                    value={verificationData.score}
-                                />
-                                <Typography variant="h6" className={classes.label} htmlFor="form-task" style={{marginLeft: '15px'}}>
-                                    <b>/100</b>
-                                </Typography>
-                            </div>
+                        <Typography style={{fontStyle: "italic"}}>Please give status based on the following criterias</Typography>
+                        <Typography><b>Criteria 1:</b> The bounding box not cropping any parts of the object </Typography>
+                        <Typography><b>Criteria 2:</b> The bounding box must be as close as possible to the edge pixels of the object </Typography>
+                        <TableContainer component={Paper} style={{ maxHeight: '40vh', marginTop: '15px' }}>
+                            <Table stickyHeader className={classes.table} size="small" aria-label="sticky header">
+                                <TableHead>
+                                    <TableRow style={{alignItems: "left"}} >
+                                        <StyledTableCell>
+                                            <Typography variant="subtitle1"><b>ID</b></Typography>
+                                        </StyledTableCell>
+                                        <StyledTableCell>
+                                            <Typography variant="subtitle1"><b>Status</b></Typography>
+                                        </StyledTableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {
+                                        boundingBoxes.map((box, index)=>{
+                                            return (
+                                            <TableRow key={box._id}>
+                                                <TableCell>
+                                                    <Button variant="contained" disableElevation onClick={() => handleSelectBox(box)}>
+                                                        Box {index+1}
+                                                    </Button>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography><b>Criteria 1:</b></Typography>
+                                                    <SelectBox 
+                                                        label1="Perfectly fit" 
+                                                        label2="Cropped some parts of the object" 
+                                                        label3="Cropped most parts of the object" 
+                                                        label4="Object is incorrect"
+                                                        handleSelected={handleCriteria1}
+                                                        index={index}/>
+                                                    <Typography><b>Criteria 2:</b></Typography>
+                                                    <SelectBox 
+                                                        label1="Perfectly fit" 
+                                                        label2="Far from the edge pixel" 
+                                                        label3="Very far from the edge pixel" 
+                                                        label4="Object is incorrect"
+                                                        handleSelected={handleCriteria2}
+                                                        index={index}/>
+                                                </TableCell>
+                                            </TableRow>
+                                            )
+                                        })
+                                    }
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                        <div style={{marginTop:"10px", flexDirection: 'row', display:'flex',}}>
+                            <Typography>Total bounding boxes are <b>{boundingBoxes?.length}</b> from</Typography>
+                            <TextField style={{width: "40px", marginLeft: "10px", marginRight: "10px"}} onChange={handleTextField}/>
+                            <Typography>bounding boxes</Typography>
                         </div>
-                        <div>
-                            <Typography variant="h6" className={classes.label} htmlFor="form-task">
-                                <b>Feedback</b>
-                            </Typography>
-                            <Input
-                                handleChange={handleChange}
-                                type="text"
-                                label="Feedback"
-                                name="feedback"
-                                multiline
-                                rows={10}
-                                value={verificationData.feedback}
-                            />
-                        </div>
-
-                        <div>
-                            <BoundingBoxCriteria />
-                        </div>
-
                     </div>
                     <div className={classes.submitButtonContainer}>
                         <div className={classes.imageCounter}>
