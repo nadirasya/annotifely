@@ -10,7 +10,7 @@ import { createTask, getClientTask } from '../../actions/tasks';
 import Input from './Input';
 import useStyles from './styles';
 
-const initialState = { UrlImage: [], title: '', label: '', instruction: '', timespan: ''};
+const initialState = { UrlImage: [], title: '', label: '', instruction: '', timespan: '', totalImage: ''};
 
 const TaskForm= () => {
     const [taskData, setTaskData] = useState(initialState);
@@ -30,12 +30,27 @@ const TaskForm= () => {
         console.log("taskData.UrlImage is", taskData.UrlImage)
     }, []);
 
+    const evaluate = () => {
+        let isError = false;
+  
+        if(taskData.totalImage == 0) {
+          isError = true;
+        }
+        return isError
+      }
+
     const handleSubmit = (e) => {
-        e.preventDefault();
-        dispatch(createTask(taskData, history)); 
-        dispatch(getClientTask());
-        setTaskData(initialState);
-        history.push('/client')
+          e.preventDefault();
+        const err = evaluate();
+        if(!err)
+        {
+            dispatch(createTask(taskData, history)); 
+            dispatch(getClientTask());
+            setTaskData(initialState);
+            history.push('/client')
+        } else {
+            alert("Please entered the image URL")
+        }
     };
 
     const handleChange = (e) => {
@@ -86,9 +101,12 @@ const TaskForm= () => {
     const onPressAddImage = () => {
         if (picture) {
             checkIfImageExists(picture, (exists) => {
+                taskData.totalImage = taskData.UrlImage.length;
                 if (exists) {
                     setUrl('');
                     const currentImages = taskData.UrlImage;
+                    taskData.totalImage++;
+                    console.log(taskData.totalImage);
                     currentImages.push(picture);
                     setTaskData({ ...taskData, ['UrlImage'] : currentImages});
                     setPicture(null);

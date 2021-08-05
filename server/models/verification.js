@@ -10,7 +10,10 @@ const verificationSchema = mongoose.Schema({
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Verificator' }],
     score: { type: Number },
-    feedback: { type: String },
+    feedback: [{
+        criteria1: { type: Number},
+        criteria2: { type: Number},
+    }],
 })
 
 export default mongoose.model('Verification', verificationSchema);
