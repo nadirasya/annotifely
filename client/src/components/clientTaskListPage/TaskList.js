@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 
 import EmptyTask from './TaskListComponents/EmptyTask';
 import AddAdditionalTime from '../clientAddAdditionalTime/AddAdditionalTimeForm';
+import StatusMessage from '../StatusMessage/StatusMessage';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -31,6 +32,8 @@ const TaskList = () => {
     const [selectedTask, setSelectedTask] = useState();
     const timer = useRef();
     const [loading, setLoading] = useState(true);
+    const [downloaded, setDownloaded] = useState(false);
+    const [downloadProgress, setDownloadProgress] = useState(false);
 
     useEffect(() => {
         dispatch(getClientTask());
@@ -55,6 +58,10 @@ const TaskList = () => {
         console.log("time", time)
         dispatch(updateTime(time, selectedTask._id))
         setAdditionalTimeTask(false);
+    }
+
+    const handleClickOk = () => {
+        setDownloaded(false)
     }
 
     const handleAddTask = () => {
@@ -83,9 +90,13 @@ const TaskList = () => {
     }
     
     const handleDownload = (id) => {
-        dispatch(downloadTask(id));
-        // alert('Task downloaded!');
-        dispatch(getClientTask());
+        setDownloadProgress(true);
+        timer.current = window.setTimeout( async() => {
+            setDownloadProgress(false);
+            await dispatch(downloadTask(id));
+            setDownloaded(true);
+        }, 1000);
+        // dispatch(getClientTask());
     }
 
       /**
@@ -113,6 +124,15 @@ const TaskList = () => {
                 </OutsideAlerter>
                 </div> 
                 : null
+            }
+            {
+                downloaded ?
+                <div className={classes.popupContainer}>
+                    <OutsideAlerter>
+                        <StatusMessage message="Successfully downloaded!" handleClickOk={handleClickOk} statusMessage={downloaded} />
+                    </OutsideAlerter>
+                </div>
+                :null
             }
 
         <Container className={classes.container}>
@@ -177,9 +197,16 @@ const TaskList = () => {
                                                 <TableCell align="left">
                                                     {
                                                         task?.timeRemaining < 1 ?
-                                                        <Button variant="contained" className={classes.buttonTertiary} onClick={() => handleDownload(task?._id)}> 
+                                                        <div>
+                                                        {
+                                                            downloadProgress ?
+                                                            <CircularProgress size='30px' /> 
+                                                            :
+                                                            <Button variant="contained" className={classes.buttonTertiary} onClick={() => handleDownload(task?._id)}> 
                                                             Download
-                                                        </Button>
+                                                            </Button>
+                                                        }
+                                                        </div>
                                                         :
                                                         <Button variant="contained" className={classes.buttonTertiaryDisabled} disabled> 
                                                             Download

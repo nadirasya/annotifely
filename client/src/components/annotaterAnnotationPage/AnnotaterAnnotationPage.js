@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { Typography, Button, CircularProgress, Grid } from '@material-ui/core';
+import { Typography, Button, CircularProgress, Grid, Container } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router-dom'
 import useStyles from './styles';
 import boundingBoxLogo from '../images/bounding box.png';
@@ -14,6 +14,7 @@ import { createAnnotation, editAnnotation, storeAnnotations, fetchAnnotations } 
 import { getTasks } from '../../actions/tasks';
 import { Prompt } from 'react-router-dom';
 import BoundingBoxCriteria from '../BoundingBoxCriteriaContainer/BoundingBoxCriteriaContainer';
+import ConfirmationForm from '../ConfirmationForm/ConfirmationForm';
 
 import '@recogito/annotorious/dist/annotorious.min.css';
 
@@ -32,6 +33,9 @@ const AnnotaterAnnotationPage = props => {
     const [ histories, setHistories ] = useState({annotations: [], current: ''});
     const [ isPrompt, setIsPrompt ] = useState(true);
     const [ user, setUser ] = useState(JSON.parse(localStorage.getItem('profile'))); 
+    const [confirmation, setConfirmation] = useState(false);
+    const [isAnnotationNull, setIsAnnotationNull] = useState(true);
+    const [message, setMessage] = useState();
 
     if (isPrompt) {
       window.onbeforeunload = () => true
@@ -158,7 +162,24 @@ const AnnotaterAnnotationPage = props => {
       setHistories({...histories, ['current']: histories.current + 1})
     }
 
+    const handleCancel = () => {
+      setConfirmation(false);
+    }
+
+    const handleClick = () => {
+      const annotationsCheck = anno.getAnnotations()
+      console.log('check', annotationsCheck)
+      if (annotationsCheck.length === 0) {
+        setIsAnnotationNull(true);
+      } else {
+        setIsAnnotationNull(false);
+      }
+
+      setConfirmation(true);
+    }
+
     const handleButton = async() => {
+      await setConfirmation(false);
       const annotationData = []
       const annotations = await anno.getAnnotations().forEach(function(element, index){
         console.log(element)
@@ -203,6 +224,41 @@ const AnnotaterAnnotationPage = props => {
         }
       }
     }
+
+    function useOutsideAlerter(ref) {
+
+      useEffect(() => {
+          /**
+           * Alert if clicked on outside of element
+           */
+          function handleClickOutside(event) {
+              if (ref.current && !ref.current.contains(event.target)) {
+                  setConfirmation(true)
+              }
+          }
+  
+          // Bind the event listener
+          document.addEventListener("mousedown", handleClickOutside);
+          return () => {
+              // Unbind the event listener on clean up
+              document.removeEventListener("mousedown", handleClickOutside);
+          };
+      }, [ref]);
+  }
+  
+    /**
+     * Component that alerts if you click outside of it
+     */
+    function OutsideAlerter(props) {
+        const wrapperRef = useRef(null);
+        useOutsideAlerter(wrapperRef);
+  
+        return (
+          <Container component="main" maxWidth="xs">
+            <div ref={wrapperRef} onClick={props.onClick}>{props.children}</div>
+          </Container>
+        )
+    }
     
     return (
     <div>
@@ -221,6 +277,23 @@ const AnnotaterAnnotationPage = props => {
             'Are you sure you want to leave?'
         }} />
      : null
+    }
+    {
+      confirmation === true ? 
+      <div className={classes.popupContainer}>
+        {/* <OutsideAlerter>
+            <ConfirmationForm message="Are you sure with the result?" handleClickCancel={handleCancel} handleClickConfirm={handleButton} confirmationForm={true}/>
+        </OutsideAlerter> */}
+        <OutsideAlerter>
+        {
+          isAnnotationNull ?
+            <ConfirmationForm message="Are you sure there is nothing to tag?" handleClickCancel={handleCancel} handleClickConfirm={handleButton} confirmationForm={true}/> 
+          :
+            <ConfirmationForm message="Are you sure the tagged object is correct?" handleClickCancel={handleCancel} handleClickConfirm={handleButton} confirmationForm={true}/>
+        }
+        </OutsideAlerter>
+      </div>
+      : null
     }
     {
     images?.length == null ?
@@ -287,7 +360,7 @@ const AnnotaterAnnotationPage = props => {
                         <b>{currentIndex+1}/{totalImage}</b>
                       </Typography>
                     </div>
-                    <Button color="primary" variant="contained" className={classes.buttonContainer} onClick={handleButton}>
+                    <Button color="primary" variant="contained" className={classes.buttonContainer} onClick={handleClick}>
                         <Typography variant="h6">
                           {
                             currentIndex==totalImage-1?

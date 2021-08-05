@@ -181,7 +181,7 @@ const TaskForm= () => {
                             name="UrlImage"
                             value={url}
                             disabled={ onPreviewUrl !== null ? true : false}
-                            isRequired={false}
+                            // isRequired={false}
                         />
                         { onPreviewUrl !== null ?
                             <Button variant="outlined" className={classes.addButtonContainer} onClick={onPressCloseImage}>

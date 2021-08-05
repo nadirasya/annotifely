@@ -49,5 +49,17 @@ export default makeStyles((theme) => ({
     },
     imageCounter: {
         padding: '20px'
-    }
+    },
+    popupContainer: {
+        position: 'fixed',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'black',
+        backgroundColor: 'rgba(0,0,0,.75)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        top: 0,
+        zIndex: 3,
+        left: 0
+      }
 }))

@@ -55,7 +55,7 @@ const LoginForm = ({loginForm}) => {
     
     return (
         // <Container component="main" maxWidth="xs">
-        <Slide in={loginForm} direction="down" mountOnEnter unmountOnExit>
+        <Slide in={loginForm} direction="down">
         <Paper className={classes.paper} elevation={3}>
             <Typography variant="h4" style={{marginBottom: '8px'}}>
                 <b>Login as</b>

@@ -19,7 +19,7 @@ const AddAdditionalTime = ({taskTitle, handleClickCancel, handleClickConfirm, ad
     return (
         <Slide in={additionalTimeForm} direction="down" mountOnEnter unmountOnExit >
             <Paper className={classes.paper} elevation={3}>
-                <div maxWidth='90vw'>
+                <div maxwidth='90vw'>
                     <div className={classes.messageContainer}>
                         <Box component="span" m={0} className={`${classes.centerBox} ${classes.box}`} style={{height: ''}}>
                             <Button disabled>
@@ -64,7 +64,7 @@ const AddAdditionalTime = ({taskTitle, handleClickCancel, handleClickConfirm, ad
                             </Grid>
                             <Grid item xs={6}>
                                 <div className={classes.buttonContainer}>
-                                    <Button variant="contained" color="grey" className={classes.button} onClick={handleClickCancel}>
+                                    <Button variant="contained" color="secondary" className={classes.button} onClick={handleClickCancel}>
                                         <Typography variant="subtitle2" >
                                             <b>Cancel</b>
                                         </Typography>
