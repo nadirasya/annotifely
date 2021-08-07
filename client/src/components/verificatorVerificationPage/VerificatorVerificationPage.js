@@ -121,7 +121,7 @@ const VerificatorVerificationPage = props => {
                     let score = 0
                     score += calculateScore(parseInt(data.criteria1))
                     score += calculateScore(parseInt(data.criteria2))
-                    data._id = boundingBoxes[index]._id
+                    data.idBoundingBox = boundingBoxes[index]._id
                     data.score = score
                     totalScore += score
         })
