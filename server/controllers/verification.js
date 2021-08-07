@@ -32,11 +32,12 @@ export const createVerification = async (req, res) => {
 
 //GET VERIFICATION BY ID ANNOTATION 
 export const getVerificationById = async (req, res) => {
-    const { id } = req.params;
+    const { boundingBoxId } = req.query;
 
     try {
-        if(id !== undefined){
-        const feedback = await Verification.find({annotation: id});
+        const annotationId = req.params.id;
+        if(annotationId !== undefined){
+        const feedback = await Verification.find({annotation: annotationId, 'feedback.idBoundingBox': boundingBoxId}).populate('annotation', 'boundingBox');
         return res.status(200).json(feedback);
         }
     }
