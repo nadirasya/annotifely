@@ -5,8 +5,7 @@ import Image from "../models/image.js";
 export const createVerification = async (req, res) => {
     const verificationData = req.body;
 
-    await verificationData.map(async(verification, index) => {
-        console.log("verification", verification);
+    await verificationData.map(async(verification) => {
         if(!verification.annotationId)
             return res.status(400).json({ errorMessage: "annotation ID not given."});
 
@@ -14,22 +13,24 @@ export const createVerification = async (req, res) => {
         if(!annotation)
         return res.status(400).json({ errorMessage: "No annotation with this ID was found."});
 
-        await Annotation.updateOne({_id: annotation}, {$set: { "totalScore" : verification.verificationData.score}});
+        await Annotation.updateOne({_id: annotation}, {$set: { "totalScore" : verification.totalScore}});
 
-        // save verification in the database
-        const newVerification = new Verification ({ score:verification.verificationData.score, 
-                                                    feedback:verification.verificationData.feedback, 
-                                                    annotation:verification.annotationId,
-                                                    boundingBox: verification.boundingBoxId, 
-                                                    verificator:req.user.id});
-        
-        try {
-            const savedVerification = await newVerification.save();
-            return res.status(200).json(savedVerification);
-        
-            } catch (error) {
-                console.log(error);
-            }
+        verification.feedback.map(async(feedback) => {
+            // save verification in the database
+            const newVerification = new Verification ({ score:feedback.score, 
+                                                        feedback: {criteria1: feedback.criteria1, criteria2: feedback.criteria2}, 
+                                                        annotation:verification.annotationId,
+                                                        boundingBox: feedback._id, 
+                                                        verificator:req.user.id});
+            
+            try {
+                const savedVerification = await newVerification.save();
+                return res.status(200);
+            
+                } catch (error) {
+                    console.log(error);
+                }
+        })
     })
 }
 

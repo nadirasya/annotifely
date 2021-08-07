@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { Typography, Button, CircularProgress, Box, Container, TableHead, Table, TableRow, TableContainer, Paper, TableCell, withStyles, TableBody, TextField,
-FormControl, Select, MenuItem } from '@material-ui/core';
+import { Typography, Button, CircularProgress, Box, Container, TableHead, Table, TableRow, TableContainer, Paper, TableCell, withStyles, TableBody, TextField, FormControlLabel, Checkbox } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router-dom'
 import useStyles from './styles';
 import { Annotorious } from '@recogito/annotorious';
@@ -79,8 +78,8 @@ const VerificatorVerificationPage = props => {
         for(let i = 0; i < boundingBoxes?.length; i++){
             temp.push({criteria1: 0, criteria2: 0})
         }
+        console.log("temp", temp, )
         setVerificationData(temp);
-        setTotalBox('');
     }
 
     function searchImage(id, myArray){
@@ -95,7 +94,8 @@ const VerificatorVerificationPage = props => {
         let score = 0;
 
         if((num !== 4)){
-            let boxScore = ((100*boundingBoxes.length)/totalBox)/2
+            let boxScore = (((100*boundingBoxes.length)/totalBox)/boundingBoxes.length)/2
+            console.log("boxScore: ", boxScore)
             switch (num) {
                 case 1:
                     score = boxScore;
@@ -112,54 +112,62 @@ const VerificatorVerificationPage = props => {
         } else {
             score = 0;
         }
-        return score;
+        const verifications = {score}
+        return verifications;
     }
 
     const handleButton = async() => {
-        let totalScore = 0;
-        verificationData.map((data, index) => {
-                    let score = 0
-                    score += calculateScore(parseInt(data.criteria1))
-                    score += calculateScore(parseInt(data.criteria2))
-                    data._id = boundingBoxes[index]._id
-                    data.score = score
-                    totalScore += score
+        let score = 0
+        let feedbackTemp = verificationData
+        feedbackTemp.map((data, index) => {
+            score += calculateScore(data.criteria1)
+            score += calculateScore(data.criteria2)
+            data._id = boundingBoxes[index]._id
         })
-        totalScore = totalScore/boundingBoxes.length
-        const verificationTemp = {feedback: verificationData, annotationId: annotatedStore[currentIndex]?._id, totalScore}
+        const verificationTemp = {feedback: feedbackTemp, annotationId: annotatedStore[currentIndex]?._id}
+        console.log(verificationTemp)
         if(currentIndex!=totalImage-1){
-            dispatch(storeVerification(verificationTemp));
+            dispatch(storeVerification({ verificationData: verificationTemp, annotationId: annotatedStore[currentIndex]?._id}));
             history.push({
-            pathname: '/verificator/verification-page',
-            state: { id: id, index: currentIndex+1 }
+              pathname: '/verificator/verification-page',
+              state: { id: id, index: currentIndex+1 }
             })
         } 
         else {
             dispatch(fetchVerification())
-            await verifications.push({feedback: verificationData, annotationId: annotatedStore[currentIndex]?._id, totalScore})
-            dispatch(createVerification(verifications))
-            history.push({
-                pathname: '/verificator',
-                state: { load: true }
-            })
-        }
+            await verifications.push({ verificationData: verificationTemp, annotationId: annotatedStore[currentIndex]?._id})
+            // dispatch(createVerification(verifications))
+            // history.push({
+            //     pathname: '/verificator',
+            //     state: { load: true }
+            // })
+            console.log("verifications", verifications)
     }
+}
+
 
     const handleSelectBox = (box) => {
+        console.log(box)
+        console.log(verificationData)
         anno.selectAnnotation(box._id)
     }
 
     const handleCriteria1 = (event) => {
         let temp = verificationData;
-        temp[parseInt(event.target.name)].criteria1 = event.target.value;
+        temp[event.target.name].criteria1 = event.target.value;
         setVerificationData(temp);
+        console.log("criteria1", temp);
     }
 
     const handleCriteria2 = (event) => {
         let temp = verificationData;
-        temp[parseInt(event.target.name)].criteria2 = event.target.value;
+        temp[event.target.name].criteria2 = event.target.value;
         setVerificationData(temp)
     }
+
+    const handleChange = (e) => {
+        setVerificationData({ ...verificationData, [e.target.name] : e.target.value });
+    };
 
     const handleTextField = e =>{
         setTotalBox(e.target.value)
@@ -213,7 +221,8 @@ const VerificatorVerificationPage = props => {
                                 </TableHead>
                                 <TableBody>
                                     {
-                                        boundingBoxes.map((box, index) => (
+                                        boundingBoxes.map((box, index)=>{
+                                            return (
                                             <TableRow key={box._id}>
                                                 <TableCell>
                                                     <Button variant="contained" disableElevation onClick={() => handleSelectBox(box)}>
@@ -228,7 +237,6 @@ const VerificatorVerificationPage = props => {
                                                         label3="Cropped most parts of the object" 
                                                         label4="Object is incorrect"
                                                         handleSelected={handleCriteria1}
-                                                        selected={1}
                                                         index={index}/>
                                                     <Typography><b>Criteria 2:</b></Typography>
                                                     <SelectBox 
@@ -240,14 +248,15 @@ const VerificatorVerificationPage = props => {
                                                         index={index}/>
                                                 </TableCell>
                                             </TableRow>
-                                        ))
+                                            )
+                                        })
                                     }
                                 </TableBody>
                             </Table>
                         </TableContainer>
                         <div style={{marginTop:"10px", flexDirection: 'row', display:'flex',}}>
                             <Typography>Total bounding boxes are <b>{boundingBoxes?.length}</b> from</Typography>
-                            <TextField value={totalBox} style={{width: "40px", marginLeft: "10px", marginRight: "10px"}} onChange={handleTextField}/>
+                            <TextField style={{width: "40px", marginLeft: "10px", marginRight: "10px"}} onChange={handleTextField}/>
                             <Typography>bounding boxes</Typography>
                         </div>
                     </div>
