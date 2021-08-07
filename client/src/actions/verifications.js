@@ -11,9 +11,10 @@ export const createVerification = (verificationData) => async(dispatch) => {
     }
 }
 
-export const storeVerification = (verificationData, annotationId) => async(dispatch) => {
-    const annotation = {verificationData, annotationId};
-    dispatch({ type: STORE_VERIFICATION, payload: annotation })
+export const storeVerification = (verificationData) => async(dispatch) => {
+    console.log("store",verificationData)
+    // const annotation = {verificationData, annotationId};
+    dispatch({ type: STORE_VERIFICATION, payload: verificationData })
 }
 
 export const fetchVerification = () => async(dispatch) => {
