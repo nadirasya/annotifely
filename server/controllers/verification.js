@@ -54,7 +54,7 @@ export const getPerformanceScore = async (req, res) => {
         const verifications = await Verification.find().populate('annotation', 'annotater');
         verifications.map((verification) => {
             if(verification.annotation[0].annotater[0].toString() === id.toString()){
-                score += verification.score;
+                score += verification.feedback[0].score;
                 index += 1;
             }
         })
