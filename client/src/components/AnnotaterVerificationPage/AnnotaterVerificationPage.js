@@ -49,6 +49,7 @@ const AnnotaterVerificationPage = props => {
         if(annotatedStore[currentIndex]?._id !== undefined){
             dispatch(getVerificationById(annotatedStore[currentIndex]?._id))
         }
+        console.log(verifications)
     },[annotatedStore, currentIndex])
 
     useEffect(() => {
@@ -196,11 +197,11 @@ const AnnotaterVerificationPage = props => {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    {/* <div style={{marginTop:"10px", flexDirection: 'row', display:'flex',}}>
-                        <Typography>Total bounding boxes are <b></b> from</Typography>
-                        <TextField value={3} style={{width: "40px", marginLeft: "10px", marginRight: "10px"}}/>
-                        <Typography>bounding boxes</Typography>
-                    </div> */}
+                    <div style={{marginTop:"10px", flexDirection: 'row', display:'flex',}}>
+                    { verifications[0].missedBoundingBox > 0 ? 
+                        <Typography>You missed <b>{verifications[0].missedBoundingBox}</b> { verifications[0].missedBoundingBox === 1? 'bounding box' : 'bounding boxes'}  </Typography>: null
+                    }
+                    </div>
                 </div>
                 <div className={classes.submitButtonContainer}>
                     <div className={classes.imageCounter}>
