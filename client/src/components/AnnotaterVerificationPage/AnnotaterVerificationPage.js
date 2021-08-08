@@ -1,8 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { Typography, Button, CircularProgress } from '@material-ui/core';
+import { Typography, Button, CircularProgress, TableHead, Table, TableRow, TableContainer, Paper, TableCell, withStyles, TableBody, TextField } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router-dom'
 import useStyles from './styles';
-import createAnnotation from './createAnnotation';
 import { Annotorious } from '@recogito/annotorious';
 import { useDispatch, useSelector } from 'react-redux';
 import Input from './Input'
@@ -10,7 +9,18 @@ import createAnnotationObject from './createAnnotation';
 import { createVerification, storeVerification, fetchVerification, getVerificationById } from '../../actions/verifications';
 
 import '@recogito/annotorious/dist/annotorious.min.css';
+import SelectBox from '../SelectBox';
 
+const StyledTableCell = withStyles((theme) => ({
+    head: {
+      backgroundColor: '#CFCFCF',
+      color: theme.palette.primary.dark,
+    },
+    body: {
+      fontSize: 14,
+      textTransform: 'none',
+    },
+}))(TableCell);
 
 const AnnotaterVerificationPage = props => {
     const classes = useStyles();
@@ -64,7 +74,7 @@ const AnnotaterVerificationPage = props => {
         if(annotorious !== null)
         return () => annotorious.destroy();
 
-    }, [images, currentIndex]);
+    }, [images, currentIndex, verifications]);
 
     function searchImage(id, myArray){
         for (var i=0; i < myArray.length; i++) {
@@ -87,8 +97,12 @@ const AnnotaterVerificationPage = props => {
         }
     }
 
+    const handleSelectBox = (box) => {
+        anno.selectAnnotation(box.idBoundingBox)
+    }
+
     return (
-    images?.length == null ?
+    images?.length == null || verifications.length == null?
     <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
       <CircularProgress/>
     </div>
@@ -118,35 +132,75 @@ const AnnotaterVerificationPage = props => {
             <div className={classes.rightContainer}>
                 <div>
                     <div>
-                        <Typography variant="h6" className={classes.label} htmlFor="form-task">
-                            <b>Score</b>
-                        </Typography>
                         <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                            <Input
-                                type="text"
-                                label="Score"
-                                name="score"
-                                half
-                                value={verifications[0]?.score}
-                            />
-                            <Typography variant="h6" className={classes.label} htmlFor="form-task" style={{marginLeft: '15px'}}>
-                                <b>/100</b>
+                            <Typography variant="h6" className={classes.label} style={{marginRight: '5px'}}>
+                                <b>Score </b>
+                            </Typography>
+                            <Typography variant="h6" className={classes.label} style={{marginRight: '5px', color: '#567068'}}>
+                                 <b> { verifications[0]?.annotation.length !== null ? Math.round(verifications[0]?.annotation[0]?.totalScore) : " "} </b>
+                            </Typography>
+                            <Typography variant="h6" className={classes.label} >
+                                out of <b>100</b>
                             </Typography>
                         </div>
                     </div>
-                    <div>
-                        <Typography variant="h6" className={classes.label} htmlFor="form-task">
-                            <b>Feedback</b>
-                        </Typography>
-                        <Input
-                            type="text"
-                            label="Feedback"
-                            name="feedback"
-                            multiline
-                            rows={10}
-                            value={verifications[0]?.feedback}
-                        />
+                    <div style={{marginTop: '5px'}}>
+                        <Typography><b>Criteria 1:</b> The bounding box not cropping any parts of the object </Typography>
+                        <Typography><b>Criteria 2:</b> The bounding box must be as close as possible to the edge pixels of the object </Typography>
                     </div>
+                    <TableContainer component={Paper} style={{ marginTop: '15px', marginBottom: '15px' }}>
+                        <Table stickyHeader className={classes.table} size="small" aria-label="sticky header">
+                            <TableHead>
+                                <TableRow style={{alignItems: "left"}} >
+                                    <StyledTableCell>
+                                        <Typography variant="subtitle1"><b>ID</b></Typography>
+                                    </StyledTableCell>
+                                    <StyledTableCell>
+                                        <Typography variant="subtitle1"><b>Status</b></Typography>
+                                    </StyledTableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {
+                                    verifications[0]?.feedback?.map((box, index) => (
+                                        <TableRow key={box._id}>
+                                            <TableCell>
+                                                <Button variant="contained" disableElevation onClick={() => handleSelectBox(box)}>
+                                                    Box {index+1}
+                                                </Button>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Typography><b>Criteria 1:</b></Typography>
+                                                <SelectBox 
+                                                    label1="Perfectly fit" 
+                                                    label2="Cropped some parts of the object" 
+                                                    label3="Cropped most parts of the object" 
+                                                    label4="Object is incorrect"
+                                                    disabled={true}
+                                                    selected={box.criteria1}
+                                                    index={index}/>
+                                                <Typography><b>Criteria 2:</b></Typography>
+                                                <SelectBox 
+                                                    label1="Perfectly fit" 
+                                                    label2="Far from the edge pixel" 
+                                                    label3="Very far from the edge pixel" 
+                                                    label4="Object is incorrect"
+                                                    disabled={true}
+                                                    selected={box.criteria2}
+                                                    index={index}/>
+                                                <Typography><b>Score: </b> {Math.round(box.score)}</Typography>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                }
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    {/* <div style={{marginTop:"10px", flexDirection: 'row', display:'flex',}}>
+                        <Typography>Total bounding boxes are <b></b> from</Typography>
+                        <TextField value={3} style={{width: "40px", marginLeft: "10px", marginRight: "10px"}}/>
+                        <Typography>bounding boxes</Typography>
+                    </div> */}
                 </div>
                 <div className={classes.submitButtonContainer}>
                     <div className={classes.imageCounter}>
