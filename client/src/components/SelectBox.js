@@ -10,7 +10,7 @@ const SelectBox = ({label1, label2, label3, label4, disabled, selected, handleSe
 
   return (
     <div>
-    <select name={String(index)} style={{width: '100%', padding: 5, borderRadius: '5px', borderColor: '#CFCFCF'}} onChange={handleChange}>
+    <select name={String(index)} style={{width: '100%', padding: 5, borderRadius: '5px', borderColor: '#CFCFCF'}} onChange={handleChange} disabled={disabled} value={selected}>
       <option value="0">Please select one</option>
       <option value="1">{label1}</option>
       <option value="2">{label2}</option>

@@ -1,13 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { Typography, Button, CircularProgress, Box, Container, TableHead, Table, TableRow, TableContainer, Paper, TableCell, withStyles, TableBody, TextField,
-FormControl, Select, MenuItem } from '@material-ui/core';
+import { Typography, Button, CircularProgress, Box, Container, TableHead, Table, TableRow, TableContainer, Paper, TableCell, withStyles, TableBody, TextField} from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router-dom'
 import useStyles from './styles';
 import { Annotorious } from '@recogito/annotorious';
 import { useDispatch, useSelector } from 'react-redux';
 import createAnnotationObject from './createAnnotation';
 import { createVerification, storeVerification, fetchVerification } from '../../actions/verifications';
-import SelectBox from './SelectBox';
+import SelectBox from '../SelectBox';
 
 import '@recogito/annotorious/dist/annotorious.min.css';
 
@@ -126,7 +125,7 @@ const VerificatorVerificationPage = props => {
                     totalScore += score
         })
         totalScore = totalScore/boundingBoxes.length
-        const verificationTemp = {feedback: verificationData, annotationId: annotatedStore[currentIndex]?._id, totalScore}
+        const verificationTemp = {feedback: verificationData, annotationId: annotatedStore[currentIndex]?._id, totalScore, missedBoundingBox: totalBox-boundingBoxes.length}
         if(currentIndex!=totalImage-1){
             dispatch(storeVerification(verificationTemp));
             history.push({
@@ -136,7 +135,7 @@ const VerificatorVerificationPage = props => {
         } 
         else {
             dispatch(fetchVerification())
-            await verifications.push({feedback: verificationData, annotationId: annotatedStore[currentIndex]?._id, totalScore})
+            await verifications.push({feedback: verificationData, annotationId: annotatedStore[currentIndex]?._id, totalScore, missedBoundingBox: totalBox-boundingBoxes.length})
             dispatch(createVerification(verifications))
             history.push({
                 pathname: '/verificator',
@@ -199,7 +198,7 @@ const VerificatorVerificationPage = props => {
                         <Typography style={{fontStyle: "italic"}}>Please give status based on the following criterias</Typography>
                         <Typography><b>Criteria 1:</b> The bounding box not cropping any parts of the object </Typography>
                         <Typography><b>Criteria 2:</b> The bounding box must be as close as possible to the edge pixels of the object </Typography>
-                        <TableContainer component={Paper} style={{ maxHeight: '40vh', marginTop: '15px' }}>
+                        <TableContainer component={Paper} style={{ marginTop: '15px' }}>
                             <Table stickyHeader className={classes.table} size="small" aria-label="sticky header">
                                 <TableHead>
                                     <TableRow style={{alignItems: "left"}} >
@@ -228,7 +227,6 @@ const VerificatorVerificationPage = props => {
                                                         label3="Cropped most parts of the object" 
                                                         label4="Object is incorrect"
                                                         handleSelected={handleCriteria1}
-                                                        selected={1}
                                                         index={index}/>
                                                     <Typography><b>Criteria 2:</b></Typography>
                                                     <SelectBox 

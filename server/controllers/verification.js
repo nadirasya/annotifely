@@ -1,12 +1,11 @@
 import Verification from "../models/verification.js";
 import Annotation from "../models/annotation.js";
-import Image from "../models/image.js";
 
 export const createVerification = async (req, res) => {
     const verificationData = req.body;
 
     await verificationData.map(async(verification) => {
-        console.log(verification)
+        // console.log(verification)
         if(!verification.annotationId)
             return res.status(400).json({ errorMessage: "annotation ID not given."});
 
@@ -18,6 +17,7 @@ export const createVerification = async (req, res) => {
 
         const newVerification = new Verification ({ feedback: verification.feedback, 
                                                     annotation: verification.annotationId,
+                                                    missedBoundingBox: verification.missedBoundingBox,
                                                     verificator: req.user.id});
 
         try {
@@ -36,7 +36,7 @@ export const getVerificationById = async (req, res) => {
 
     try {
         if(id !== undefined){
-        const feedback = await Verification.find({annotation: id});
+        const feedback = await Verification.find({annotation: id}).populate('annotation', 'id totalScore');
         return res.status(200).json(feedback);
         }
     }
@@ -50,14 +50,14 @@ export const getPerformanceScore = async (req, res) => {
     let score = 0;
     let index = 0;
     try {
-        const verifications = await Verification.find().populate('annotation', 'annotater');
+        const verifications = await Annotation.find({annotater: id})
         verifications.map((verification) => {
-            if(verification.annotation[0].annotater[0].toString() === id.toString()){
-                score += verification.score;
+            if(verification?.totalScore !== undefined){
+                score += verification?.totalScore;
                 index += 1;
             }
         })
-        score = score/index;
+        score = Math.round(score/index) 
         res.status(200).json(score);
     } catch (error) {
         res.status(500).send();
