@@ -1,13 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { Typography, Button, CircularProgress, Box, Container, TableHead, Table, TableRow, TableContainer, Paper, TableCell, withStyles, TableBody, TextField,
-FormControl, Select, MenuItem } from '@material-ui/core';
+import { Typography, Button, CircularProgress, Box, Container, TableHead, Table, TableRow, TableContainer, Paper, TableCell, withStyles, TableBody, TextField} from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router-dom'
 import useStyles from './styles';
 import { Annotorious } from '@recogito/annotorious';
 import { useDispatch, useSelector } from 'react-redux';
 import createAnnotationObject from './createAnnotation';
 import { createVerification, storeVerification, fetchVerification } from '../../actions/verifications';
-import SelectBox from './SelectBox';
+import SelectBox from '../SelectBox';
 import { Prompt } from 'react-router-dom';
 import ConfirmationForm from '../ConfirmationForm/ConfirmationForm';
 
@@ -124,14 +123,6 @@ const VerificatorVerificationPage = props => {
       }
   
       const handleClick = () => {
-        // const annotationsCheck = anno.getAnnotations()
-        // console.log('check', annotationsCheck)
-        // if (annotationsCheck.length === 0) {
-        //   setIsAnnotationNull(true);
-        // } else {
-        //   setIsAnnotationNull(false);
-        // }
-  
         setConfirmation(true);
       }
 
@@ -147,7 +138,7 @@ const VerificatorVerificationPage = props => {
                     totalScore += score
         })
         totalScore = totalScore/boundingBoxes.length
-        const verificationTemp = {feedback: verificationData, annotationId: annotatedStore[currentIndex]?._id, totalScore}
+        const verificationTemp = {feedback: verificationData, annotationId: annotatedStore[currentIndex]?._id, totalScore, missedBoundingBox: totalBox-boundingBoxes.length}
         if(currentIndex!=totalImage-1){
             dispatch(storeVerification(verificationTemp));
             history.push({
@@ -158,7 +149,7 @@ const VerificatorVerificationPage = props => {
         else {
             await setIsPrompt(false)
             dispatch(fetchVerification())
-            await verifications.push({feedback: verificationData, annotationId: annotatedStore[currentIndex]?._id, totalScore})
+            await verifications.push({feedback: verificationData, annotationId: annotatedStore[currentIndex]?._id, totalScore, missedBoundingBox: totalBox-boundingBoxes.length})
             dispatch(createVerification(verifications))
             history.push({
                 pathname: '/verificator',
@@ -248,111 +239,111 @@ const VerificatorVerificationPage = props => {
             : null
         }
         {
-        images?.length == null || boundingBoxes?.length == 0 || verificationData === undefined?
-        <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
-        <CircularProgress/>
-        </div>
-        :
-        <Container maxWidth="90vw">
-        <div style={{paddingLeft: '2%', paddingRight: '2%', paddingBottom: '3%'}}>
-            <div className={classes.pageTitle}>
-                <Typography variant="h4">
-                <b>Verification Form</b> 
-                </Typography>
+            images?.length == null || boundingBoxes?.length == 0 || verificationData === undefined?
+            <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
+            <CircularProgress/>
             </div>
-            <div className={classes.labelContainer}>
-                <div>
-                    <div className={classes.taskLabel}>
-                        <Typography variant="h6">
-                            {images[currentIndex]?.task[0]?.instruction}
+            :
+            <Container maxWidth="90vw">
+                <div style={{paddingLeft: '2%', paddingRight: '2%', paddingBottom: '3%'}}>
+                    <div className={classes.pageTitle}>
+                        <Typography variant="h4">
+                        <b>Verification Form</b> 
                         </Typography>
-                    </div> 
-                    <div className={classes.imageContainer}>
-                        <img
-                            ref={imgEl} 
-                            style={{maxWidth: '100%', maxHeight: '100%'}}
-                            src={ searchImage(annotatedStore[currentIndex].image[0], images) }
-                            />
-                        </div>
                     </div>
-                    
-                    <div className={classes.rightContainer}>
+                    <div className={classes.labelContainer}>
                         <div>
-                            <Typography style={{fontStyle: "italic"}}>Please give status based on the following criterias</Typography>
-                            <Typography><b>Criteria 1:</b> The bounding box not cropping any parts of the object </Typography>
-                            <Typography><b>Criteria 2:</b> The bounding box must be as close as possible to the edge pixels of the object </Typography>
-                            <TableContainer component={Paper} style={{ maxHeight: '40vh', marginTop: '15px' }}>
-                                <Table stickyHeader className={classes.table} size="small" aria-label="sticky header">
-                                    <TableHead>
-                                        <TableRow >
-                                            <StyledTableCell style={{width: "10%", textAlign: "center"}} >
-                                                <Typography variant="subtitle1"><b>ID</b></Typography>
-                                            </StyledTableCell>
-                                            <StyledTableCell style={{paddingLeft: 0}}>
-                                                <Typography variant="subtitle1"><b>Status</b></Typography>
-                                            </StyledTableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {
-                                            boundingBoxes.map((box, index) => (
-                                                <TableRow key={box._id}>
-                                                    <TableCell style={{marginLeft: 0, marginRight: 0, alignItems: "center"}}>
-                                                        <Button style={{paddingLeft: 0, paddingRight:0}} variant="contained" disableElevation onClick={() => handleSelectBox(box)}>
-                                                            Box {index+1}
-                                                        </Button>
-                                                    </TableCell>
-                                                    <TableCell style={{paddingLeft: 0}}>
-                                                        <Typography><b>Criteria 1:</b></Typography>
-                                                        <SelectBox 
-                                                            label1="Perfectly fit" 
-                                                            label2="Cropped some parts of the object" 
-                                                            label3="Cropped most parts of the object" 
-                                                            label4="Object is incorrect"
-                                                            handleSelected={handleCriteria1}
-                                                            selected={1}
-                                                            index={index}/>
-                                                        <Typography><b>Criteria 2:</b></Typography>
-                                                        <SelectBox 
-                                                            label1="Perfectly fit" 
-                                                            label2="Far from the edge pixel" 
-                                                            label3="Very far from the edge pixel" 
-                                                            label4="Object is incorrect"
-                                                            handleSelected={handleCriteria2}
-                                                            index={index}/>
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))
-                                        }
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                            <div style={{marginTop:"10px", flexDirection: 'row', display:'flex',}}>
-                                <Typography>Total bounding boxes are <b>{boundingBoxes?.length}</b> from</Typography>
-                                <TextField value={totalBox} style={{width: "40px", marginLeft: "10px", marginRight: "10px"}} onChange={handleTextField}/>
-                                <Typography>bounding boxes</Typography>
-                            </div>
-                        </div>
-                        <div className={classes.submitButtonContainer}>
-                            <div className={classes.imageCounter}>
-                                <Typography variant="h4">
-                                    <b>{currentIndex+1}/{totalImage}</b>
-                                </Typography>
-                            </div>
-                            <Button color="primary" variant="contained" className={classes.buttonContainer} onClick={handleClick}>
+                            <div className={classes.taskLabel}>
                                 <Typography variant="h6">
-                                {
-                                    currentIndex==totalImage-1?
-                                    <b>Submit</b> :
-                                    <b>Next</b>
-                                }
+                                    {images[currentIndex]?.task[0]?.instruction}
                                 </Typography>
-                            </Button>
+                            </div> 
+                            <div className={classes.imageContainer}>
+                                <img
+                                    ref={imgEl} 
+                                    style={{maxWidth: '100%', height: '70vh'}}
+                                    src={ searchImage(annotatedStore[currentIndex].image[0], images) }
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div className={classes.rightContainer}>
+                                <div>
+                                    <Typography style={{fontStyle: "italic"}}>Please give status based on the following criterias</Typography>
+                                    <Typography><b>Criteria 1:</b> The bounding box not cropping any parts of the object </Typography>
+                                    <Typography><b>Criteria 2:</b> The bounding box must be as close as possible to the edge pixels of the object </Typography>
+                                    <TableContainer component={Paper} style={{ maxHeight: '40vh', marginTop: '15px' }}>
+                                        <Table stickyHeader className={classes.table} size="small" aria-label="sticky header">
+                                            <TableHead>
+                                                <TableRow >
+                                                    <StyledTableCell style={{width: "10%", textAlign: "center"}} >
+                                                        <Typography variant="subtitle1"><b>ID</b></Typography>
+                                                    </StyledTableCell>
+                                                    <StyledTableCell style={{paddingLeft: 0}}>
+                                                        <Typography variant="subtitle1"><b>Status</b></Typography>
+                                                    </StyledTableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {
+                                                    boundingBoxes.map((box, index) => (
+                                                        <TableRow key={box._id}>
+                                                            <TableCell style={{marginLeft: 0, marginRight: 0, alignItems: "center"}}>
+                                                                <Button style={{paddingLeft: 0, paddingRight:0}} variant="contained" disableElevation onClick={() => handleSelectBox(box)}>
+                                                                    Box {index+1}
+                                                                </Button>
+                                                            </TableCell>
+                                                            <TableCell style={{paddingLeft: 0}}>
+                                                                <Typography><b>Criteria 1:</b></Typography>
+                                                                <SelectBox 
+                                                                    label1="Perfectly fit" 
+                                                                    label2="Cropped some parts of the object" 
+                                                                    label3="Cropped most parts of the object" 
+                                                                    label4="Object is incorrect"
+                                                                    handleSelected={handleCriteria1}
+                                                                    // selected={1}
+                                                                    index={index}/>
+                                                                <Typography><b>Criteria 2:</b></Typography>
+                                                                <SelectBox 
+                                                                    label1="Perfectly fit" 
+                                                                    label2="Far from the edge pixel" 
+                                                                    label3="Very far from the edge pixel" 
+                                                                    label4="Object is incorrect"
+                                                                    handleSelected={handleCriteria2}
+                                                                    index={index}/>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    ))
+                                                }
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                    <div style={{marginTop:"10px", flexDirection: 'row', display:'flex',}}>
+                                        <Typography>Total bounding boxes are <b>{boundingBoxes?.length}</b> from</Typography>
+                                        <TextField value={totalBox} style={{width: "40px", marginLeft: "10px", marginRight: "10px"}} onChange={handleTextField}/>
+                                        <Typography>bounding boxes</Typography>
+                                    </div>
+                                </div>
+                                <div className={classes.submitButtonContainer}>
+                                    <div className={classes.imageCounter}>
+                                        <Typography variant="h4">
+                                            <b>{currentIndex+1}/{totalImage}</b>
+                                        </Typography>
+                                    </div>
+                                    <Button color="primary" variant="contained" className={classes.buttonContainer} onClick={handleClick}>
+                                        <Typography variant="h6">
+                                        {
+                                            currentIndex==totalImage-1?
+                                            <b>Submit</b> :
+                                            <b>Next</b>
+                                        }
+                                        </Typography>
+                                    </Button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-        </div>
-        </Container>
+            </Container>
         }
     </div>
     )

@@ -14,6 +14,7 @@ const verificationSchema = mongoose.Schema({
         criteria1: { type: Number },
         criteria2: { type: Number },
     }],
+    missedBoundingBox: { type: Number }
 })
 
 export default mongoose.model('Verification', verificationSchema);

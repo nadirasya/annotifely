@@ -38,7 +38,6 @@ const AnnotaterMyAnnotationsPage = () => {
         dispatch(getAnnotaterTask(user.result._id));
         dispatch(getAnnotationByIdAnnotater(user.result._id));
         clearTimeout(timer.current);
-
     }, [dispatch])
 
     timer.current = window.setTimeout(() => {
@@ -155,6 +154,9 @@ const AnnotaterMyAnnotationsPage = () => {
                                         <Typography variant="subtitle1"><b>Time Remaining</b></Typography>
                                     </StyledTableCell>
                                     <StyledTableCell>
+                                        <Typography variant="subtitle1"><b>Score</b></Typography>
+                                    </StyledTableCell>
+                                    <StyledTableCell>
                                     </StyledTableCell>
                                     <StyledTableCell>
                                     </StyledTableCell>
@@ -171,6 +173,12 @@ const AnnotaterMyAnnotationsPage = () => {
                                             row?.timeRemaining <= 1 ? '-':
                                             `${row?.timeRemaining} days`
                                         } 
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            row.totalScore != null ?
+                                            Math.round(row.totalScore/row.task[0]?.totalImage) : '-'
+                                        }
                                     </TableCell>
                                     <TableCell>
                                         <Grid container spacing={1}>
@@ -202,7 +210,7 @@ const AnnotaterMyAnnotationsPage = () => {
                                     </TableCell>
                                     <TableCell>
                                         {row.totalScore !== 100 &&  row.totalScore !== undefined?
-                                        <div style={{backgroundColor: 'yellow', color: 'black', padding: '5px', display: 'flex', justifyContent: 'center', borderRadius: '15px'}} >
+                                        <div style={{backgroundColor: 'yellow', color: 'black', padding: '5px', display: 'flex', justifyContent: 'center', borderRadius: '5px'}} >
                                             Please check the feedback and edit the annotation to improve your score 
                                         </div>
                                         : null}

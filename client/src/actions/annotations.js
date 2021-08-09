@@ -79,21 +79,32 @@ export const getAnnotationByIdTask = (id, annotaterId) => async(dispatch) => {
 export const getAnnotationByIdAnnotater = (annotaterId) => async(dispatch) => {
     const currentDate = moment();
     const annoTemp = [];
+    let index = 0;
+    let totalIndex = 0;
 
     try {
         const { data } = await api.getAnnotationByIdAnnotater(annotaterId);
-
-        // console.log("data", data);
-        data.map((annotation) => {
+        console.log("data", data);
+        data.map((annotation, i) => {
             const taskId = annotation.task[0]._id;
             const annotaterId = annotation.annotater[0]._id;
             const check = annoTemp.some(function(anno){ return (anno.annotater[0]._id === annotaterId  && anno.task[0]._id === taskId ) });
             if(check === false){
+                index = index + 1;
+                totalIndex = 0;
+                
                 //CALCULATE TIME DIFFERENCE
                 const createdDate = moment(annotation?.task[0]?.createdAt);
                 annotation['timeRemaining'] =  annotation?.task[0]?.timeSpan - currentDate.diff(createdDate, 'days');
                 annoTemp.push(annotation);
+            } else {
+                if(annoTemp[index-1].totalScore != null){
+                    console.log(index-1, "add", annotation?.totalScore, "to", annoTemp[index-1].totalScore, "total", annoTemp[index-1].totalScore+annotation?.totalScore)
+                    annoTemp[index-1].totalScore += annotation?.totalScore
+                }
+                totalIndex+=1
             }
+            console.log("anno", annoTemp)
             return annotation;
         })
         // console.log('annoTemp', annoTemp)
