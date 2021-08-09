@@ -124,7 +124,7 @@ const AnnotaterVerificationPage = props => {
                 <div className={classes.imageContainer}>
                     <img
                         ref={imgEl} 
-                        style={{maxWidth: '100%', maxHeight: '100%'}}
+                        style={{maxWidth: '100%', height: '70vh'}}
                         src={ searchImage(annotatedStore[currentIndex].image[0], images) }
                         />
                     </div>
@@ -149,14 +149,14 @@ const AnnotaterVerificationPage = props => {
                         <Typography><b>Criteria 1:</b> The bounding box not cropping any parts of the object </Typography>
                         <Typography><b>Criteria 2:</b> The bounding box must be as close as possible to the edge pixels of the object </Typography>
                     </div>
-                    <TableContainer component={Paper} style={{ marginTop: '15px', marginBottom: '15px' }}>
+                    <TableContainer component={Paper} style={{ marginTop: '15px', marginBottom: '15px', maxHeight: '43vh' }}>
                         <Table stickyHeader className={classes.table} size="small" aria-label="sticky header">
                             <TableHead>
-                                <TableRow style={{alignItems: "left"}} >
-                                    <StyledTableCell>
+                                <TableRow>
+                                    <StyledTableCell style={{width: "10%", textAlign: "center"}}>
                                         <Typography variant="subtitle1"><b>ID</b></Typography>
                                     </StyledTableCell>
-                                    <StyledTableCell>
+                                    <StyledTableCell style={{paddingLeft: 0}}>
                                         <Typography variant="subtitle1"><b>Status</b></Typography>
                                     </StyledTableCell>
                                 </TableRow>
@@ -166,11 +166,11 @@ const AnnotaterVerificationPage = props => {
                                     verifications[0]?.feedback?.map((box, index) => (
                                         <TableRow key={box._id}>
                                             <TableCell>
-                                                <Button variant="contained" disableElevation onClick={() => handleSelectBox(box)}>
+                                                <Button style={{paddingLeft: 0, paddingRight:0}} variant="contained" disableElevation onClick={() => handleSelectBox(box)}>
                                                     Box {index+1}
                                                 </Button>
                                             </TableCell>
-                                            <TableCell>
+                                            <TableCell style={{paddingLeft: 0}}>
                                                 <Typography><b>Criteria 1:</b></Typography>
                                                 <SelectBox 
                                                     label1="Perfectly fit" 
@@ -198,8 +198,8 @@ const AnnotaterVerificationPage = props => {
                         </Table>
                     </TableContainer>
                     <div style={{marginTop:"10px", flexDirection: 'row', display:'flex',}}>
-                    { verifications[0].missedBoundingBox > 0 ? 
-                        <Typography>You missed <b>{verifications[0].missedBoundingBox}</b> { verifications[0].missedBoundingBox === 1? 'bounding box' : 'bounding boxes'}  </Typography>: null
+                    { verifications[0]?.missedBoundingBox > 0 ? 
+                        <Typography>You missed <b>{verifications[0]?.missedBoundingBox}</b> { verifications[0]?.missedBoundingBox === 1? 'bounding box' : 'bounding boxes'}  </Typography>: null
                     }
                     </div>
                 </div>
