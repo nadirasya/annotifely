@@ -37,7 +37,6 @@ const AnnotationList = () => {
     
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
-        console.log('hai');
     };
     
     const handleChangeRowsPerPage = (event) => {

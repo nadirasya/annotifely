@@ -92,6 +92,9 @@ export const getAnnotationByIdAnnotater = (annotaterId) => async(dispatch) => {
             if(check === false){
                 index = index + 1;
                 totalIndex = 0;
+
+                //CALCULATE TOTAL IMAGE
+                annotation['totalImage'] =  annotation.task[0]?.totalImage
                 
                 //CALCULATE TIME DIFFERENCE
                 const createdDate = moment(annotation?.task[0]?.createdAt);
@@ -99,15 +102,14 @@ export const getAnnotationByIdAnnotater = (annotaterId) => async(dispatch) => {
                 annoTemp.push(annotation);
             } else {
                 if(annoTemp[index-1].totalScore != null){
-                    console.log(index-1, "add", annotation?.totalScore, "to", annoTemp[index-1].totalScore, "total", annoTemp[index-1].totalScore+annotation?.totalScore)
                     annoTemp[index-1].totalScore += annotation?.totalScore
+                    annoTemp[index-1].totalImage += annotation.task[0]?.totalImage
                 }
                 totalIndex+=1
             }
-            console.log("anno", annoTemp)
             return annotation;
         })
-        // console.log('annoTemp', annoTemp)
+        console.log('annoTemp', annoTemp)
         dispatch({ type: GET_ANNOTATION_BY_ID, payload: annoTemp })
     } catch (error) {
         

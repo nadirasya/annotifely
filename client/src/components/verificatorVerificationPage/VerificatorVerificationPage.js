@@ -98,7 +98,7 @@ const VerificatorVerificationPage = props => {
         let score = 0;
 
         if((num !== 4)){
-            let boxScore = ((100*boundingBoxes.length)/totalBox)/2
+            let boxScore = 5
             switch (num) {
                 case 1:
                     score = boxScore;
@@ -137,7 +137,7 @@ const VerificatorVerificationPage = props => {
                     data.score = score
                     totalScore += score
         })
-        totalScore = totalScore/boundingBoxes.length
+        console.log("totalScore", totalScore)
         const verificationTemp = {feedback: verificationData, annotationId: annotatedStore[currentIndex]?._id, totalScore, missedBoundingBox: totalBox-boundingBoxes.length}
         if(currentIndex!=totalImage-1){
             dispatch(storeVerification(verificationTemp));
