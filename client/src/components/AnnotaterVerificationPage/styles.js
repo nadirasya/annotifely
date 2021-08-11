@@ -24,6 +24,7 @@ export default makeStyles((theme) => ({
         // width: '30%'
     },
     rightContainer: {
+        marginTop: '5vh',
         paddingLeft: '3%',
         display: 'flex',
         justifyContent: 'space-between',
@@ -41,6 +42,7 @@ export default makeStyles((theme) => ({
         borderRadius: '10px'
     },
     submitButtonContainer: {
+        marginTop: '3vh',
         display:'flex',
         flexDirection: 'row',
         justifyContent: 'flex-end'

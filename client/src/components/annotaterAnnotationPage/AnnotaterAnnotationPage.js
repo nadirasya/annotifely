@@ -317,7 +317,7 @@ const AnnotaterAnnotationPage = props => {
                 <div className={classes.imageContainer}>
                     <img
                         ref={imgEl} 
-                        style={{maxWidth: '100%', maxHeight: '100%'}}
+                        style={{maxWidth: '100%', height: '70vh'}}
                         
                         src={ location.state?.type === "edit" ?searchImage(annotatedStore[currentIndex].image[0], images) : images[currentIndex]?.imageURL }
                         />

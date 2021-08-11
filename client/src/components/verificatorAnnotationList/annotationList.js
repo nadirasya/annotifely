@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, CircularProgress, withStyles } from '@material-ui/core';
+import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Paper, Button, CircularProgress, withStyles } from '@material-ui/core';
 import makeStyles from './styles';
 
 import { getAnnotations, getAnnotationByIdTask } from '../../actions/annotations';
@@ -29,10 +29,21 @@ const AnnotationList = () => {
 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
     const annotations = useSelector((state) => state.annotations['annotatedData'])
     const timer = useRef();
     let load = location?.state?.load;
     
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+        console.log('hai');
+    };
+    
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
 
     useEffect(() => {
         dispatch(getAnnotations());
@@ -97,7 +108,7 @@ const AnnotationList = () => {
                                 </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                {annotations.map((annotation) => (
+                                {annotations.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((annotation) => (
                                     <TableRow key={annotation._id} style={{alignItems: "left"}}>
                                     <TableCell component="th" scope="row">
                                         <Typography variant="subtitle1" ><b>{annotation?.annotater[0]?.name}</b></Typography>
@@ -117,6 +128,16 @@ const AnnotationList = () => {
                                 ))}
                                 </TableBody>
                             </Table>
+                            
+                        <TablePagination
+                            rowsPerPageOptions={[10, 25, 50]}
+                            component="div"
+                            count={annotations.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onChangePage={handleChangePage}
+                            onChangeRowsPerPage={handleChangeRowsPerPage}
+                        />
                         </TableContainer>
                     </div>
                 </div>
