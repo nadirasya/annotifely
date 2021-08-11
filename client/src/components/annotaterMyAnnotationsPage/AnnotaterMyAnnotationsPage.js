@@ -177,7 +177,7 @@ const AnnotaterMyAnnotationsPage = () => {
                                     <TableCell>
                                         {
                                             row.totalScore != null ?
-                                            Math.round(row.totalScore/row.task[0]?.totalImage) : '-'
+                                            row.totalScore+'/'+row.totalImage*10 : '-'
                                         }
                                     </TableCell>
                                     <TableCell>
@@ -209,7 +209,7 @@ const AnnotaterMyAnnotationsPage = () => {
                                         </Grid>
                                     </TableCell>
                                     <TableCell>
-                                        {row.totalScore !== 100 &&  row.totalScore !== undefined?
+                                        {row.totalScore !== row.totalImage*10 &&  row.totalScore !== undefined?
                                         <div style={{backgroundColor: 'yellow', color: 'black', padding: '5px', display: 'flex', justifyContent: 'center', borderRadius: '5px'}} >
                                             Please check the feedback and edit the annotation to improve your score 
                                         </div>

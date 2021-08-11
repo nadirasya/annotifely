@@ -16,6 +16,7 @@ export const getTasks = (id) => async (dispatch) => {
                 const createdDate = moment(task.createdAt);
                 const dateChecker = task.timeSpan - currentDate.diff(createdDate, 'days');
                 if(dateChecker > 1 ){
+                    console.log("hi")
                     task.totalAnnotater=task.totalAnnotater.length
                     task['timeRemaining'] = currentDate.diff(createdDate, 'days');
                     availableTask.push(task);
@@ -56,6 +57,7 @@ export const getAnnotaterTask = (id) => async (dispatch) => {
 export const getTasksById = (id) => async(dispatch) => {
     try {
         const { data } = await api.getTasksById(id);
+        console.log(data);
         dispatch({ type: FETCH_IMAGES, payload: data })
     } catch (error) {
         console.log(error);

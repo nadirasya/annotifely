@@ -57,7 +57,6 @@ export const getPerformanceScore = async (req, res) => {
                 index += 1;
             }
         })
-        score = Math.round(score/index) 
         res.status(200).json(score);
     } catch (error) {
         res.status(500).send();
