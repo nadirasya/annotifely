@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import { createTask, getClientTask } from '../../actions/tasks';
 import Input from './Input';
 import useStyles from './styles';
+import StatusMessage from '../StatusMessage/StatusMessage';
 
 const initialState = { UrlImage: [], title: '', label: '', instruction: '', timespan: '', totalImage: ''};
 
@@ -20,6 +21,7 @@ const TaskForm= () => {
     const [onPreviewUrl, setOnPreviewUrl] = useState(null);
     const [confirmation, setConfirmation] = useState(false);
     const [imageToRemove, setImageToRemove] = useState();
+    const [isImageNull, setIsImageNull] = useState(false);
 
     const classes = useStyles();
     const history = useHistory();
@@ -33,15 +35,16 @@ const TaskForm= () => {
     const evaluate = () => {
         let isError = false;
   
-        if(taskData.totalImage == 0) {
+        if(taskData.UrlImage.length === 0) {
           isError = true;
         }
         return isError
       }
 
     const handleSubmit = (e) => {
-          e.preventDefault();
+        e.preventDefault();
         const err = evaluate();
+        console.log(err);
         if(!err)
         {
             dispatch(createTask(taskData, history)); 
@@ -49,7 +52,8 @@ const TaskForm= () => {
             setTaskData(initialState);
             history.push('/client')
         } else {
-            alert("Please entered the image URL")
+            // alert("Please entered the image URL")
+            setIsImageNull(true);
         }
     };
 
@@ -146,6 +150,10 @@ const TaskForm= () => {
         setPicture(null);
     }
 
+    const handleClickOk = () => {
+        setIsImageNull(false);
+    }
+
 
     function useOutsideAlerter(ref) {
 
@@ -155,7 +163,7 @@ const TaskForm= () => {
              */
             function handleClickOutside(event) {
                 if (ref.current && !ref.current.contains(event.target)) {
-                    setConfirmation(true)
+                    setConfirmation(false) || setIsImageNull(false)
                 }
             }
     
@@ -199,7 +207,7 @@ const TaskForm= () => {
                             name="UrlImage"
                             value={url}
                             disabled={ onPreviewUrl !== null ? true : false}
-                            // isRequired={false}
+                            isRequired={false}
                         />
                         { onPreviewUrl !== null ?
                             <Button variant="outlined" className={classes.addButtonContainer} onClick={onPressCloseImage}>
@@ -312,6 +320,15 @@ const TaskForm= () => {
                 <div className={classes.popupContainer}>
                     <OutsideAlerter>
                         <ConfirmationForm message="Are you sure you want to delete this image?" handleClickCancel={handleCancelRemoveImage} handleClickConfirm={onRemoveImage} confirmationForm={true}/> 
+                    </OutsideAlerter>
+                </div>
+                : null
+            }
+            {
+                isImageNull ?
+                <div className={classes.popupContainer}>
+                    <OutsideAlerter>
+                        <StatusMessage message="Please insert at least one image URL." handleClickOk={handleClickOk} statusMessage={true}/>
                     </OutsideAlerter>
                 </div>
                 : null
